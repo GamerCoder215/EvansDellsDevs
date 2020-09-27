@@ -5,8 +5,8 @@ module.exports = {
 	guildOnly: true,
 	async run(client, message, args) {
 		// Discord + Quick.DB
-		const Discord = require('discord.js')
-		const db = require('quick.db')
+		const Discord = require('discord.js');
+		const db = require('quick.db');
 		// Tables
 		var invalidArgumentMessages = [
 			`Sorry ${message.author.username}, you have provided invalid arguments.`
