@@ -17,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/GamerCoder215/TCC---Connor/issues"
   },
-  "homepage": "https://github.com/GamerCoder215/TCC---Connor#readme"
+  "homepage": "https://github.com/GamerCoder215/TCC---Connor#readme",
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "express": "^4.17.1",
+    "quick.db": "^7.1.2"
+  }
 }

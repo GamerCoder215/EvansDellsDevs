@@ -17,8 +17,7 @@ module.exports = {
 		const helpEmbed = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\``)
 		.addFields(
-			{ name: '📓General', value: `\`${prefix}help general\`\n\n`, inline: true },
-			{ name: '', value: ''}
+			{ name: '📓General', value: `\`${prefix}help general\`\n\n`, inline: true }
 		)
 		.setColor('#D8D52B')
 		.setTimestamp();

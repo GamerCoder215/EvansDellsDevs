@@ -9,10 +9,10 @@ module.exports = {
 		const db = require('quick.db');
 		// Tables
 		var invalidArgumentMessages = [
-			`Sorry ${message.author.username}, you have provided invalid arguments.`
-			`Hey there ${message.author.username}! You have provided some invalid arguments.`
-			`Let's see ${message.author.username}, you have some invalid arguments.`
-			`Hey ${message.author.username}, you have invalid arguments!`
+			`Sorry ${message.author.username}, you have provided invalid arguments.`,
+			`Hey there ${message.author.username}! You have provided some invalid arguments.`,
+			`Let's see ${message.author.username}, you have some invalid arguments.`,
+			`Hey ${message.author.username}, you have invalid arguments!`,
 			`Please provide some valid arguments, ${message.author.username}`
 		]
 		var invalidPermissionMessages = [
@@ -34,19 +34,19 @@ module.exports = {
 		const invalidArguments = new Discord.MessageEmbed()
 		.setDescription(invalidArgumentMessages[Math.floor(Math.random() * 5)])
 		.setColor('#ff0000')
-		.setAuthor('', `${message.author.avatarURL}`)
+		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true }))
 		.setFooter('Connor', 'https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png')
 		.setTimestamp();
 		const invalidPermissions = new Discord.MessageEmbed()
 		.setDescription(invalidPermissionMessages[Math.floor(Math.random() * 6)])
 		.setColor('#ff0000')
-		.setAuthor('', `${message.author.avatarURL}`)
+		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true }))
 		.setFooter('Connor', 'https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png')
 		.setTimestamp();
 		const samePrefix = new Discord.MessageEmbed()
 		.setDescription(`Sorry ${message.author.username}, you already have that as your prefix!`)
 		.setColor('#ff0000')
-		.setAuthor('', `${message.author.avatarURL}`)
+		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true }))
 		.setFooter('Connor', 'https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png')
 		.setTimestamp();
 		const tooManyArguments = new Discord.MessageEmbed()
@@ -57,7 +57,7 @@ module.exports = {
 		.setTimestamp();
 		const actionSucessful = new Discord.MessageEmbed()
 		.setDescription(sucessMessages[Math.floor(Math.random() * 5)])
-		.setAuthor(`${message.author.username}`, `${message.author.avatarURL}`)
+		.setAuthor(`${message.author.username}`, message.author.displayAvatarURL({ format: "png", dynamic: true }))
 		.setColor('#D8D52B')
 		.setFooter('Connor', 'https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png')
 		.setTimestamp();
@@ -72,9 +72,9 @@ module.exports = {
 			} else if (args[0] === db.get(`guild_${message.guild.id}_prefix`)) {
 				return message.channel.send(samePrefix);
 			} else {
-				db.delete(`guild_${message.guild.id}_prefix`);
-				db.set(`guild_${message.guild.id}_prefix`, args[0]);
-				return message.channel.send(actionSucessful)
+			db.delete(`guild_${message.guild.id}_prefix`);
+			db.set(`guild_${message.guild.id}_prefix`, args[0]);
+			return message.channel.send(actionSucessful)
 			}
 		} catch (error) {
 			console.error(error)

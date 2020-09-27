@@ -32,7 +32,7 @@ fs.readdir('./events/', (err, files) => {
 // When bot joins a server, this happens:
 client.on("guildCreate", guild => {
   var found = false;
-  guild.channels.forEach(function(channel, id) {
+  guild.channels.cache.forEach(function(channel, id) {
       // If a channel is already found, nothing more needs to be done
       if(found == true || channel.type != "text") {
         return;

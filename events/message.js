@@ -2,7 +2,7 @@ module.exports = async (client, message) => {
 	const Discord = require('discord.js')
 	const db = require('quick.db')
 
-	const prefix = db.get(`guild_${message.guild.id}_prefix`) || "?"
+	const prefix = db.get(`guild_${message.guild.id}_prefix`) || '?'
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const cmdName = args.shift().toLowerCase();
   if (!message.content.startsWith(prefix)) return;
