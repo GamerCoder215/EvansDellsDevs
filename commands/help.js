@@ -54,6 +54,19 @@ module.exports = {
 		.setColor('#00feff')
 		.setFooter('ConnorBot', config.icon)
 		.setTimestamp();
+		const helpFun1 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Fun`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.addFields(
+			{ name: `**${prefix}pokemon**`, value: `Find out your dream pokemon.`},
+			{ name: `**${prefix}rickroll** <channel>`, value: `Rickroll a channel! (You must have send permissions in that channel!)`},
+			{ name: `**${prefix}clap** <message>`, value: `Make👏 a👏 message👏 look👏 like👏 this👏`},
+			{ name: `**${prefix}shout** <message>`, value: `**__📣 MAKE A MESSAGE LOOK LIKE THIS📣__**`}
+		)
+		.setColor('#00feff')
+		.setFooter('ConnorBot', config.icon)
+		.setTimestamp();
 		// Command Sequence
 		try {
 			if (!args[0]) {
@@ -80,6 +93,8 @@ module.exports = {
 		})
 	} else if (args[0] === 'general') {
 		return message.channel.send(helpGeneral);
+	} else if (args[0] === 'fun') {
+		const funHelpPages = await message.channel.send(helpFun1)
 	}
 
 		} catch (error) {
