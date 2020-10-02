@@ -2,7 +2,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const keepAlive = require('./server');
 
 // Handlers
 // Command Handler (Modules)
@@ -52,6 +51,11 @@ client.on("guildCreate", guild => {
   })
 });
 
-keepAlive();
+// Always Online thing
+const http = require('http');
+const server = http.createServer((req, res) => {
+  res.writeHead(200);
+  res.end('ok');
+});
 // Login
 client.login(process.env.TOKEN);
