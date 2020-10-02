@@ -3,10 +3,11 @@ module.exports = {
 	description: 'Give a help message.',
 	aliases: ['h'],
 	async run(client, message, args) {
-		// Discord + Prefix
+		// Discord, Prefix + Config
 		const Discord = require('discord.js');
 		const db = require('quick.db');
 		const prefix = db.get(`guild_${message.guild.id}_prefix`);
+		const config = require('./command_config.json')
 		// Timed Out Embed
 		const timedOut = new Discord.MessageEmbed()
 		.setTitle('<:error:761349813195112448> Error')
@@ -30,7 +31,7 @@ module.exports = {
 		.setTimestamp();
 		const helpPage2 = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Page 2`)
-		.setDescription(`\`\`\`css\n[] is optional;<> is required\`\`\``)
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
 		.addFields(
 			{ name: '🔧Moderation', value: `\`${prefix}help moderation\``, inline: true},
 			{ name: '\u200b', value: '\u200b'},
@@ -42,7 +43,17 @@ module.exports = {
 		.setColor('#00feff')
 		.setFooter('ConnorBot', 'https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png')
 		.setTimestamp();
-
+		// Sub Help Embeds
+		const helpGeneral = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | General`)
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.addFields(
+			{ name: `**${prefix}links**`, value: 'Get some useful links for the bot.'},
+			{ name: `**${prefix}help**`, value: 'View the help message.'}
+		)
+		.setColor('#00feff')
+		.setFooter('ConnorBot', config.icon)
+		.setTimestamp();
 		// Command Sequence
 		try {
 			if (!args[0]) {
@@ -67,11 +78,10 @@ module.exports = {
 	pageTurner.on('end', (collected) => {
 		helpPages.edit(timedOut);
 		})
+	} else if (args[0] === 'general') {
+		return message.channel.send(helpGeneral);
 	}
-	// Sub-Help Pages
-	if (!args[0]) {
-		return;
-	} else if ()
+
 		} catch (error) {
 			message.reply(`Internal Error: \"${error}\" | Paste error in support server`)
 		}
