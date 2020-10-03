@@ -60,9 +60,24 @@ module.exports = {
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
 		.addFields(
 			{ name: `**${prefix}pokemon**`, value: `Find out your dream pokemon.`},
-			{ name: `**${prefix}rickroll** <channel>`, value: `Rickroll a channel! (You must have send permissions in that channel!)`},
+			{ name: `**${prefix}rickroll** `, value: `Rickroll the channel!`},
 			{ name: `**${prefix}clap** <message>`, value: `Make👏 a👏 message👏 look👏 like👏 this👏`},
-			{ name: `**${prefix}shout** <message>`, value: `**__📣 MAKE A MESSAGE LOOK LIKE THIS📣__**`}
+			{ name: `**${prefix}shout** <message>`, value: `**__📣 MAKE A MESSAGE LOOK LIKE THIS📣__**`},
+			{ name: `**${prefix}distract** [diversion|distraction]`, value: `Distract the channel (or create a diversion.)`}
+		)
+		.setColor('#00feff')
+		.setFooter('ConnorBot', config.icon)
+		.setTimestamp();
+		const helpFun2 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Fun | Page 2`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.addFields(
+			{ name: `**${prefix}number** <min-value> <max-value>`, value: `Generate a number from a specified area.`},
+			{ name: `**${prefix}8ball**`, value: `Generate a random answer from 8 possibilities.`},
+			{ name: `**${prefix}ingrammar** <message>`, value: `Remove al of the vowels and y's in a message. \"Lke ths r tht.\"`},
+			{ name: `**${prefix}color**`, value: `Generate a random color from the basic rainbow.`},
+			{ name: `**${prefix}mlg** [user-mention|user-id]`, value: `Get a MLG user avatar. If nothing, you'll get your own.`}
 		)
 		.setColor('#00feff')
 		.setFooter('ConnorBot', config.icon)
@@ -95,6 +110,21 @@ module.exports = {
 		return message.channel.send(helpGeneral);
 	} else if (args[0] === 'fun') {
 		const funHelpPages = await message.channel.send(helpFun1)
+		// Reaction Listener
+		funHelpPages.react('1️⃣').then(() => funHelpPages.react('2️⃣')).then(() => funHelpPages.react('3️⃣'));
+
+		const funPageFilter = (reaction, user) => {
+			return ['1️⃣', '2⃣', '3️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
+		};
+
+		const funPageTurner = funHelpPages.createReactionCollector(funPageFilter, { time: 120000 });
+		funPageTurner.on('collect', (reaction,user) => {
+			if (reaction.emoji.name === '1⃣') {
+				funHelpPages.edit(helpFun1);
+			} else if (reaction.emoji.name === '2⃣'){
+				funHelpPages.edit(helpFun2);
+			}
+		})
 	}
 
 		} catch (error) {
