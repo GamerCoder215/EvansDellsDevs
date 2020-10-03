@@ -54,6 +54,7 @@ module.exports = {
 		.setColor('#00feff')
 		.setFooter('ConnorBot', config.icon)
 		.setTimestamp();
+
 		const helpFun1 = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Fun`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
@@ -78,6 +79,31 @@ module.exports = {
 			{ name: `**${prefix}ingrammar** <message>`, value: `Remove al of the vowels and y's in a message. \"Lke ths r tht.\"`},
 			{ name: `**${prefix}color**`, value: `Generate a random color from the basic rainbow.`},
 			{ name: `**${prefix}mlg** [user-mention|user-id]`, value: `Get a MLG user avatar. If nothing, you'll get your own.`}
+		)
+		.setColor('#00feff')
+		.setFooter('ConnorBot', config.icon)
+		.setTimestamp();
+		const helpFun3 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Fun | Page 3`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.addFields(
+			{ name: `**${prefix}game**`, value: `Find your ideal video game.`}
+		)
+		.setColor('#00feff')
+		.setFooter('ConnorBot', config.icon)
+		.setTimestamp();
+
+		const helpEducation1 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Education`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.addFields(
+			{ name: `**${prefix}add** <first> <second>`, value: `Add two numbers.`},
+			{ name: `**${prefix}subtract** <first> <second>`, value: `Subtract two numbers.`},
+			{ name: `**${prefix}multiply** <first> <second>`, value: `Multiply two numbers.`},
+			{ name: `**${prefix}divide** <first> <second>`, value: `Divide two numbers.`},
+			{ name: `**${prefix}function <sin|cos|tan> <number>**`, value: `Get a cosine, sine, or tangent from a number.`}
 		)
 		.setColor('#00feff')
 		.setFooter('ConnorBot', config.icon)
@@ -112,21 +138,46 @@ module.exports = {
 		const funHelpPages = await message.channel.send(helpFun1)
 		// Reaction Listener
 		funHelpPages.react('1️⃣').then(() => funHelpPages.react('2️⃣')).then(() => funHelpPages.react('3️⃣'));
-
+			// Reaction Filter
 		const funPageFilter = (reaction, user) => {
 			return ['1️⃣', '2️⃣', '3️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
 
 		const funPageTurner = funHelpPages.createReactionCollector(funPageFilter, { time: 120000 });
-		funPageTurner.on('collect', (reaction,user) => {
+		funPageTurner.on('collect', (reaction, user) => {
 			if (reaction.emoji.name === '1️⃣') {
 				funHelpPages.edit(helpFun1);
 				funHelpPages.reactions.resolve('1️⃣').users.remove(message.author.id);
-			} else if (reaction.emoji.name === '2️⃣'){
+			} else if (reaction.emoji.name === '2️⃣') {
 				funHelpPages.edit(helpFun2);
-				funHelpPages.reactions.resolve('2️⃣').users.remove(message.author.id)
+				funHelpPages.reactions.resolve('2️⃣').users.remove(message.author.id);
+			} else if (reaction.emoji.name === '3⃣') {
+					funHelpPages.edit(helpFun3);
+					funHelpPages.reactions.resolve('3⃣').users.remove(message.author.id);
 			}
 		})
+		funPageTurner.on('end', (reaction, user) => {
+			funHelpPages.edit(timedOut);
+			}
+		})
+	} else if (args[0] === 'education') {
+		const educationHelpPages = await message.channel.send(helpEducation1);
+		// Reaction Listener
+		educationHelpPages.react('1️⃣').then(() => educationHelpPages.react('2️⃣')).then(() => educationHelpPages.react('3️⃣')).then(() => educationHelpPages.react('4️⃣'));
+			// Filter
+		const educationPageFilter = (reaction, user) => {
+			return ['1️⃣', '2️⃣', '3️⃣', '4️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
+		};
+			// Reaction Collection
+		const educationPageTurner = educationHelpPages.createReactionCollector(educationPageFilter, { time: 120000 });
+		educationPageTurner.on('collect', (reaction, user) => {
+			if (reaction.emoji.name === '1️⃣') {
+				educationHelpPages.edit(helpEducation1);
+			}
+		})
+
+		break;
+
 	}
 
 		} catch (error) {
