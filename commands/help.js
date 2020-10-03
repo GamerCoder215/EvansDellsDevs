@@ -114,15 +114,17 @@ module.exports = {
 		funHelpPages.react('1️⃣').then(() => funHelpPages.react('2️⃣')).then(() => funHelpPages.react('3️⃣'));
 
 		const funPageFilter = (reaction, user) => {
-			return ['1️⃣', '2⃣', '3️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
+			return ['1️⃣', '2️⃣', '3️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
 
 		const funPageTurner = funHelpPages.createReactionCollector(funPageFilter, { time: 120000 });
 		funPageTurner.on('collect', (reaction,user) => {
-			if (reaction.emoji.name === '1⃣') {
+			if (reaction.emoji.name === '1️⃣') {
 				funHelpPages.edit(helpFun1);
-			} else if (reaction.emoji.name === '2⃣'){
+				funHelpPages.reactions.resolve('1️⃣').users.remove(message.author.id);
+			} else if (reaction.emoji.name === '2️⃣'){
 				funHelpPages.edit(helpFun2);
+				funHelpPages.reactions.resolve('2️⃣').users.remove(message.author.id)
 			}
 		})
 	}
