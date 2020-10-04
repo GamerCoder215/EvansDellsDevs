@@ -61,7 +61,7 @@ module.exports = {
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
 		.addFields(
 			{ name: `**${prefix}pokemon**`, value: `Find out your dream pokemon.`},
-			{ name: `**${prefix}rickroll** `, value: `Rickroll the channel!`},
+			{ name: `**${prefix}turn** <message>`, value: `sıɥʇ ǝʞıl ʞool ǝɓɐssǝɯ ɐ ǝʞɐW`},
 			{ name: `**${prefix}clap** <message>`, value: `Make👏 a👏 message👏 look👏 like👏 this👏`},
 			{ name: `**${prefix}shout** <message>`, value: `**__📣 MAKE A MESSAGE LOOK LIKE THIS📣__**`},
 			{ name: `**${prefix}distract** [diversion|distraction]`, value: `Distract the channel (or create a diversion.)`}
@@ -96,14 +96,68 @@ module.exports = {
 
 		const helpEducation1 = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Education`)
+		.setAuthor(`${message.author.username} | Math`, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.addFields(
+			{ name: `**${prefix}add** <first> <second> [third] [fourth]`, value: `Add two numbers.`},
+			{ name: `**${prefix}subtract** <first> <second> [third] [fourth]`, value: `Subtract two numbers.`},
+			{ name: `**${prefix}multiply** <first> <second> [third] [fourth]`, value: `Multiply two numbers.`},
+			{ name: `**${prefix}divide** <first> <second> [third] [fourth]`, value: `Divide two numbers.`},
+			{ name: `**${prefix}function** <sin|cos|tan|log> <number>`, value: `Get a cosine, sine, or tangent from a number.`}
+		)
+		.setColor('#00feff')
+		.setFooter('ConnorBot', config.icon)
+		.setTimestamp();
+		const helpEducation2 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Education | Page 2`)
+		.setAuthor(`${message.author.username} | Math (Page 2)`, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.addFields(
+			{ name: `**${prefix}square** <number>`, value: 'Square a number.'},
+			{ name: `**${prefix}cube** <number>`, value: 'Cube a number.'},
+			{ name: `**${prefix}sqrt** <number>`, value: 'Get the square root of a number.'},
+			{ name: `**${prefix}cbrt** <number>`, value: 'Get the cube root of a number.'},
+			{ name: `**${prefix}pi** <number>`, value: 'Multiply a number times π.'}
+		)
+		.setColor('#00feff')
+		.setFooter('ConnorBot', config.icon)
+		.setTimestamp();
+		const helpEducation3 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Education | Page 3`)
+		.setAuthor(`${message.author.username} | ELA / Writing`, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.addFields(
+			{ name: `**${prefix}length** <message>`, value: `Get the information of a message. Words, Characters, Vowels, Constanents, etc.`},
+			{ name: `**${prefix}fix** <message> (BETA)`, value: `Uses an extremely complex function to fix your grammar, and highlights your errors.`}
+		)
+		.setColor('#00feff')
+		.setFooter('ConnorBot', config.icon)
+		.setTimestamp();
+
+		const helpModeration1 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Moderation`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
 		.addFields(
-			{ name: `**${prefix}add** <first> <second>`, value: `Add two numbers.`},
-			{ name: `**${prefix}subtract** <first> <second>`, value: `Subtract two numbers.`},
-			{ name: `**${prefix}multiply** <first> <second>`, value: `Multiply two numbers.`},
-			{ name: `**${prefix}divide** <first> <second>`, value: `Divide two numbers.`},
-			{ name: `**${prefix}function <sin|cos|tan> <number>**`, value: `Get a cosine, sine, or tangent from a number.`}
+			{ name: `**${prefix}ban** <user> [reason] [duration]`, value: `Ban a specified user, for a specified time.`},
+			{ name: `**${prefix}kick** <user> [reason]`, value: `Kick a user.`},
+			{ name: `**${prefix}mute** <user> [reason] [duration]`, value: `Prevent a user from talking.`},
+			{ name: `**${prefix}nick** <user> <nickname>`, value: `Change a user's nickname.`},
+			{ name: `**${prefix}delete** <messageID>`, value: `Delete a message with a specified ID.`}
+		)
+		.setColor('#00feff')
+		.setFooter('ConnorBot', config.icon)
+		.setTimestamp()
+		const helpModeration2 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Moderation | Page 2`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.addFields(
+			{ name: `**${prefix}purge** <amount> [channel]`, value: `Purge a certain amount of messages. Choice of specified channel. (Discord has prevented a purge of messages older than 2 weeks)`},
+			{ name: `**${prefix}mutechannel** <channel> [duration]`, value: `Mute a specified channel.`},
+			{ name: `**${prefix}unban** <user>`, value: `Unban a specified user.`},
+			{ name: `**${prefix}unmute** <user>`, value: `Unmute a user.`},
+			{ name: `**${prefix}unmutechannel** <channel>`, value: `Unmute a specified channel.`},
 		)
 		.setColor('#00feff')
 		.setFooter('ConnorBot', config.icon)
@@ -163,21 +217,28 @@ module.exports = {
 	} else if (args[0] === 'education') {
 		const educationHelpPages = await message.channel.send(helpEducation1);
 		// Reaction Listener
-		educationHelpPages.react('1️⃣').then(() => educationHelpPages.react('2️⃣')).then(() => educationHelpPages.react('3️⃣')).then(() => educationHelpPages.react('4️⃣'));
+		educationHelpPages.react('1️⃣').then(() => educationHelpPages.react('2️⃣')).then(() => educationHelpPages.react('3️⃣'));
 			// Filter
 		const educationPageFilter = (reaction, user) => {
-			return ['1️⃣', '2️⃣', '3️⃣', '4️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
+			return ['1️⃣', '2️⃣', '3️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
 			// Reaction Collection
 		const educationPageTurner = educationHelpPages.createReactionCollector(educationPageFilter, { time: 120000 });
 		educationPageTurner.on('collect', (reaction, user) => {
 			if (reaction.emoji.name === '1️⃣') {
 				educationHelpPages.edit(helpEducation1);
+				educationHelpPages.reactions.resolve('1⃣').users.remove(message.author.id);
+			} else if (reaction.emoji.name === '2⃣') {
+				educationHelpPages.edit(helpEducation2)
+				educationHelpPages.reaction.resolve('2⃣').users.remove(message.author.id);
+			} else if (reaction.emoji.name === '3⃣') {
+				educationHelpPages.edit(helpEducation3)
+				educationHelpPages.reaction.resolve('3⃣').users.remove(message.author.id);
 			}
 		})
-
-		break;
-
+		educationPageTurner.on('end', (collected) => {
+			educationHelpPages.edit(timedOut);
+		})
 	}
 
 		} catch (error) {
