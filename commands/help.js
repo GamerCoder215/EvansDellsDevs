@@ -212,9 +212,8 @@ module.exports = {
 		})
 		funPageTurner.on('end', (reaction, user) => {
 			funHelpPages.edit(timedOut);
-			}
-		})
-	} else if (args[0] === 'education') {
+			})
+		} else if (args[0] === 'education') {
 		const educationHelpPages = await message.channel.send(helpEducation1);
 		// Reaction Listener
 		educationHelpPages.react('1️⃣').then(() => educationHelpPages.react('2️⃣')).then(() => educationHelpPages.react('3️⃣'));
@@ -240,7 +239,6 @@ module.exports = {
 			educationHelpPages.edit(timedOut);
 		})
 	}
-
 		} catch (error) {
 			message.reply(`Internal Error: \"${error}\" | Paste error in support server`)
 		}
