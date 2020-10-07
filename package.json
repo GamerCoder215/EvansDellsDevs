@@ -19,8 +19,10 @@
   },
   "homepage": "https://github.com/GamerCoder215/TCC---Connor#readme",
   "dependencies": {
+    "canvas": "^2.6.1",
     "discord.js": "^12.3.1",
     "express": "^4.17.1",
-    "quick.db": "^7.1.2"
+    "quick.db": "^7.1.2",
+    "translate": "^1.1.2"
   }
 }

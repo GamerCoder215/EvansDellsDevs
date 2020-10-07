@@ -33,6 +33,7 @@ module.exports = {
       `https://i.gifer.com/origin/3c/3c54c75eb777733fa91df536d7c54f17_w200.gif`,
       `http://38.media.tumblr.com/551a1a074aa1ee1424e218a3914f6130/tumblr_n9dzjm0pJC1s3bc1no2_500.gif`
     ]
+	try {
     const pokemonEmbed = new Discord.MessageEmbed()
     .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
     .setDescription(`\`Your pokemon, ${message.author.username}, is:\``)
@@ -40,5 +41,9 @@ module.exports = {
     .setFooter('ConnorBot', config.icon)
     .setTimestamp();
     message.channel.send(pokemonEmbed);
+		} catch (error) {
+			message.reply(config.error)
+			console.error(error)
+		}
   }
 }

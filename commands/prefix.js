@@ -4,9 +4,10 @@ module.exports = {
 	aliases: ['p', 'pr'],
 	guildOnly: true,
 	async run(client, message, args) {
-		// Discord + Quick.DB
+		// Discord + Quick.DB + Config
 		const Discord = require('discord.js');
 		const db = require('quick.db');
+		const config = require('./command_config.json')
 		// Tables
 		var invalidArgumentMessages = [
 			`Sorry ${message.author.username}, you have provided invalid arguments.`,
@@ -34,32 +35,32 @@ module.exports = {
 		const invalidArguments = new Discord.MessageEmbed()
 		.setDescription(invalidArgumentMessages[Math.floor(Math.random() * 5)])
 		.setColor('#ff0000')
-		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true }))
-		.setFooter('Connor', 'https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png')
+		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+		.setFooter('ConnorBot', config.icon)
 		.setTimestamp();
 		const invalidPermissions = new Discord.MessageEmbed()
 		.setDescription(invalidPermissionMessages[Math.floor(Math.random() * 6)])
 		.setColor('#ff0000')
-		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true }))
-		.setFooter('Connor', 'https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png')
+		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+		.setFooter('ConnorBot', config.icon)
 		.setTimestamp();
 		const samePrefix = new Discord.MessageEmbed()
 		.setDescription(`Sorry ${message.author.username}, you already have that as your prefix!`)
 		.setColor('#ff0000')
-		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true }))
-		.setFooter('Connor', 'https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png')
+		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+		.setFooter('ConnorBot', config.icon)
 		.setTimestamp();
 		const tooManyArguments = new Discord.MessageEmbed()
 		.setDescription(`Your prefix has too many arguments, ${message.author.username}! You must have below 3 arguments for you prefix!`)
 		.setColor('#ff0000')
-		.setAuthor('', `${message.author.username}`)
-		.setFooter('Connor', 'https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png')
+		.setAuthor('', message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setFooter('ConnorBot', config.icon)
 		.setTimestamp();
 		const actionSucessful = new Discord.MessageEmbed()
 		.setDescription(sucessMessages[Math.floor(Math.random() * 5)])
-		.setAuthor(`${message.author.username}`, message.author.displayAvatarURL({ format: "png", dynamic: true }))
+		.setAuthor(`${message.author.username}`, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
 		.setColor('#D8D52B')
-		.setFooter('Connor', 'https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png')
+		.setFooter('ConnorBot', config.icon)
 		.setTimestamp();
 		try {
 			// Command Sequence
@@ -78,7 +79,7 @@ module.exports = {
 			}
 		} catch (error) {
 			console.error(error)
-			message.reply(`I\'m sorry, I had an internal error. Paste this error in the support server: \"${error}\"`)
+			message.reply(config.error)
 		}
 	}
 }

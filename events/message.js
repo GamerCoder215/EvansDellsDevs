@@ -2,7 +2,7 @@ module.exports = async (client, message) => {
 	const Discord = require('discord.js')
 	const db = require('quick.db')
 
-	const prefix = db.get(`guild_${message.guild.id}_prefix`)
+	var prefix = db.get(`guild_${message.guild.id}_prefix`);
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const cmdName = args.shift().toLowerCase();
   if (!message.content.startsWith(prefix)) return;
@@ -28,6 +28,5 @@ module.exports = async (client, message) => {
 	}
 	} catch (error) {
 		console.error(error);
-		message.reply(`I\'m sorry, I had an internal error. Paste this error in the support server: \"${error}\"`)
 	}
 }

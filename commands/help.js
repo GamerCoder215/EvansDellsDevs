@@ -6,13 +6,15 @@ module.exports = {
 		// Discord, Prefix + Config
 		const Discord = require('discord.js');
 		const db = require('quick.db');
-		const prefix = db.get(`guild_${message.guild.id}_prefix`);
+		var prefix = db.get(`guild_${message.guild.id}_prefix`) || '?';
 		const config = require('./command_config.json')
 		// Timed Out Embed
 		const timedOut = new Discord.MessageEmbed()
 		.setTitle('<:error:761349813195112448> Error')
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.setDescription('Your message has timed out!')
 		.setColor('#ff0000')
+		.setFooter('ConnorBot', config.icon)
 		.setTimestamp();
 		// Page 1 + 2 Embeds
 		const helpPage1 = new Discord.MessageEmbed()
@@ -62,9 +64,9 @@ module.exports = {
 		.addFields(
 			{ name: `**${prefix}pokemon**`, value: `Find out your dream pokemon.`},
 			{ name: `**${prefix}turn** <message>`, value: `sıɥʇ ǝʞıl ʞool ǝɓɐssǝɯ ɐ ǝʞɐW`},
-			{ name: `**${prefix}clap** <message>`, value: `Make👏 a👏 message👏 look👏 like👏 this👏`},
+			{ name: `**${prefix}binary** <message>`, value: `Turns a message into binary code!`},
 			{ name: `**${prefix}shout** <message>`, value: `**__📣 MAKE A MESSAGE LOOK LIKE THIS📣__**`},
-			{ name: `**${prefix}distract** [diversion|distraction]`, value: `Distract the channel (or create a diversion.)`}
+			{ name: `**${prefix}distract** [diversion]`, value: `Distract the channel (or create a diversion.)`}
 		)
 		.setColor('#00feff')
 		.setFooter('ConnorBot', config.icon)
@@ -76,7 +78,7 @@ module.exports = {
 		.addFields(
 			{ name: `**${prefix}number** <min-value> <max-value>`, value: `Generate a number from a specified area.`},
 			{ name: `**${prefix}8ball**`, value: `Generate a random answer from 8 possibilities.`},
-			{ name: `**${prefix}ingrammar** <message>`, value: `Remove al of the vowels and y's in a message. \"Lke ths r tht.\"`},
+			{ name: `**${prefix}ingrammar** <message>`, value: `Remove all of the vowels and y's in a message. \"Lke ths r tht.\"`},
 			{ name: `**${prefix}color**`, value: `Generate a random color from the basic rainbow.`},
 			{ name: `**${prefix}mlg** [user-mention|user-id]`, value: `Get a MLG user avatar. If nothing, you'll get your own.`}
 		)
@@ -205,12 +207,12 @@ module.exports = {
 			} else if (reaction.emoji.name === '2️⃣') {
 				funHelpPages.edit(helpFun2);
 				funHelpPages.reactions.resolve('2️⃣').users.remove(message.author.id);
-			} else if (reaction.emoji.name === '3⃣') {
+			} else if (reaction.emoji.name === '3️⃣') {
 					funHelpPages.edit(helpFun3);
-					funHelpPages.reactions.resolve('3⃣').users.remove(message.author.id);
+					funHelpPages.reactions.resolve('3️⃣').users.remove(message.author.id);
 			}
 		})
-		funPageTurner.on('end', (reaction, user) => {
+		funPageTurner.on('end', (collected) => {
 			funHelpPages.edit(timedOut);
 			})
 		} else if (args[0] === 'education') {
@@ -226,13 +228,13 @@ module.exports = {
 		educationPageTurner.on('collect', (reaction, user) => {
 			if (reaction.emoji.name === '1️⃣') {
 				educationHelpPages.edit(helpEducation1);
-				educationHelpPages.reactions.resolve('1⃣').users.remove(message.author.id);
-			} else if (reaction.emoji.name === '2⃣') {
+				educationHelpPages.reactions.resolve('1️⃣').users.remove(message.author.id);
+			} else if (reaction.emoji.name === '2️⃣') {
 				educationHelpPages.edit(helpEducation2)
-				educationHelpPages.reaction.resolve('2⃣').users.remove(message.author.id);
-			} else if (reaction.emoji.name === '3⃣') {
+				educationHelpPages.reactions.resolve('2️⃣').users.remove(message.author.id);
+			} else if (reaction.emoji.name === '3️⃣') {
 				educationHelpPages.edit(helpEducation3)
-				educationHelpPages.reaction.resolve('3⃣').users.remove(message.author.id);
+				educationHelpPages.reactions.resolve('3️⃣').users.remove(message.author.id);
 			}
 		})
 		educationPageTurner.on('end', (collected) => {
@@ -240,7 +242,8 @@ module.exports = {
 		})
 	}
 		} catch (error) {
-			message.reply(`Internal Error: \"${error}\" | Paste error in support server`)
+			message.reply(config.error)
+			console.error(error)
 		}
 	}
 }

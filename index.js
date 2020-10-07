@@ -34,5 +34,6 @@ const server = http.createServer((req, res) => {
   res.writeHead(200);
   res.end('ok');
 });
+console.log(`Server has been hosted.`)
 // Login
 client.login(process.env.TOKEN);
