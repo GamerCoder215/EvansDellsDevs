@@ -35,17 +35,21 @@ module.exports = {
 		try {
 			const canvas = Canvas.createCanvas(720, 720);
 			const ctx = canvas.getContext('2d');
-			const givenUser = getUserFromMention(args[0]);
-			if (!args[0]) {
+			const target = message.mentions.users.first();
+			if (!message.mentions.users.size) {
 				return message.channel.send(invalidArguments)
 			} else {
 			// Avatar Background
-			const background = await Canvas.loadImage(givenUser.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+			const background = await Canvas.loadImage(target.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 			ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
 			const mlgGlasses = await Canvas.loadImage('https://appstickers-cdn.appadvice.com/1153717858/818874876/184aec1dfa6c9cccb2213863d8b28d8f-1.png')
-			ctx.drawImage(mlgGlasses, 100, 120, 500, 500)
+			ctx.drawImage(mlgGlasses, 130, 90, 500, 500)
 			const mlgSmoke = await Canvas.loadImage('http://cdn130.picsart.com/240052267051211.png')
-			ctx.drawImage(mlgSmoke, 100, 140, 500, 500)
+			ctx.drawImage(mlgSmoke, 290, 450, 150, 150)
+			const mlgDorito = await Canvas.loadImage('https://lh3.googleusercontent.com/BFB-GzwaP9P4tk4G-WWr4tOadNQGHgtagHWFtHJDDNZGIjdm9sHkLM_uv25XfhZIcdDjKzuWnCYGwhKGVSfLXA=s400')
+			ctx.drawImage(mlgDorito, 50, 50, 250, 250)
+			const mlgFrog = await Canvas.loadImage('https://gifimage.net/wp-content/uploads/2017/06/mlg-frog-gif-5.gif')
+			ctx.drawImage(mlgFrog, 50, 400, 250, 250)
 			// Sending the MLG picture.
 			const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'mlg-image.png');
 			message.channel.send('', attachment)
