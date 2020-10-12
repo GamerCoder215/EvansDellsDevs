@@ -1,35 +1,27 @@
 module.exports = {
 	name: '8ball',
-	description: 'Provide 8 possibilities to a question.',
-	aliases: ['eightball', '8b', 'eightb'],
+	description: 'Get a random message from 8 possibilities.',
+	aliases: ['eightball', '8b'],
 	async run(client, message, args) {
-		// Discord + Config
+		// Discord
 		const Discord = require('discord.js');
-		const config = require('./command_config.json');
-		// 8 ball Table
-		var eightBall = [
+		// Table of Possibilities
+		var eightball = [
 			`Yes`,
 			`No`,
 			`Maybe`,
-			`Maybe Not`,
-			`Definetly`,
-			`Definetly Not`,
-			`Not Sure`,
-			`Ask Again.`
+			`Maybe not`,
+			`Probably`,
+			`Probably not`,
+			`Not sure`,
+			`Definetly.`
 		]
 		// Command Sequence
-		try {
-		// Embed
-		const eightBallEmbed = new Discord.MessageEmbed()
-		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
-		.setDescription(eightBall[Math.floor(Math.random() * 8)])
-		.setColor(config.blue)
-		.setFooter('ConnorBot', config.icon)
-		.setTimestamp();
-		message.channel.send(eightBallEmbed);
-		} catch (error) {
-			console.error(error);
-			message.reply(config.error);
-		}
+			// Embed
+			const eightballEmbed = new Discord.MessageEmbed()
+			.setColor('#4DFFFF')
+			.setDescription('**' + eightball[Math.floor(Math.random() * 8)] + '**')
+			.setTimestamp();
+			message.channel.send(eightballEmbed);
 	}
 }

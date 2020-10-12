@@ -1,10 +1,10 @@
- // Events / Pre-Command Stuff
+// Events / Pre-Command Stuff
 const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
 // Handlers
-// Command Handler
+// Command Handler (Modules)
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
@@ -34,6 +34,7 @@ const server = http.createServer((req, res) => {
   res.writeHead(200);
   res.end('ok');
 });
-console.log(`Server has been hosted.`)
+
+server.listen(3000);
 // Login
 client.login(process.env.TOKEN);

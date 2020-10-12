@@ -1,8 +1,6 @@
 module.exports = async (client, message) => {
 	const Discord = require('discord.js')
-	const db = require('quick.db')
-
-	var prefix = db.get(`guild_${message.guild.id}_prefix`);
+	const prefix = 'an!'
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const cmdName = args.shift().toLowerCase();
   if (!message.content.startsWith(prefix)) return;
@@ -14,19 +12,15 @@ module.exports = async (client, message) => {
 		if (command) command.run(client, message, args);
 		// Detects if it is in a DM
 		if (command.guildOnly && message.channel.type === 'dm') {
-		var messages = [
-			`Sorry ${message.author.username}, you need to be in a guild to execute this command!`,
-			`Oops ${message.author.username}, this command is onlly executable in a server.`,
-			`Please use this command in a server, ${message.author.username}`
-		]
 		const invalidChannel = new Discord.MessageEmbed()
-		.setTitle('Error')
+		.setTitle('Error 05')
 		.setColor('#ff0000')
-		.setDescription(messages[Math.floor(Math.random() * 3)])
+		.setDescription('You need to be in a guild to execute this comand!')
 		.setTimestamp();
-		return message.reply(invalidChannel);
+	return message.reply(invalidChannel);
 	}
 	} catch (error) {
 		console.error(error);
+		message.reply(`Internal Error: "${error}"; Contact GamerCoder__#2640 / Support Server (Copy this error)`)
 	}
 }
