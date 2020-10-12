@@ -3,9 +3,6 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-// NPM & In-App Denencies
-const config = require('./config.json');
-
 // Handlers
 // Command Handler
 client.commands = new Discord.Collection();
@@ -35,11 +32,6 @@ const server = http.createServer((req, res) => {
   res.writeHead(200);
   res.end('ok');
 });
-
-
-
-
-
 
 // Login
 client.login(process.env.TOKEN);
