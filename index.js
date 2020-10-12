@@ -3,6 +3,9 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
+// NPM & In-App Denencies
+const config = require('./config.json');
+
 // Handlers
 // Command Handler
 client.commands = new Discord.Collection();
@@ -23,17 +26,20 @@ fs.readdir('./events/', (err, files) => {
 		const event = require(`./events/${file}`);
 		// Get event from file name
 		const eventName = file.split('.')[0];
-
 		client.on(eventName, event.bind(null, client));
 	});
 });
-
 // Always Online thing
 const http = require('http');
 const server = http.createServer((req, res) => {
   res.writeHead(200);
   res.end('ok');
 });
-console.log(`Server has been hosted.`)
+
+
+
+
+
+
 // Login
 client.login(process.env.TOKEN);
