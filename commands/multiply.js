@@ -1,5 +1,6 @@
 module.exports = {
 	name: 'multiply',
+	education: true,
 	description: 'Multiply up to four given numbers',
 	async run(client, message, args) {
 		// Discord + Config

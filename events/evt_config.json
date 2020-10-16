@@ -1,0 +1,9 @@
+{
+	"name": "Connor",
+	"icon": "https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png",
+	"red": "#ff0000",
+	"gold": "#ffd700",
+	"blue": "7df9ff",
+	"error": "I'm sorry, I had an internal error. Notify Connor Corner and describe the actions that lead up to this message.",
+	"serverID": "761571644384346143"
+}

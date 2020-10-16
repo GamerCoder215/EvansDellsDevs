@@ -6,9 +6,12 @@ const client = new Discord.Client();
 // Handlers
 // Command Handler
 client.commands = new Discord.Collection();
+// The commands collection
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+// Filters out all files named with js
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
+		// Get the command folder with all the commands
     client.commands.set(command.name, command);
 }
 module.exports = client;

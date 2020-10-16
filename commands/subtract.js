@@ -2,6 +2,7 @@ module.exports = {
 	name: 'subtract',
 	description: 'Subtracts up to four given numbers',
 	aliases: ['sub', 'subt'],
+	education: true,
 	async run(client, message, args) {
 		// Discord + Config
 		const Discord = require('discord.js');

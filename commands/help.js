@@ -10,7 +10,7 @@ module.exports = {
 		const config = require('./command_config.json')
 		// Timed Out Embed
 		const timedOut = new Discord.MessageEmbed()
-		.setTitle('<:error:761349813195112448> Error')
+		.setTitle('❌ Error')
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.setDescription('Your message has timed out!')
 		.setColor('#ff0000')
@@ -18,21 +18,21 @@ module.exports = {
 		.setTimestamp();
 		// Page 1 + 2 Embeds
 		const helpPage1 = new Discord.MessageEmbed()
-		.setTitle(`Help for \`${message.author.username}\``)
+		.setTitle(`Help for \`${message.author.username}\` | Free Modules`)
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
 		.addFields(
 			{ name: '📓General', value: `\`${prefix}help general\``, inline: true },
 			{ name: '\u200b', value: '\u200b'},
 			{ name: '🎉Fun', value: `\`${prefix}help fun\``, inline: true},
 			{ name: '\u200b', value: '\u200b'},
-			{ name: '🧑‍🏫 Education', value: `\`${prefix}help education\``, inline: true}
+			{ name: '⚙️Settings', value: `\`${prefix}help settings\``, inline: true},
 		)
 		.setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 })}`)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
 		const helpPage2 = new Discord.MessageEmbed()
-		.setTitle(`Help for \`${message.author.username}\` | Page 2`)
+		.setTitle(`Help for \`${message.author.username}\` | Page 2 | Free Modules (Page 2)`)
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
 		.addFields(
 			{ name: '🔧Moderation', value: `\`${prefix}help moderation\``, inline: true},
@@ -46,13 +46,17 @@ module.exports = {
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
 		const helpPage3 = new Discord.MessageEmbed()
-		.setTitle(`Help for \`${message.author.username}\` | Page 3`)
+		.setTitle(`Help for \`${message.author.username}\` | Page 3 | Paid Modules`)
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
 		.addFields(
-			{ name: '⚙️Settings', value: `\`${prefix}help settings\``, inline: true},
+			{ name: '🧑‍🏫 Education', value: `\`${prefix}help education\``, inline: true},
+			{ name: '\u200b', value: '\u200b'},
+			{ name: '<:database:766527107651338250> Database', value: `\`${prefix}help database\``},
+			{ name: '\u200b', value: '\u200b'},
+			{ name: '🛠️ Advanced Tools', value: `\`${prefix}help advtools\``}
 		)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
-		.setColor(config.blue)
+		.setColor(config.gold)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
 		// Sub Help Embeds
@@ -61,7 +65,8 @@ module.exports = {
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
 		.addFields(
 			{ name: `**${prefix}links**`, value: 'Get some useful links for the bot.'},
-			{ name: `**${prefix}help**`, value: 'View the help message.'}
+			{ name: `**${prefix}help**`, value: 'View the help message.'},
+			{ name: `**${prefix}ping**`, value: 'Ping me with an exact runtime.'}
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
@@ -140,10 +145,10 @@ module.exports = {
 		.setDescription('\`\`\`css\n[] is optional; <> is required\`\`\`')
 		.addFields(
 			{ name: `**${prefix}exponent** <number> <first-exponent> [second-exponent] [third-exponent]`, value: 'Create a custom exponent equation.'},
-			{ name: `**${prefix}expression** <expression>`, value: `Create your own custom expression and Connor will solve it for you! (Variables __not__ supported.)`},
-			{ name: `**${prefix}equation** <equation>`, value: `Create your own equation and Connor will return \`true\` or \`false\` depending on your other side. (Variables __not__ supported)`},
+			{ name: `**${prefix}expression** <expression>`, value: `Create your own custom expression and Connor will solve it for you! (For example: \"(12 + 3) * x + 7 ^ 2\") **Variables Not Supported**`},
+			{ name: `**${prefix}test** <zero|prime|negative|positive|integer> <expression>`, value: `Test if your expression (evaluated) is zero, prime, negative, positive, or an integer!`},
 			{ name: `**${prefix}remainder** <dividend> <divisor>`, value: `Divide a number by another number, and Connor will return a remainder.`},
-			{ name: `**${prefix}round <up|down|normal> <number>**`, value: `Rounds a number to the nearest integer, either up, down, or normally.`},
+			{ name: `**${prefix}round <up|down|normal> <expression>**`, value: `Rounds an evaluated expression either up, down, or normally.`},
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
@@ -153,7 +158,7 @@ module.exports = {
 		.setAuthor(`${message.author.username} | Math (Page 4)`, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.setDescription('\`\`\`css\n[] is optional; <> is required\`\`\`')
 		.addFields(
-			{ name: `**${prefix}absolute** <number>`, value: `Returns the absolute value of a number.`},
+			{ name: `**${prefix}absolute** <expression>`, value: `Returns the absolute value of an expression.`},
 			{ name: `**${prefix}mean** <numbers>`, value: `Find the mean of all the values.`},
 		)
 		.setColor(config.blue)
@@ -165,7 +170,8 @@ module.exports = {
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
 		.addFields(
 			{ name: `**${prefix}length** <message>`, value: `Get the information of a message. Words, Characters, Vowels, Constanents, etc.`},
-			{ name: `**${prefix}fix** <message> (BETA)`, value: `Uses an extremely complex function to fix your grammar, and highlights your errors.`}
+			{ name: `**${prefix}fix** <message> (BETA)`, value: `Uses an extremely complex function to fix your grammar, and highlights your errors.`},
+			{ name: `**${prefix}translate** <to-language> <phrase>`, value: `Translate a phrase to a specified language.`}
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)

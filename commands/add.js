@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'add',
 	description: 'Adds up to four given numbers',
+	education: true,
 	async run(client, message, args) {
 		// Discord + Config
 		const Discord = require('discord.js');
