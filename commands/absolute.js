@@ -27,7 +27,7 @@ module.exports = {
 			const argsSlice = args.slice(0).join(' ');
 			const expression = math.evaluate(argsSlice);
 			const absoluteEmbed = new Discord.MessageEmbed()
-			.setDescription(`Your answer is ${Math.abs(expression)}`)
+			.setDescription(`Your answer is \`${Math.abs(expression)}\``)
 			.setColor(config.gold)
 			.setFooter(config.name, config.icon)
 			.setTimestamp();

@@ -169,9 +169,8 @@ module.exports = {
 		.setAuthor(`${message.author.username} | ELA / Writing`, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
 		.addFields(
-			{ name: `**${prefix}length** <message>`, value: `Get the information of a message. Words, Characters, Vowels, Constanents, etc.`},
-			{ name: `**${prefix}fix** <message> (BETA)`, value: `Uses an extremely complex function to fix your grammar, and highlights your errors.`},
-			{ name: `**${prefix}translate** <to-language> <phrase>`, value: `Translate a phrase to a specified language.`}
+			{ name: `**${prefix}phraseinfo** <message>`, value: `Get the information of a message. Words, Characters, Vowels, Constanents, etc.`},
+			{ name: `**${prefix}translate** <to-language> <phrase>`, value: `Translate a phrase to a specified language. Leave no arguments for a list of supported languages.`}
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
