@@ -8,6 +8,11 @@ module.exports = async (client, message) => {
 	} else {
 		var guildID = message.guild.id;
 	}
+	// Detects if user is muted
+	if (db.get(`guild_${message.guild.id}_${message.author.id}_muted`) === true) {
+		message.delete();
+		message.author.send(`You are muted. Please stop trying to talk.`);
+	}
 	// Detects if it is in a DM
 	var prefix = db.get(`guild_${guildID}_prefix`) || '?'
 	// Get the prefix (If none, use question mark)
@@ -26,7 +31,6 @@ module.exports = async (client, message) => {
 			`Oops ${message.author.username}, this command is onlly executable in a server.`,
 			`Please use this command in a server, ${message.author.username}`
 		]
-		// This is how embeds work
 		const invalidChannel = new Discord.MessageEmbed()
 		.setTitle('Error')
 		.setColor('#ff0000')
@@ -55,7 +59,7 @@ module.exports = async (client, message) => {
 		.setTimestamp();
 		return message.channel.send(educationPremium);
 	}
-	// Detects if you haven't been DMed with a code and you haven't 
+	// Detects if you haven't been DMed with a code and you haven't
 	if (message.member.roles.cache.has('766313565816487976') && db.get(`dms_purchases_${message.author.id}_education`) === false) {
 		const thanksEmbed = new Discord.MessageEmbed()
 		.setTitle('Thanks for Purchasing the Education Module!')
@@ -80,10 +84,6 @@ module.exports = async (client, message) => {
 		.setTimestamp();
 		message.author.send(`<@${message.author.id}>`, removeEmbed)
 	}
-	/* 
-	Find the command in each file, and also run on any
-	aliases found
-	*/
 
 	try {
 		if (command) command.run(client, message, args);

@@ -10,7 +10,7 @@ module.exports = {
 		const config = require('./command_config.json')
 		// Timed Out Embed
 		const timedOut = new Discord.MessageEmbed()
-		.setTitle('❌ Error')
+		.setTitle('❌Error')
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.setDescription('Your message has timed out!')
 		.setColor('#ff0000')
@@ -181,10 +181,10 @@ module.exports = {
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
 		.addFields(
-			{ name: `**${prefix}ban** <user> [reason] [duration]`, value: `Ban a specified user, for a specified time.`},
-			{ name: `**${prefix}kick** <user> [reason]`, value: `Kick a user.`},
-			{ name: `**${prefix}mute** <user> [reason] [duration]`, value: `Prevent a user from talking.`},
-			{ name: `**${prefix}nick** <user> <nickname>`, value: `Change a user's nickname.`},
+			{ name: `**${prefix}ban** <user> <reason>`, value: `Ban a specified user, for a specified time.`},
+			{ name: `**${prefix}kick** <user> <reason>`, value: `Kick a user.`},
+			{ name: `**${prefix}mute** <user> <reason>`, value: `Prevent a user from talking, in both a text channel and voice channel.`},
+			{ name: `**${prefix}nick** <self|user> <nickname> [reason]`, value: `Change yourself or a user's nickname. Optional reason.`},
 			{ name: `**${prefix}delete** <messageID>`, value: `Delete a message with a specified ID.`}
 		)
 		.setColor(config.blue)
@@ -199,7 +199,21 @@ module.exports = {
 			{ name: `**${prefix}mutechannel** <channel> [duration]`, value: `Mute a specified channel.`},
 			{ name: `**${prefix}unban** <user>`, value: `Unban a specified user.`},
 			{ name: `**${prefix}unmute** <user>`, value: `Unmute a user.`},
-			{ name: `**${prefix}unmutechannel** <channel>`, value: `Unmute a specified channel.`},
+			{ name: `**${prefix}unmutechannel** <channel> [reason]`, value: `Unmute a specified channel. No roles required. Optional reason.`},
+		)
+		.setColor(config.blue)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
+		const helpModeration3 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\ | Moderation | Page 3`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescritpion(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.addFields(
+			{ name: `**${prefix}tempban** <user> <duration> <reason>`, value: `Temporarily ban a user. Duration must be in **hours** (0.5 for 30 minutes, 0.25 for 15 minutes, etc.)`},
+			{ name: `**${prefix}tempmute** <user> <duration> <reason>`, value: `Temporarily mute a user. Duration must be in **minutes** (60 for hour, 30 for half an hour, etc.)`},
+			{ name: `**${prefix}tempmutechannel** <channel> <duration> [reason]`, value: `Temporarily mute a channel. Duration must be in **minutes**.`},
+			{ name: `**${prefix}deafen** <user> <reason>`, value: `Server Deafen a user in a voice channel.`},
+			{ name: `**${prefix}tempdeafen** <user> <duration> <reason>`, value: `Temporarily Server Deafen a user in a voice channel. Duration must be in **minutes**.`}
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
@@ -292,9 +306,9 @@ module.exports = {
 	} else if (args[0] === 'moderation') {
 		const moderationHelpPages = await message.channel.send(helpModeration1);
 		// Reaction Listener
-		moderationHelpPages.react('1️⃣').then(() => moderationHelpPages.react('2️⃣'))
+		moderationHelpPages.react('1️⃣').then(() => moderationHelpPages.react('2️⃣')).then(() => moderationHelpPages.react('3️⃣'))
 		const moderationPageFilter = (reaction, user) => {
-			return ['1️⃣', '2️⃣'].includes(reaction.emoji.name && user.id === message.author.id)
+			return ['1️⃣', '2️⃣', '3️⃣'].includes(reaction.emoji.name && user.id === message.author.id)
 		}
 		// Collector
 		const moderationPageTurner = moderationHelpPages.createReactionCollector(moderationPageFilter, { time: 120000})
@@ -303,13 +317,16 @@ module.exports = {
 				moderationHelpPages.edit(helpModeration1);
 				moderationHelpPages.reactions.resolve('1️⃣').users.remove(message.author.id);
 			} else if (reaction.emoji.name === '2️⃣') {
-				moderationHelpPages.edit(helpModeration2)
+				moderationHelpPages.edit(helpModeration2);
 				moderationHelpPages.reactions.resolve('2️⃣').users.remove(message.author.id);
+			}️ else if (reaction.emoji.name === '3️⃣') {
+				moderationHelpPages.edit(helpModeration3);
+				moderationHelpPages.reactions.resolve('3️⃣').users.remove(message.author.id);
 			}
-		})
+		});
 		moderationPageTurner.on('end', (collected) => {
 			moderationHelpPages.edit(timedOut);
-		})
+		});
 	}
 		} catch (error) {
 			message.reply(config.error)
