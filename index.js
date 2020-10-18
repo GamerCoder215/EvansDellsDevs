@@ -8,7 +8,7 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 // The commands collection
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
-// Filters out all files named with js
+// Filters out all files named with js and mjs
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
 		// Get the command folder with all the commands

@@ -1,9 +1,9 @@
-module.export = {
+module.exports = {
   name: 'phraseinfo',
   description: 'Find out information about a phrase.',
   education: true,
   aliases: ['phrinfo', 'lngth', 'lnth'],
-  async run(client, message. args) {
+  async run(client, message, args) {
     // Discord, Config & NPM Dependencies
     const Discord = require('discord.js');
     const config = require('./command_config.json');
@@ -32,7 +32,7 @@ module.export = {
         var wordCount = phrase.split(' ').length;
         var vowelCount = phrase.replace(/[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZµ`˜¡™£¢∞§¶•ªº–≠œ∑´®†¥¨ˆøπ“‘’”Ω≈ç√`⁄‹›ﬁﬂ‡°·‚—±ÅÍÎ˝ÓÔÒÚÆ¸˛Ç◊ı˜Â¯˘¿]/g, '').length;
         var consonantCount = phrase.replace(/[aeiouAEIOUµ`˜¡™£¢∞§¶•ªº–≠œ∑´®†¥¨ˆøπ“‘’”Ω≈ç√`⁄‹›ﬁﬂ‡°·‚—±ÅÍÎ˝ÓÔÒÚÆ¸˛Ç◊ı˜Â¯˘¿]/g, '').length;
-        var chracterCountNoSpaces = phrase.replace(/[ ]/g, '').length;
+        var characterCountNoSpaces = phrase.replace(/[ ]/g, '').length;
         const phraseInfoEmbed = new Discord.MessageEmbed()
         .setDescription(`__Phrase Info__\nCharacters: \`${characterCount}\`\nWord Count: \`${wordCount}\`\nVowel Count: \`${vowelCount}\`\nConsonant Count: \`${consonantCount}\`\nCharacter Count (No Spaces): \`${characterCountNoSpaces}\``)
         .setColor(config.gold)
@@ -40,6 +40,9 @@ module.export = {
         .setTimestamp();
         message.channel.send(phraseInfoEmbed);
       }
-    }
-  }
+    } catch (error) {
+			console.error(error);
+			message.reply(config.error);
+		}
+	}
 }

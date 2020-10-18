@@ -24,10 +24,15 @@ module.exports = {
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
 		try {
-			var numbers = args.slice(0).join(' ')
+			var oldNumbers = args.slice(0).join(' ')
+			var numbers = oldNumbers.toString();
+			if (!oldNumbers) {
+				return message.channel.send(invalidArguments);
+			} else {
 			// Finding the Mean
-			var numberCount = numbers.replace(/[ ]/g, '').length(); // Replaces all the spaces with nothing, then gets the length
-			var numberAdd = math.evaluate(numbers.replace(/[ ]/g, ' + ') * 1) // Replaces the spaces with +'s, then evaluates it
+			var numberCount = numbers.replace(/[ ]/g, '').length; // Replaces all the spaces with nothing, then gets the length
+			var addingNumbers = numbers.replace(/[ ]/g, ' + ')
+			var numberAdd = math.evaluate(addingNumbers) // Replaces the spaces with +'s, then evaluates it
 			var mean = (numberAdd * 1) / (numberCount * 1); // * 1 is there in case they turn out strings
 			const meanEmbed = new Discord.MessageEmbed()
 			.setDescription(`The mean is \`${mean}\`.`)
@@ -35,6 +40,7 @@ module.exports = {
 			.setFooter(config.name, config.icon)
 			.setTimestamp();
 			message.channel.send(meanEmbed);
+			}
 		} catch (error) {
 			console.error(error);
 			message.reply(config.error);

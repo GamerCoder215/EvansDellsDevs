@@ -7,7 +7,7 @@ module.exports = {
 		// Discord + Config + Translate Module
 		const Discord = require('discord.js');
 		const config = require('./command_config.json');
-		const translate = require('translate');
+		const translate = require('translate-google');
 		// Supported Languages
 		const languages = new Discord.MessageEmbed()
 		.setTitle('Supported Languages')
@@ -41,93 +41,104 @@ module.exports = {
 					return message.channel.send(invalidArguments);
 				} else {
 				if (args[0] === 'spanish') {
-					const spanishTranslation = await (translate(translationMessage, { to: 'es'}))
+					translate(translationMessage, {to: 'es'}).then(res => {
 					const spanishEmbed = new Discord.MessageEmbed()
-					.setDescription(`\"${spanishTranslation}\"`)
+					.setDescription(`\"${res}\"`)
 					.setColor(config.gold)
 					.setFooter(config.name, config.icon)
-					.setTimestamp()
+					.setTimestamp();
 					message.channel.send(spanishEmbed)
+					})
 				}	else if (args[0] === 'french') {
-					const frenchTranslation = await (translate(translationMessage, { to: 'fr'}))
+					translate(translationMessage, {to: 'fr'}).then(res => {
 					const frenchEmbed = new Discord.MessageEmbed()
-					.setDescription(`\"${frenchTranslation}\"`)
+					.setDescription(`\"${res}\"`)
 					.setColor(config.gold)
 					.setFooter(config.name, config.icon)
-					.setTimestamp()
+					.setTimestamp();
 					message.channel.send(frenchEmbed)
+					});
 				}	else if (args[0] === 'english') {
-					const englishTranslation = await (translate(translationMessage, { to: 'en'}))
+					translate(translationMessage, {to: 'en'}).then(res => {
 					const englishEmbed = new Discord.MessageEmbed()
-					.setDescription(`\"${englishTranslation}\"`)
+					.setDescription(`\"${res}\"`)
 					.setColor(config.gold)
 					.setFooter(config.name, config.icon)
-					.setTimestamp()
+					.setTimestamp();
 					message.channel.send(englishEmbed)
+					});
 				}	else if (args[0] === 'german') {
-					const germanTranslation = await (translate(translationMessage, { to: 'de'}))
+					translate(translationMessage, {to: 'de'}).then(res => {
 					const germanEmbed = new Discord.MessageEmbed()
-					.setDescription(`\"${germanTranslation}\"`)
+					.setDescription(`\"${res}\"`)
 					.setColor(config.gold)
 					.setFooter(config.name, config.icon)
 					.setTimestamp()
 					message.channel.send(germanEmbed)
-				}	else if (args[0] === 'portugese') {
-					const portugueseTranslation = await (translate(translationMessage, { to: 'pt'}))
+					});
+				}	else if (args[0] === 'portuguese') {
+					translate(translationMessage, {to: 'pt'}).then(res => {
 					const portugueseEmbed = new Discord.MessageEmbed()
-					.setDescription(`\"${portugeseTranslation}\"`)
+					.setDescription(`\"${res}\"`)
 					.setColor(config.gold)
 					.setFooter(config.name, config.icon)
-					.setTimestamp()
+					.setTimestamp();
 					message.channel.send(portugueseEmbed)
+					});
 				}	else if (args[0] === 'indonesian') {
-					const indonesianTranslation = await (translate(translationMessage, { to: 'id'}))
+					const indonesianTranslation = await translate(translationMessage, {to: 'id'}).then(res => {
 					const indonesianEmbed = new Discord.MessageEmbed()
-					.setDescription(`\"${indonesianTranslation}\"`)
+					.setDescription(`\"${res}\"`)
 					.setColor(config.gold)
 					.setFooter(config.name, config.icon)
-					.setTimestamp()
+					.setTimestamp();
 					message.channel.send(indonesianEmbed)
+					})
 				}	else if (args[0] === 'japenese') {
-					const japeneseTranslation = await (translate(translationMessage, { to: 'ja'}))
+					translate(translationMessage, {to: 'ja'}).then(res => {
 					const japeneseEmbed = new Discord.MessageEmbed()
-					.setDescription(`\"${japeneseTranslation}\"`)
+					.setDescription(`\"${res}\"`)
 					.setColor(config.gold)
 					.setFooter(config.name, config.icon)
-					.setTimestamp()
+					.setTimestamp();
 					message.channel.send(japeneseEmbed)
+					});
 				}	else if (args[0] === 'chinese') {
-					const chineseTranslation = await (translate(translationMessage, { to: 'zh'}))
+					translate(translationMessage, { to: 'zh-cn' }).then(res => {
 					const chineseEmbed = new Discord.MessageEmbed()
-					.setDescription(`\"${chineseTranslation}\"`)
+					.setDescription(`\"${res}\"`)
 					.setColor(config.gold)
 					.setFooter(config.name, config.icon)
-					.setTimestamp()
+					.setTimestamp();
 					message.channel.send(chineseEmbed)
+					});
 				}	else if (args[0] === 'swahili') {
-					const swahiliTranslation = await (translate(translationMessage, { to: 'sw'}))
+					translate(translationMessage, { to: 'sw' }).then(res => {
 					const swahiliEmbed = new Discord.MessageEmbed()
-					.setDescription(`\"${swahiliTranslation}\"`)
+					.setDescription(`\"${res}\"`)
 					.setColor(config.gold)
 					.setFooter(config.name, config.icon)
-					.setTimestamp()
+					.setTimestamp();
 					message.channel.send(swahiliEmbed)
+					});
 				}	else if (args[0] === 'swedish') {
-					const swedishTranslation = await (translate(translationMessage, { to: 'sv'}))
+					translate(translationMessage, { to: 'sv' }).then(res => {
 					const swedishEmbed = new Discord.MessageEmbed()
-					.setDescription(`\"${swedishTranslation}\"`)
+					.setDescription(`\"${res}\"`)
 					.setColor(config.gold)
 					.setFooter(config.name, config.icon)
-					.setTimestamp()
+					.setTimestamp();
 					message.channel.send(swedishEmbed)
+					});
 				}	else if (args[0] === 'hebrew') {
-					const hebrewTranslation = await (translate(translationMessage, { to: 'he'}))
+					translate(translationMessage, {to: 'iw' }).then(res => {
 					const hebrewEmbed = new Discord.MessageEmbed()
-					.setDescription(`\"${hebrewTranslation}\"`)
+					.setDescription(`\"${res}\"`)
 					.setColor(config.gold)
 					.setFooter(config.name, config.icon)
-					.setTimestamp()
+					.setTimestamp();
 					message.channel.send(hebrewEmbed)
+					});
 				}
 				}
 			}

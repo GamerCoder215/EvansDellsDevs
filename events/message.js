@@ -3,7 +3,6 @@ module.exports = async (client, message) => {
 	const Discord = require('discord.js');
 	const db = require('quick.db'); // Databased used for custom prefix
 	const config = require('./evt_config.json');
-	var code = require('generate-password');
 	if (message.guild === null) {
 		var guildID = '761571644384346143'
 	} else {
