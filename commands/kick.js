@@ -4,9 +4,11 @@ module.exports = {
   guildOnly: true,
   aliases: ['kck', 'boot'],
   async run(client, message, args) {
-    // Discord, Config & Dependencies
+    // Discord, Config & NPM Dependencies
     const Discord = require('discord.js');
     const config = require('./command_config.json');
+		// In-App Dependencies
+		const guild = client.guilds.cache.get(message.guild.id)
     // Tables
       // Invalid Args Table
 		var invalidArgumentMessages = [
@@ -71,16 +73,18 @@ module.exports = {
     // Command Sequence
     try {
     const reason = args.slice(1).join(' ');
-    const target = client.users.cache.get(getIDFromMention(args[0]))1;
+    const targetUser = client.users.cache.get(getIDFromMention(args[0]));
+		const target = guild.member(targetUser);
     // Security Checks
     if (!args[0]) return message.channel.send(invalidArguments); // Checks if a user is given
     if (!reason) return message.channel.send(invalidArguments); // Checks if a reason is given
-    if (target.hasPermission('ADMINISTRATOR') || target.hasPermission('MANAGE_CHANNELS') || target.hasPermission('MANAGE_SERVER') || target.hasPermission('MANAGE_ROLES') || target.hasPermission('BAN_MEMBERS') || target.hasPermission('MANAGE_MESSAGES') || !target.kickable) return message.channel.send(userUnkickable); // Checks if the target is kickable
-    if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.send(invalidPermissions); // Checks if the user has permission
+    if (!target.hasPermission('ADMINISTRATOR') && target.kickable) {
+		if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.send(invalidPermissions); // Checks if the user has permission
     // Ban Sequence
     target.kick({ reason: `${reason}` })
-    target.send(`<@${target.id}>\nYou were kicked in ${message.guild.name} for: \"${reason}\".`);
+    target.send(`<@${targetUser.id}>\nYou were kicked in ${message.guild.name} for: \"${reason}\".`);
     message.channel.send(actionSucessful);
+		} else return message.channel.send(userUnkickable); // Checks if the target is kickable
     } catch (error) {
       console.error(error);
       message.reply(config.error);

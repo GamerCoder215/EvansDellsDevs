@@ -1,16 +1,15 @@
 module.exports = {
-  name: 'mute',
-  description: 'Mutes a user, with no roles required.',
-  aliases: ['silence', 'mte'],
-  guildOnly: true,
-  async run(client, message, args) {
-    // Discord, Config & NPM Dependencies
-    const Discord = require('discord.js');
-    const config = require('./command_config.json');
-    const db = require('quick.db');
+	name: 'undeafen',
+	description: 'Undeafens a user.',
+	guildOnly: true,
+	aliases: ['undfn', 'unserverdeaf', 'undeaf', 'udfn', 'udf'],
+	async run(client, message, args) {
+		// Discord, Config & NPM Dependencies
+		const Discord = require('discord.js');
+		const config = require('./command_config.json');
 		// In-App Dependencies
 		const guild = client.guilds.cache.get(message.guild.id);
-    // Tables
+		// Tables
       // Invalid Args Table
 		var invalidArgumentMessages = [
 			`Sorry ${message.author.username}, you have provided invalid arguments.`,
@@ -43,9 +42,9 @@ module.exports = {
       `Your attempt at punishing yourself has failed, ${message.author.username}`
     ]
     // Embeds
-      // User Unmutable
-      const userUnmutable = new Discord.MessageEmbed()
-      .setDescription('This user cannot be muted.')
+      // User Undeafenable
+      const userUndeafenable = new Discord.MessageEmbed()
+      .setDescription('This user cannot be deafened.')
       .setColor(config.red)
       .setFooter(config.name, config.icon)
       .setTimestamp();
@@ -77,34 +76,38 @@ module.exports = {
       .setColor(config.red)
       .setFooter(config.name, config.icon)
       .setTimestamp();
-    // Functions
-      // Get User from ID Function
-      function getIDFromMention(mention) {
-        if (!mention) return;
-        if (mention.startsWith('<@') && mention.endsWith('>')) {
-          var mentionID = mention.replace(/[<@!>]/g, '')
-          return (mentionID);
-        } else return;
-      }
-    // Command Sequence
-    try {
-      const reason = args.slice(1).join(' ')
-      const targetUser = client.users.cache.get(getIDFromMention(args[0]));
-			const target = guild.member(targetUser.id)
-      // Security Checks
-      if (!reason) return message.channel.send(invalidArguments);
-      if (!args[0]) return message.channel.send(invalidArguments);
-      if (target.hasPermission('ADMINISTRATOR') || target.hasPermission('MANAGE_CHANNELS') || target.hasPermission('MANAGE_MESSAGES') || target.hasPermission('MUTE_MEMBERS') || target.hasPermission('DEAFEN_MEMBERS')) return message.channel.send(userUnmutable);
-      if (!message.member.hasPermission('MUTE_MEMBERS') && !message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send(invalidPermissions);
-      if (target.id === message.author.id) return message.channel.send(cantPunishSelf);
-      // Mute Sequence
-      db.set(`guild_${message.guild.id}_${targetUser.id}_muted`, true)
-      message.channel.send(actionSucessful);
-      target.voice.setMute(true, { reason: `${reason}`});
-      target.send(`<@${targetUser.id}> You have been muted in ${message.guild.name} for: \"${reason}\"`);
-    } catch (error) {
-			console.error(error);
-			message.reply(config.error);
+			// Not Connected to Voice
+			const userDisconnected = new Discord.MessageEmbed()
+			.setDescription(`This user isn't in a voice channel right now.`)
+			.setColor(config.red)
+			.setFooter(config.name, config.icon)
+			.setTimestamp();
+			// Get ID Function
+			function getID(mention) {
+				if (!mention) return;
+				if (mention.startsWith('<') && mention.endsWith('>')) {
+					var mentionID = mention.replace(/[<@!#&>]/g, '')
+					return (mentionID);
+				} else return;
+			}
+		// Command Sequence
+		try {
+			if (!message.member.hasPermission('DEAFEN_MEMBERS')) {
+				return message.channel.send(invalidPermissions);
+			} else {
+				var targetUser = client.users.cache.get(getID(args[0]))
+				var target = guild.member(targetUser.id);
+				if (!args[0]) return message.channel.send(invalidArguments);
+				if (target.voice === null) {
+					return message.channel.send(userDisconnected);
+				} else {
+					target.voice.setDeaf(false)
+					target.send(`<@${targetUser.id}> You were undeafened in ${guild.name}!`);
+				}
+			}
+		} catch (error) {
+			console.error(error)
+			message.reply(config.error)
 		}
-  }
+	}
 }

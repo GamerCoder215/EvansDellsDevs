@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'mute',
-  description: 'Mutes a user, with no roles required.',
-  aliases: ['silence', 'mte'],
+  name: 'unmute',
+  description: 'Unmutes a user',
+  aliases: ['unsilence', 'unmte', 'umte'],
   guildOnly: true,
   async run(client, message, args) {
     // Discord, Config & NPM Dependencies
@@ -43,12 +43,6 @@ module.exports = {
       `Your attempt at punishing yourself has failed, ${message.author.username}`
     ]
     // Embeds
-      // User Unmutable
-      const userUnmutable = new Discord.MessageEmbed()
-      .setDescription('This user cannot be muted.')
-      .setColor(config.red)
-      .setFooter(config.name, config.icon)
-      .setTimestamp();
       // Invalid Args Embed
   		const invalidArguments = new Discord.MessageEmbed()
   		.setDescription(invalidArgumentMessages[Math.floor(Math.random() * 5)])
@@ -70,13 +64,6 @@ module.exports = {
   		.setColor('#D8D52B')
   		.setFooter('ConnorBot', config.icon)
   		.setTimestamp();
-      // No Punishing Self Embed
-      const cantPunishSelf = new Discord.MessageEmbed()
-      .setDescription(antiSuicideMessages[Math.floor(Math.random() * 6)])
-      .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
-      .setColor(config.red)
-      .setFooter(config.name, config.icon)
-      .setTimestamp();
     // Functions
       // Get User from ID Function
       function getIDFromMention(mention) {
@@ -94,14 +81,12 @@ module.exports = {
       // Security Checks
       if (!reason) return message.channel.send(invalidArguments);
       if (!args[0]) return message.channel.send(invalidArguments);
-      if (target.hasPermission('ADMINISTRATOR') || target.hasPermission('MANAGE_CHANNELS') || target.hasPermission('MANAGE_MESSAGES') || target.hasPermission('MUTE_MEMBERS') || target.hasPermission('DEAFEN_MEMBERS')) return message.channel.send(userUnmutable);
       if (!message.member.hasPermission('MUTE_MEMBERS') && !message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send(invalidPermissions);
-      if (target.id === message.author.id) return message.channel.send(cantPunishSelf);
-      // Mute Sequence
-      db.set(`guild_${message.guild.id}_${targetUser.id}_muted`, true)
+      // Unmute Sequence
+      db.set(`guild_${message.guild.id}_${targetUser.id}_muted`, false)
       message.channel.send(actionSucessful);
-      target.voice.setMute(true, { reason: `${reason}`});
-      target.send(`<@${targetUser.id}> You have been muted in ${message.guild.name} for: \"${reason}\"`);
+      target.setMute(false, { reason: `${reason}`});
+      target.send(`<@${targetUser.id}> You have been unmuted in ${message.guild.name} for: \"${reason}\"`);
     } catch (error) {
 			console.error(error);
 			message.reply(config.error);

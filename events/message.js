@@ -1,17 +1,22 @@
 module.exports = async (client, message) => {
 	// Discord & Dependencies
 	const Discord = require('discord.js');
-	const db = require('quick.db'); // Databased used for custom prefix
+	const db = require('quick.db');
 	const config = require('./evt_config.json');
 	if (message.guild === null) {
 		var guildID = '761571644384346143'
 	} else {
 		var guildID = message.guild.id;
 	}
+	// Detects if a channel is muted
+	if (db.get(`channel_${message.channel.id}_muted`) === true) {
+		if (!message.member.hasPermission('MANAGE_MESSAGES') && !message.author.bot) {
+		message.delete({ reason: 'Channel is muted.'});
+		}
+	}
 	// Detects if user is muted
 	if (db.get(`guild_${message.guild.id}_${message.author.id}_muted`) === true) {
-		message.delete();
-		message.author.send(`You are muted. Please stop trying to talk.`);
+		message.delete({ reason: 'User is muted.'});
 	}
 	// Detects if it is in a DM
 	var prefix = db.get(`guild_${guildID}_prefix`) || '?'
@@ -84,7 +89,6 @@ module.exports = async (client, message) => {
 		.setTimestamp();
 		message.author.send(`<@${message.author.id}>`, removeEmbed)
 	}
-
 	try {
 		if (command) command.run(client, message, args);
 		// If there is a command, run it

@@ -1,13 +1,14 @@
 module.exports = {
-	name: 'prefix',
-	description: 'Sets a prefix.',
-	aliases: ['p', 'pr'],
+	name: 'unban',
+	description: 'Unban a user.',
 	guildOnly: true,
+	aliases: ['pardon', 'prdn'],
 	async run(client, message, args) {
-		// Discord + Quick.DB + Config
+		// Discord, Config & NPM Dependencies
 		const Discord = require('discord.js');
-		const db = require('quick.db');
-		const config = require('./command_config.json')
+		const config = require('./command_config.json');
+		// In-App Dependencies
+		const guild = client.guilds.cache.get(message.guild.id);
 		// Tables
 		var invalidArgumentMessages = [
 			`Sorry ${message.author.username}, you have provided invalid arguments.`,
@@ -32,54 +33,55 @@ module.exports = {
 			`Connor found out about your action ${message.author.username}, \nand he helped it become a sucess.`
 		]
 		// Embeds
+		// Invalid Args Embed
 		const invalidArguments = new Discord.MessageEmbed()
 		.setDescription(invalidArgumentMessages[Math.floor(Math.random() * 5)])
-		.setColor('#ff0000')
-		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
-		.setFooter('ConnorBot', config.icon)
+		.setColor(config.red)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+		.setFooter(config.name, config.icon)
 		.setTimestamp();
+		// Invalid Permissions
 		const invalidPermissions = new Discord.MessageEmbed()
 		.setDescription(invalidPermissionMessages[Math.floor(Math.random() * 6)])
-		.setColor('#ff0000')
-		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
-		.setFooter('ConnorBot', config.icon)
+		.setColor(config.red)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		const samePrefix = new Discord.MessageEmbed()
-		.setDescription(`Sorry ${message.author.username}, you already have that as your prefix!`)
-		.setColor('#ff0000')
-		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
-		.setFooter('ConnorBot', config.icon)
-		.setTimestamp();
-		const tooManyArguments = new Discord.MessageEmbed()
-		.setDescription(`Your prefix has too many arguments, ${message.author.username}! You must have below 3 arguments for you prefix!`)
-		.setColor('#ff0000')
-		.setAuthor('', message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
-		.setFooter('ConnorBot', config.icon)
-		.setTimestamp();
+		// Action Sucessful
 		const actionSucessful = new Discord.MessageEmbed()
 		.setDescription(sucessMessages[Math.floor(Math.random() * 5)])
 		.setAuthor(`${message.author.username}`, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
 		.setColor(config.gold)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
+		// Already Banned
+		const alreadyBanned = new Discord.MessageEmbed()
+		.setDescription('This user isn\'t banned!')
+		.setColor(config.red)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
+		// Get ID Function
+		function getID(mention) {
+			if (!mention) return;
+			if (mention.startsWith('<') && mention.endsWith('>')) {
+				var mentionID = mention.replace(/[<@&#!>]/)
+				return (mentionID);
+			} else return;
+		}
+		// Command Sequence
 		try {
-			// Command Sequence
-			if (!message.member.hasPermission('MANAGE_SERVER')) {
+			if (!args[0]) return message.channel.send(invalidArguments);
+			var user = client.users.cache.get(getID(args[0]));
+			if (!message.member.hasPermission('BAN_MEMBERS')) {
 				return message.channel.send(invalidPermissions);
-			} else if (!args[0]) {
-				return message.channel.send(invalidArguments);
-			} else if (args[0].length > 3) {
-				return message.channel.send(tooManyArguments);
-			} else if (args[0] === db.get(`guild_${message.guild.id}_prefix`)) {
-				return message.channel.send(samePrefix);
 			} else {
-			db.delete(`guild_${message.guild.id}_prefix`);
-			db.set(`guild_${message.guild.id}_prefix`, args[0]);
-			return message.channel.send(actionSucessful)
+				guild.members.unban(user.id);
+				message.channel.send(actionSucessful);
+				user.send(`<@${user.id}> You were unbanned in **${guild.name}**!`)
 			}
 		} catch (error) {
-			console.error(error)
-			message.reply(config.error)
+			console.error(error);
+			message.reply(config.error);
 		}
 	}
 }

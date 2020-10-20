@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'mute',
-  description: 'Mutes a user, with no roles required.',
-  aliases: ['silence', 'mte'],
+  name: 'tempmute',
+  description: 'Temporarily mutes a user.',
+  aliases: ['tempsilence', 'tempmte', 'tmte'],
   guildOnly: true,
   async run(client, message, args) {
     // Discord, Config & NPM Dependencies
@@ -43,7 +43,7 @@ module.exports = {
       `Your attempt at punishing yourself has failed, ${message.author.username}`
     ]
     // Embeds
-      // User Unmutable
+      // User Unbannable
       const userUnmutable = new Discord.MessageEmbed()
       .setDescription('This user cannot be muted.')
       .setColor(config.red)
@@ -88,10 +88,11 @@ module.exports = {
       }
     // Command Sequence
     try {
-      const reason = args.slice(1).join(' ')
+      const reason = args.slice(2).join(' ')
       const targetUser = client.users.cache.get(getIDFromMention(args[0]));
 			const target = guild.member(targetUser.id)
       // Security Checks
+			if (isNaN(!args[1])) return message.channel.send(invalidArguments);
       if (!reason) return message.channel.send(invalidArguments);
       if (!args[0]) return message.channel.send(invalidArguments);
       if (target.hasPermission('ADMINISTRATOR') || target.hasPermission('MANAGE_CHANNELS') || target.hasPermission('MANAGE_MESSAGES') || target.hasPermission('MUTE_MEMBERS') || target.hasPermission('DEAFEN_MEMBERS')) return message.channel.send(userUnmutable);
@@ -100,8 +101,13 @@ module.exports = {
       // Mute Sequence
       db.set(`guild_${message.guild.id}_${targetUser.id}_muted`, true)
       message.channel.send(actionSucessful);
-      target.voice.setMute(true, { reason: `${reason}`});
-      target.send(`<@${targetUser.id}> You have been muted in ${message.guild.name} for: \"${reason}\"`);
+      target.setMute(true, { reason: `${reason}`});
+      target.send(`<@${targetUser.id}> You have been temporarily muted in ${message.guild.name} for: \"${reason}\". Your duration is \`${args[1]}\` minutes.`);
+			setTimeout(() => {
+				db.set(`guild_${message.guild.id}_${targetUser.id}_muted`, false)
+				target.setMute(false, { reason: `Duration of tempmute was up.`})
+				target.send(`<@${targetUser.id}> You have been unmuted after \`${args[1]}\` minutes!`)
+			}, 1000 * 60 * args[1])
     } catch (error) {
 			console.error(error);
 			message.reply(config.error);
