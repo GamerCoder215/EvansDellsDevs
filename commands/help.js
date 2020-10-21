@@ -216,6 +216,26 @@ module.exports = {
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
+		const helpMusic1 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Music`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.addFields(
+			{ name: `**${prefix}play** <URL> [volume] `, value: `Plays a specified song. We support YouTube, SoundCloud, Spotify, iTunes, and more!`},
+			{ name: `**${prefix}stop**`, value: `Stops the current song being played.`},
+			{ name: `**${prefix}connect** [channelID]`, value: `Connects to a specified channel, if left blank will join the one you are in.`},
+			{ name: `**${prefix}disconnect**`, value: `Disconnects from the current channel the bot is in.`},
+			{ name: `**${prefix}lookup** <service> <keyword>`, value: `Lookup a song on a specified service, and get information! The services include Spotify, YouTube, Twitch, iTunes, SoundCloud, and more!`}
+		)
+		.setColor(config.blue)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
+		const helpMusic2 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Music | Page 2`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.addFields(
+			{ name: `**${prefix}pause**`, value: `Pauses the current track being played.`},
+			{ name: `**${prefix}**`}
+		)
 		// Command Sequence
 		try {
 			if (!args[0]) {
