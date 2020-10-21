@@ -39,7 +39,7 @@ module.exports = {
 			{ name: '\u200b', value: '\u200b'},
 			{ name: '🏠 Server Moderation', value: `\`${prefix}help servermod\``, inline: true},
 			{ name: '\u200b', value: '\u200b'},
-			{ name: '🎵 Music', value: `\`${prefix}help music\``, inline: true},
+			{ name: '📗 Dictionary', value: `\`${prefix}help dictionary\``, inline: true},
 		)
 		.setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 })}`)
 		.setColor(config.blue)
@@ -216,15 +216,15 @@ module.exports = {
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		const helpMusic1 = new Discord.MessageEmbed()
-		.setTitle(`Help for \`${message.author.username}\` | Music`)
+		const helpDictionary1 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Dictionary`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.addFields(
-			{ name: `**${prefix}play** <URL> [volume] `, value: `Plays a specified song. We support YouTube, SoundCloud, Spotify, iTunes, and more!`},
-			{ name: `**${prefix}stop**`, value: `Stops the current song being played.`},
-			{ name: `**${prefix}connect** [channelID]`, value: `Connects to a specified channel, if left blank will join the one you are in.`},
-			{ name: `**${prefix}disconnect**`, value: `Disconnects from the current channel the bot is in.`},
-			{ name: `**${prefix}lookup** <service> <keyword>`, value: `Lookup a song on a specified service, and get information! The services include Spotify, YouTube, Twitch, iTunes, SoundCloud, and more!`}
+			{ name: `**${prefix}urban** <keyword> `, value: `Look something up on the urban dictionary.`},
+			{ name: `**${prefix}webster**`, value: `Look something up on the Merriam-Webster Dictionary.`},
+			{ name: `**${prefix}emojipedia <keyword>`, value: `Look up emoji names on EmojiPedia.`},
+			{ name: `**${prefix}wikipedia**`, value: `Look something up on Wikipedia.`},
+			{ name: `**${prefix}vocab** <word>`, value: `Look up a word on Vocabulary.com.`}
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
@@ -233,9 +233,13 @@ module.exports = {
 		.setTitle(`Help for \`${message.author.username}\` | Music | Page 2`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.addFields(
-			{ name: `**${prefix}pause**`, value: `Pauses the current track being played.`},
-			{ name: `**${prefix}**`}
+			{ name: `**${prefix}thesarus** <word>`, value: `Look up a word on Thesarus.com`},
+			{ name: `**${prefix}github** <keyword>`, value: `Search projects on GitHub.`},
+			{ name: `****`}
 		)
+		.setColor(config.blue)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
 		// Command Sequence
 		try {
 			if (!args[0]) {

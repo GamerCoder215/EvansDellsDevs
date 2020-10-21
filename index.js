@@ -32,11 +32,7 @@ fs.readdir('./events/', (err, files) => {
 });
 
 // Always Online thing
-const http = require('http');
-const server = http.createServer((req, res) => {
-  res.writeHead(200);
-  res.end('ok');
-});
+require("express")().use(require("express").static(__dirname + "/dashboard")).listen(8080)
 console.log(`Server has been hosted.`)
 // Login
 client.login(process.env.TOKEN);

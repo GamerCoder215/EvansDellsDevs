@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -18,9 +19,11 @@
   },
   "homepage": "https://github.com/GamerCoder215/TCC---Connor#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "canvas": "^2.6.1",
     "discord.js": "^12.3.1",
     "express": "^4.17.1",
+    "ffmpeg": "0.0.4",
     "mathjs": "^7.5.1",
     "quick.db": "^7.1.2",
     "translate-google": "^1.4.3"
