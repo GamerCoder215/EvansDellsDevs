@@ -25,6 +25,7 @@
     "express": "^4.17.1",
     "ffmpeg": "0.0.4",
     "mathjs": "^7.5.1",
+    "node-fetch": "^2.6.1",
     "quick.db": "^7.1.2",
     "translate-google": "^1.4.3"
   },

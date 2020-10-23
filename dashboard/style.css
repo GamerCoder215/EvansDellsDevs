@@ -7,6 +7,7 @@
 body {
 	background: url(images/db-bg.png);
 	background-size: cover;
+	overflow: auto;
 }
 
 .title {
@@ -22,16 +23,39 @@ body {
 	margin-right: 5px;
 }
 
+div.wavy {
+	text-decoration-style: wavy;
+	width: 600px;
+	background-color: gray;
+	height: 300px;
+	transform: translateY(50px);
+}
+.icon {
+	height: 36px;
+	width: 36px;
+	margin-right: 5px;
+	transform: translateY(6px);
+}
+#highlight {
+	font-weight: bold;
+	color: navy;
+	float: left;
+	margin-left: 3px;
+}
 button {
 	font-family: Cartoon;
 	background: transparent;
-	min-height: 30px;
-	min-width: 150px;
+	min-height: 70px;
+	min-width: 230px;
 	border-radius: 10px;
 	border-style: solid;
-	font-size: 18px;
+	font-size: 36px;
 	color: white;
 	text-align: center;
-	transform: translateX(200px)
+	transform: translateX(100px)
 	translateY(30px);
+}
+
+p {
+	font-family: Cartoon;
 }
