@@ -19,7 +19,7 @@ module.exports = {
 		// Page 1 + 2 Embeds
 		const helpPage1 = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Free Modules`)
-		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\`\n\nIf you need additional help, refer to the [documentation](https://docs.connorbot.cf).`)
 		.addFields(
 			{ name: '📓General', value: `\`${prefix}help general\``, inline: true },
 			{ name: '\u200b', value: '\u200b'},
@@ -33,13 +33,13 @@ module.exports = {
 		.setTimestamp();
 		const helpPage2 = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Page 2 | Free Modules (Page 2)`)
-		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\`\n\nIf you need additional help, refer to the [documentation](https://docs.connorbot.cf).`)
 		.addFields(
 			{ name: '🔧Moderation', value: `\`${prefix}help moderation\``, inline: true},
 			{ name: '\u200b', value: '\u200b'},
 			{ name: '🏠 Server Moderation', value: `\`${prefix}help servermod\``, inline: true},
 			{ name: '\u200b', value: '\u200b'},
-			{ name: '📗 Dictionary', value: `\`${prefix}help dictionary\``, inline: true},
+			{ name: '📦 Logging', value: `\`${prefix}help Logging\``, inline: true},
 		)
 		.setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 })}`)
 		.setColor(config.blue)
@@ -47,7 +47,7 @@ module.exports = {
 		.setTimestamp();
 		const helpPage3 = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Page 3 | Paid Modules`)
-		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\``)
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\`\n\nIf you need additional help, refer to the [documentation](https://docs.connorbot.cf).`)
 		.addFields(
 			{ name: '🧑‍🏫 Education', value: `\`${prefix}help education\``, inline: true},
 			{ name: '\u200b', value: '\u200b'},
@@ -66,7 +66,8 @@ module.exports = {
 		.addFields(
 			{ name: `**${prefix}links**`, value: 'Get some useful links for the bot.'},
 			{ name: `**${prefix}help**`, value: 'View the help message.'},
-			{ name: `**${prefix}ping**`, value: 'Ping me with an exact runtime.'}
+			{ name: `**${prefix}ping**`, value: 'Ping me with an exact runtime.'},
+			{ name: `**${prefix}cmdinfo** <command>`, value: 'Get information about a command. Commands must be referred as their **original name**.'}
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
@@ -216,26 +217,22 @@ module.exports = {
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		const helpDictionary1 = new Discord.MessageEmbed()
-		.setTitle(`Help for \`${message.author.username}\` | Dictionary`)
+		const helpLogging1 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Logging`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.addFields(
-			{ name: `**${prefix}urban** <keyword> `, value: `Look something up on the urban dictionary (https://www.urbandictionary.com).`},
-			{ name: `**${prefix}webster** <english|spanish> <keyword>`, value: `Look something up on the Merriam-Webster Dictionary (https://merriam-webster.com).`},
-			{ name: `**${prefix}emojipedia <keyword>`, value: `Look up emoji names on EmojiPedia (https://emojipedia.com).`},
-			{ name: `**${prefix}wikipedia**`, value: `Look something up on Wikipedia (https://wikipedia.org).`},
-			{ name: `**${prefix}vocab** <word>`, value: `Look up a word on Vocabulary.com (https://vocabulary.com).`}
+			{ name: `**${prefix}setchannel <channel> <all|event>`, value: `Set the channel where you want events to show up. Option of separating certain events. If you want all events, use all.`},
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		const helpDictionary2 = new Discord.MessageEmbed()
+		const helpLogging2 = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Music | Page 2`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.addFields(
-			{ name: `**${prefix}thesarus** <word>`, value: `Look up a word on Thesaurus.com (https://thesaurus.com).`},
-			{ name: `**${prefix}github** <keyword>`, value: `Search projects on GitHub (https://github.com).`},
-			{ name: `**${prefix}npm** <keyword>`, value: `Look up modules on npm (https://npmjs.com)`}
+			{ name: `**${prefix}thesarus** <word>`, value: `Look up a word on [Thesaurus.com](https://thesaurus.com).`},
+			{ name: `**${prefix}github** <keyword>`, value: `Search projects on [GitHub](https://github.com).`},
+			{ name: `**${prefix}npm** <keyword>`, value: `Look up modules on [NPM](https://npmjs.com)`}
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
@@ -349,24 +346,24 @@ module.exports = {
 		moderationPageTurner.on('end', (collected) => {
 			moderationHelpPages.edit(timedOut);
 		})
-	} else if (args[0] === 'dictionary') {
-		const dictionaryHelpPages = await message.channel.send(helpDictionary1)
-		dictionaryHelpPages.react('1️⃣').then(() => dictionaryHelpPages.react('️2️⃣'))
+	} else if (args[0] === 'logging') {
+		const loggingHelpPages = await message.channel.send(helpLogging1)
+		loggingHelpPages.react('1️⃣').then(() => loggingHelpPages.react('2️⃣'));
 		const dictioanryPageFilter = (reaction, user) => {
 			return ['1️⃣', '2️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
-		const dictionaryPageTurner = dictionaryHelpPages.createReactionCollector(dictioanryPageFilter, { time: 120000 });
-		dictionaryPageTurner.on('collect', (reaction, user) => {
+		const loggingPageTurner = loggingHelpPages.createReactionCollector(dictioanryPageFilter, { time: 120000 });
+		loggingPageTurner.on('collect', (reaction, user) => {
 			if (reaction.emoji.name === '1️⃣') {
-				dictionaryHelpPages.edit(helpDictionary1);
-				dictionaryHelpPages.reactions.resolve('1️⃣').users.remove(message.author.id);
-			} else if (reaction.emoji.name === '️2️⃣') {
-				dictionaryHelpPages.edit(helpDictionary2);
-				dictionaryHelpPages.reactions.resolve('️2️⃣').users.remove(message.author.id);
+				loggingHelpPages.edit(helplogging1);
+				loggingHelpPages.reactions.resolve('1️⃣').users.remove(message.author.id);
+			} else if (reaction.emoji.name === '2️⃣') {
+				loggingHelpPages.edit(helplogging2);
+				loggingHelpPages.reactions.resolve('2️⃣').users.remove(message.author.id);
 			}
 		})
-		dictionaryPageTurner.on('end', (collected) => {
-			dictionaryHelpPages.edit(timedOut);
+		loggingPageTurner.on('end', (collected) => {
+			loggingHelpPages.edit(timedOut);
 		})
 	}
 	} catch (error) {
