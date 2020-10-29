@@ -8,6 +8,7 @@
 * [General](modules/general.md)
 * [Fun](modules/fun.md)
 * [Moderation](modules/moderation.md)
+* [Logging](modules/logging.md)
 * [Server Moderation](modules/server-moderation.md)
 * [Bot Settings](modules/bot-settings.md)
 
@@ -23,6 +24,7 @@
 
 * [About Us](about-us.md)
 * [About Paid Modules](about-paid-modules.md)
+* [Event Names](event-names.md)
 
 ## Links
 
