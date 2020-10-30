@@ -7,12 +7,50 @@ const client = new Discord.Client();
 // Command Handler
 client.commands = new Discord.Collection();
 // The commands collection
-const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
-// Filters out all files named with js and mjs
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-		// Get the command folder with all the commands
+const generalCommandFiles = fs.readdirSync(`./commands/general/`).filter(file => file.endsWith('.js'));
+const funCommandFiles = fs.readdirSync(`./commands/fun/`).filter(file => file.endsWith('.js'));
+const databaseCommandFiles = fs.readdirSync(`./commands/database/`).filter(file => file.endsWith('.js'));
+const advtoolsCommandFiles = fs.readdirSync(`./commands/advtools/`).filter(file => file.endsWith('.js'));
+const educationCommandFiles = fs.readdirSync(`./commands/education/`).filter(file => file.endsWith('.js'));
+const settingsCommandFiles = fs.readdirSync(`./commands/settings/`).filter(file => file.endsWith('.js'));
+const moderationCommandFiles = fs.readdirSync(`./commands/moderation/`).filter(file => file.endsWith('.js'));
+const loggingCommandFiles = fs.readdirSync(`./commands/logging/`).filter(file => file.endsWith('.js'));
+const servermoderationCommandFiles = fs.readdirSync(`./commands/servermoderation/`).filter(file => file.endsWith('.js'));
+for (const file of generalCommandFiles) {
+    const command = require(`./commands/general/${file}`);
     client.commands.set(command.name, command);
+}
+for (const file of funCommandFiles) {
+	const command = require(`./commands/fun/${file}`);
+	client.commands.set(command.name, command)
+}
+for (const file of databaseCommandFiles) {
+	const command = require(`./commands/database/${file}`);
+	client.commands.set(command.name, command)
+}
+for (const file of advtoolsCommandFiles) {
+	const command = require(`./commands/advtools/${file}`);
+	client.commands.set(command.name, command)
+}
+for (const file of educationCommandFiles) {
+	const command = require(`./commands/education/${file}`);
+	client.commands.set(command.name, command)
+}
+for (const file of settingsCommandFiles) {
+	const command = require(`./commands/settings/${file}`);
+	client.commands.set(command.name, command)
+}
+for (const file of moderationCommandFiles) {
+	const command = require(`./commands/moderation/${file}`);
+	client.commands.set(command.name, command)
+}
+for (const file of loggingCommandFiles) {
+	const command = require(`./commands/logging/${file}`);
+	client.commands.set(command.name, command)
+}
+for (const file of servermoderationCommandFiles) {
+	const command = require(`./commands/servermoderation/${file}`);
+	client.commands.set(command.name, command)
 }
 module.exports = client;
 
