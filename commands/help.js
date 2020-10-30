@@ -19,7 +19,7 @@ module.exports = {
 		// Page 1 + 2 Embeds
 		const helpPage1 = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Free Modules`)
-		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\`\n\nIf you need additional help, refer to the [documentation](https://docs.connorbot.cf).`)
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\`\nIf you need additional help, refer to the [documentation](https://docs.connorbot.cf).`)
 		.addFields(
 			{ name: '📓General', value: `\`${prefix}help general\``, inline: true },
 			{ name: '\u200b', value: '\u200b'},
@@ -33,13 +33,13 @@ module.exports = {
 		.setTimestamp();
 		const helpPage2 = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Page 2 | Free Modules (Page 2)`)
-		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\`\n\nIf you need additional help, refer to the [documentation](https://docs.connorbot.cf).`)
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\`\nIf you need additional help, refer to the [documentation](https://docs.connorbot.cf).`)
 		.addFields(
 			{ name: '🔧Moderation', value: `\`${prefix}help moderation\``, inline: true},
 			{ name: '\u200b', value: '\u200b'},
 			{ name: '🏠 Server Moderation', value: `\`${prefix}help servermod\``, inline: true},
 			{ name: '\u200b', value: '\u200b'},
-			{ name: '📦 Logging', value: `\`${prefix}help Logging\``, inline: true},
+			{ name: '📦 Logging', value: `\`${prefix}help logging\``, inline: true},
 		)
 		.setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 })}`)
 		.setColor(config.blue)
@@ -47,7 +47,7 @@ module.exports = {
 		.setTimestamp();
 		const helpPage3 = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Page 3 | Paid Modules`)
-		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\`\n\nIf you need additional help, refer to the [documentation](https://docs.connorbot.cf).`)
+		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\`\nIf you need additional help, refer to the [documentation](https://docs.connorbot.cf).`)
 		.addFields(
 			{ name: '🧑‍🏫 Education', value: `\`${prefix}help education\``, inline: true},
 			{ name: '\u200b', value: '\u200b'},
@@ -217,26 +217,27 @@ module.exports = {
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		const helpLogging1 = new Discord.MessageEmbed()
+		const helpLogging = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Logging`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.addFields(
-			{ name: `**${prefix}setchannel <channel> <all|event>`, value: `Set the channel where you want events to show up. Option of separating certain events. If you want all events, use all.`},
+			{ name: `**${prefix}setchannel** <channel> <all|event>`, value: `Set the channel where you want events to show up. Option of separating certain events. If you want all events, use all. Click [here](https://docs.connorbot.cf/module-information/event-names) for event names.`},
+			{ name: `**${prefix}enable** <all|event>`, value: `Enables an event for sending. **You must set a channel for the event(s) first**. Option of enabling a certain event or all.`},
+			{ name: `**${prefix}disable** <all|event>`, value: `Disables an event for sending. All events, by default, are automatically disabled.`},
+			{ name: `**${prefix}messagetype** <normal|embed>`, value: `Allows you to pick if you want logging done normally or in embeds. Default: Normal.`},
+			{ name: `**${prefix}detailtype** <1|2|3|4>`, value: `Sets how detailed you want the logs.\n1 — Minimal Logging\n2 — Basic Logging\n3 — Somewhat Detailed Logging (Recommended)\n4 — Maximum Logging`}
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		const helpLogging2 = new Discord.MessageEmbed()
-		.setTitle(`Help for \`${message.author.username}\` | Music | Page 2`)
+
+		const helpDatabase1 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.id}\` | Database`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.addFields(
-			{ name: `**${prefix}thesarus** <word>`, value: `Look up a word on [Thesaurus.com](https://thesaurus.com).`},
-			{ name: `**${prefix}github** <keyword>`, value: `Search projects on [GitHub](https://github.com).`},
-			{ name: `**${prefix}npm** <keyword>`, value: `Look up modules on [NPM](https://npmjs.com)`}
+			{ name: `**${prefix}store** <value>`, value: `Store a message or keyword in a database.`},
+			{ name: `**${prefix}get** <id>`, value: `Get the keyword stored from an ID.`}
 		)
-		.setColor(config.blue)
-		.setFooter(config.name, config.icon)
-		.setTimestamp();
 		// Command Sequence
 		try {
 			if (!args[0]) {
@@ -347,24 +348,7 @@ module.exports = {
 			moderationHelpPages.edit(timedOut);
 		})
 	} else if (args[0] === 'logging') {
-		const loggingHelpPages = await message.channel.send(helpLogging1)
-		loggingHelpPages.react('1️⃣').then(() => loggingHelpPages.react('2️⃣'));
-		const dictioanryPageFilter = (reaction, user) => {
-			return ['1️⃣', '2️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
-		};
-		const loggingPageTurner = loggingHelpPages.createReactionCollector(dictioanryPageFilter, { time: 120000 });
-		loggingPageTurner.on('collect', (reaction, user) => {
-			if (reaction.emoji.name === '1️⃣') {
-				loggingHelpPages.edit(helplogging1);
-				loggingHelpPages.reactions.resolve('1️⃣').users.remove(message.author.id);
-			} else if (reaction.emoji.name === '2️⃣') {
-				loggingHelpPages.edit(helplogging2);
-				loggingHelpPages.reactions.resolve('2️⃣').users.remove(message.author.id);
-			}
-		})
-		loggingPageTurner.on('end', (collected) => {
-			loggingHelpPages.edit(timedOut);
-		})
+		message.channel.send(helpLogging);
 	}
 	} catch (error) {
 		message.reply(config.error)

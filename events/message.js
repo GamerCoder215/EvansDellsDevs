@@ -3,6 +3,14 @@ module.exports = async (client, message) => {
 	const Discord = require('discord.js');
 	const db = require('quick.db');
 	const config = require('./evt_config.json');
+	// Embeds
+	const premiumEmbed = new Discord.MessageEmbed()
+	.setTitle('Paid Feature')
+	.setDescription(`This is a paid feature that needs to be purchased. If you want to purchase the Premium Module, follow these steps:\n\n1.) Join the [Support Server](https://discord.gg/upx6SqG).\n2.) Buy the [Premium Module](https://patreon.com/gamercoder215) you want. \n3.) After purchase, please wait a short while. You will then have access to the premium module when I DM you!\n**Note: Premiums are PER USER.**__ If you are a teacher / president of a group, apply for group work [here](https://www.surveymonkey.com/r/9728TSK)`)
+	.setColor(config.gold)
+	.setFooter(config.name, config.icon)
+	.setTimestamp();
+	// Other Stuff
 	if (message.guild === null) {
 		var guildID = '761571644384346143'
 	} else {
@@ -44,25 +52,37 @@ module.exports = async (client, message) => {
 		return message.reply(invalidChannel);
 	}
 	// Set Null to False
-	if (`modules_education_${message.author.id}_purchased` === null) {
+	if (db.get(`modules_education_${message.author.id}_purchased`) === null) {
 		db.set(`modules_education_${message.author.id}_purchased`, false)
 	}
-	if (`dms_purchases_${message.author.id}_education` === null) {
+	if (db.get(`dms_purchases_${message.author.id}_education`) === null) {
 		db.set(`dms_purchases_${message.author.id}_education`, false)
+	}
+	if (db.get(`modules_database_${message.author.id}_purchased`) === null) {
+		db.set(`modules_database_${message.author.id}_purchased`, false)
+	}
+	if (db.get(`dms_purchases_${message.author.id}_database`) === null) {
+		db.set(`dms_purchases_${message.author.id}_database`, false)
+	}
+	if (db.get(`modules_advtools_${message.author.id}_purchased`) === null) {
+		db.set(`modules_advtools_${message.author.id}_purchased`, false)
+	}
+	if (db.get(`dms_purchases_${message.author.id}_advtools`) === null) {
+		db.set(`dms_purchases_${message.author.id}_advtools`, false)
 	}
 	// Detects if you have the Education role
 	if (message.member.roles.cache.has('766313565816487976')) {
 		db.set(`modules_education_${message.author.id}_purchased`, true)
 	}
-	// Detetcs if the Education Module isn't bought
+	// Detetcs if Premium Modules haven't bought
 	if (command.education && db.get(`modules_education_${message.author.id}_purchased`) === false) {
-		const educationPremium = new Discord.MessageEmbed()
-		.setTitle('Paid Feature')
-		.setDescription(`This is a paid feature that comes with the \`Education\` Module. If you want to purchase the Education Module, follow these steps:\n\n1.) Join the Support Server: https://discord.gg/upx6SqG\n2.) Buy the Education Module Here: https://patreon.com/gamercoder215\n3.) After purchase, please wait a short while. You will then have access to the education module when I DM you!\n**Note: Premiums are PER USER.**__ If you are a teacher / president of a group, apply for group work —> https://www.surveymonkey.com/r/9728TSK`)
-		.setColor(config.gold)
-		.setFooter(config.name, config.icon)
-		.setTimestamp();
-		return message.channel.send(educationPremium);
+		return message.channel.send(premiumEmbed);
+	}
+	if (command.database && db.get(`modules_database_${message.author.id}_purchased`) === false) {
+		return message.channel.send(premiumEmbed)
+	}
+	if (command.advtools && db.get(`modules_advtools_${message.author.id}_purchased`) === false) {
+		return message.channel.send(premiumEmbed)
 	}
 	// Detects if you haven't been DMed with a code and you haven't
 	if (message.member.roles.cache.has('766313565816487976') && db.get(`dms_purchases_${message.author.id}_education`) === false) {
