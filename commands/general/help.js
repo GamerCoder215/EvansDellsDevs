@@ -235,9 +235,52 @@ module.exports = {
 		.setTitle(`Help for \`${message.author.id}\` | Database`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.addFields(
-			{ name: `**${prefix}store** <value>`, value: `Store a message or keyword in a database.`},
-			{ name: `**${prefix}get** <id>`, value: `Get the keyword stored from an ID.`}
+			{ name: `**${prefix}new** <value>`, value: `Store a message or keyword in a database. Will return an ID.`},
+			{ name: `**${prefix}get** <id>`, value: `Get the keyword stored from an ID.`},
+			{ name: `**${prefix}protect** <id> <permission>`, value: `Protect a certain value with a permission. If you need a list of permissions, go [here](https://https://docs.connorbot.cf/module-information/database-permissions).`},
+			{ name: `**${prefix}2fa** <user|channel>`, value: `Protects all stored items with 2FA. Click [here](https://docs.connorbot.cf/guide#2fa) to learn more about 2FA.`},
+			{ name: `**${prefix}password** <password>`, value: `Protect all stored items with a password. Click [here](https://docs.connorbot.cf/guide#password-protection) to learn more about password protection.`}
 		)
+		.setColor(config.blue)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
+		const helpDatabase2 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.id}\` | Database | Page 2`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.addFields(
+			{ name: `**${prefix}rename** <id> <value>`, value: `Renames the value associated with the ID in the database.`},
+			{ name: `**${prefix}delete** <id>`, value: `Deletes a value in the database.`},
+			{ name: `**${prefix}shutdown**`, value: `This will shut down the database, only allowing the owner access to the database. **This will also disable 2FA and Password Protection**.`},
+			{ name: `**${prefix}open**`, value: `This will open the database back up, allowing everyone with access to the database.`},
+			{ name: `**${prefix}setowner** <user> [user2] [user3]`, value: `This will set the owner(s) of the database. Maximum of 3 owners. **Owners bypass 2FA and Password, and can also shut down the database. __Be Careful__**.`}
+		)
+		.setColor(config.blue)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
+		const helpDatabase3 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.id}\` | Database | Page 3`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.addFields(
+			{ name: `**${prefix}blacklist** <user>`, value: `Blacklist a user from the database, despite having access.`},
+			{ name: `**${prefix}unblacklist** <user>`, value: `Remove a user from the database blacklist.`}
+			{ name: `**${prefix}whitelist** <enable|disable>`, value: `Enable or Disable the whitelist. **This will disable the \`${prefix}protect\`** command.`},
+			{ name: `**${prefix}whitelistadd** <user1> [user2] [user3]`, value: `Add users to the whitelist, if enabled. **You can add as many users as you want**.`},
+			{ name: `**${prefix}whitelistremove** <user1> [user2] [user3]`, value: `Remove users to the whitelist, if enabled. **You can add as many users as you want.**`}
+		)
+		.setColor(config.blue)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
+		const helpDatabase4 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.id}\` | Database | Page 4`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.addFields(
+			{ name: `**${prefix}dbreset**`, value: `This will delete all keywords in the database and disable 2FA and Password protection. **This command can only be executed by the owner(s)**.`},
+		)
+		.setColor(config.blue)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
+
+
 		// Command Sequence
 		try {
 			if (!args[0]) {
@@ -264,6 +307,7 @@ module.exports = {
 		})
 	pageTurner.on('end', (collected) => {
 		helpPages.edit(timedOut);
+		helpPages.reactions.removeAll();
 		})
 	} else if (args[0] === 'general') {
 		return message.channel.send(helpGeneral);
@@ -291,6 +335,7 @@ module.exports = {
 		})
 		funPageTurner.on('end', (collected) => {
 			funHelpPages.edit(timedOut);
+			funHelpPages.reactions.removeAll();
 			})
 		} else if (args[0] === 'education') {
 		const educationHelpPages = await message.channel.send(helpEducation1);
@@ -322,6 +367,7 @@ module.exports = {
 		})
 		educationPageTurner.on('end', (collected) => {
 			educationHelpPages.edit(timedOut);
+			educationHelpPages.reactions.removeAll();
 		})
 	} else if (args[0] === 'moderation') {
 		const moderationHelpPages = await message.channel.send(helpModeration1);
@@ -346,9 +392,37 @@ module.exports = {
 		})
 		moderationPageTurner.on('end', (collected) => {
 			moderationHelpPages.edit(timedOut);
+			moderationHelpPages.reactions.removeAll();
 		})
 	} else if (args[0] === 'logging') {
 		message.channel.send(helpLogging);
+	} else if (args[0] === 'database') {
+		const databaseHelpPages = await message.channel.send(helpDatabase1);
+		databaseHelpPages.react('1️⃣').then(() => databaseHelpPages.react('2️⃣')).then(() => databaseHelpPages.react('3️⃣')).then(() => databaseHelpPages.react('4️⃣'));
+		// Filter
+		const databasePageFilter = (reaction, user) => {
+			return ['1️⃣', '2️⃣', '3️⃣', '4️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
+		};
+		const databasePageTurner = databaseHelpPages.createReactionCollector(databasePageFilter, { time: 120000})
+		databasePageTurner.on('collect', (reaction, user) => {
+		if (reaction.emoji.name === '1️⃣') {
+			databaseHelpPages.edit(helpDatabase1);
+			databaseHelpPages.reactions.resolve('1️⃣').users.remove(message.author.id);
+		} else if (reaction.emoji.name === '2️⃣') {
+			databaseHelpPages.edit(helpDatabase2);
+			databaseHelpPages.reactions.resolve('2️⃣').users.remove(message.author.id);
+		} else if (reaction.emoji.name === '3️⃣') {
+			databaseHelpPages.edit(helpDatabase3);
+			databaseHelpPages.reactions.resolve('3️⃣').users.remove(message.author.id);
+		} else if (reaction.emoji.name === '4️⃣') {
+			databaseHelpPages.edit(helpDatabase4);
+			databaseHelpPages.reactions.resolve('4️⃣')
+			}
+		})
+		databasePageTurner.on('end', (collected) => {
+			databaseHelpPages.edit(timedOut)
+			databaseHelpPages.reactions.removeAll();
+		})
 	}
 	} catch (error) {
 		message.reply(config.error)
