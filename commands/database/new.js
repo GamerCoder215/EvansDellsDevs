@@ -4,7 +4,6 @@ module.exports = {
   database: true,
   aliases: ['create', 'nw'],
   async run(client, message, args) {
-    message.delete({ reason: `Needs to be private.` })
     // Discord, Config & NPM Dependencies
     const Discord = require('discord.js');
     const config = require('../command_config.json');
@@ -29,19 +28,23 @@ module.exports = {
     // Command Sequence
     try {
     var keywords = args.slice(0).join(' ')
-    if (!keywords) return message.channel.send(invalidArguments)
-    var valueStringID = message.author.username.toString().split(1).toUpperCase();
+    if (!keywords) {
+			return message.channel.send(invalidArguments)
+		} else {
+		message.delete({ reason: `Needs to be private.` })
+    var valueStringID = message.author.username.toString().slice(0, 2).toUpperCase();
     db.add(`valueID`, 1)
     var valueNumberID = db.get(`valueID`);
     var valueID = `${valueStringID}-${valueNumberID}`;
     db.set(`value_${valueID}`, keywords)
-    const valueCreated = new Discord.MessageEmbed();
-    .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}));
-    .setDescription(`Your value has been saved, ${message.author.id}!\nGet it with this ID: \`${valueID}\``)
+    const valueCreated = new Discord.MessageEmbed()
+    .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+    .setDescription(`Your value has been saved, ${message.author.username}!\nGet it with this ID: \`${valueID}\``)
     .setColor(config.gold)
     .setFooter(config.name, config.icon)
     .setTimestamp();
     message.channel.send(valueCreated);
+			}
     } catch (error) {
       console.error(error);
       message.reply(config.error);

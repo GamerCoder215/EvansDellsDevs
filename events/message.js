@@ -73,9 +73,15 @@ module.exports = async (client, message) => {
 	if (db.get(`valueID`) === null) {
 		db.set(`valueID`, 0)
 	}
-	// Detects if you have the Education role
+	// Detects if you have a Premium role
 	if (message.member.roles.cache.has('766313565816487976')) {
 		db.set(`modules_education_${message.author.id}_purchased`, true)
+	}
+	if (message.member.roles.cache.has('768146423258415104')) {
+		db.set(`modules_database_${message.author.id}_purchased`, true)
+	}
+	if (message.member.roles.cache.has('768146574026473494')) {
+		db.set(`modules_advtools_${message.author.id}_purchased`, true)
 	}
 	// Detetcs if Premium Modules haven't bought
 	if (command.education && db.get(`modules_education_${message.author.id}_purchased`) === false) {

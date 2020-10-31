@@ -43,6 +43,7 @@ module.exports = {
       const dataEmbed = new Discord.MessageEmbed()
       .setTitle(`Code \`${args[0]}\``)
       .setDescription(`The value give is: "${keywords}"`)
+			.setColor(config.gold)
       .setFooter(config.name, config.icon)
       .setTimestamp();
       message.channel.send(dataEmbed);
