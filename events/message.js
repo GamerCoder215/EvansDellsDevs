@@ -51,7 +51,7 @@ module.exports = async (client, message) => {
 		.setTimestamp();
 		return message.reply(invalidChannel);
 	}
-	// Set Null to False
+	// Set Null to False or 0
 	if (db.get(`modules_education_${message.author.id}_purchased`) === null) {
 		db.set(`modules_education_${message.author.id}_purchased`, false)
 	}
@@ -69,6 +69,9 @@ module.exports = async (client, message) => {
 	}
 	if (db.get(`dms_purchases_${message.author.id}_advtools`) === null) {
 		db.set(`dms_purchases_${message.author.id}_advtools`, false)
+	}
+	if (db.get(`valueID`) === null) {
+		db.set(`valueID`, 0)
 	}
 	// Detects if you have the Education role
 	if (message.member.roles.cache.has('766313565816487976')) {

@@ -1,14 +1,13 @@
 module.exports = {
-  name: 'new',
-  description: 'Creates a new item for a database.',
+  name: 'get',
+  description: 'Gets a value from the database.',
   database: true,
-  aliases: ['create', 'nw'],
+  aliases: ['retrieve', 'dbget'],
   async run(client, message, args) {
-    message.delete({ reason: `Needs to be private.` })
     // Discord, Config & NPM Dependencies
     const Discord = require('discord.js');
     const config = require('../command_config.json');
-    const db = require('quick.db')
+    const db = require('quick.db');
     // Tables
       // Invalid Args Table
 		var invalidArgumentMessages = [
@@ -23,25 +22,32 @@ module.exports = {
     const invalidArguments = new Discord.MessageEmbed()
     .setDescription(invalidArgumentMessages[Math.floor(Math.random() * 5)])
     .setColor(config.red)
-    .setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+    .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+    .setFooter(config.name, config.icon)
+    .setTimestamp();
+    const dataNotFound = new Discord.MessageEmbed()
+    .setDescription(`Sorry ${message.author.username}, there is no data associated with this code.`)
+    .setColor(config.red)
+    .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
     .setFooter(config.name, config.icon)
     .setTimestamp();
     // Command Sequence
     try {
-    var keywords = args.slice(0).join(' ')
-    if (!keywords) return message.channel.send(invalidArguments)
-    var valueStringID = message.author.username.toString().split(1).toUpperCase();
-    db.add(`valueID`, 1)
-    var valueNumberID = db.get(`valueID`);
-    var valueID = `${valueStringID}-${valueNumberID}`;
-    db.set(`value_${valueID}`, keywords)
-    const valueCreated = new Discord.MessageEmbed();
-    .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}));
-    .setDescription(`Your value has been saved, ${message.author.id}!\nGet it with this ID: \`${valueID}\``)
-    .setColor(config.gold)
-    .setFooter(config.name, config.icon)
-    .setTimestamp();
-    message.channel.send(valueCreated);
+    if (!args[0]) {
+      return message.channel.send(invalidArguments);
+    } else {
+      var keywords = db.get(`value_${args[0]}`)
+      if (keywords === undefined) {
+      return message.channel.send(dataNotFound);
+      } else {
+      const dataEmbed = new Discord.MessageEmbed()
+      .setTitle(`Code \`${args[0]}\``)
+      .setDescription(`The value give is: "${keywords}"`)
+      .setFooter(config.name, config.icon)
+      .setTimestamp();
+      message.channel.send(dataEmbed);
+      }
+    }
     } catch (error) {
       console.error(error);
       message.reply(config.error);
