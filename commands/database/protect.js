@@ -58,12 +58,12 @@ module.exports = {
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
 		// Action Sucessful Embed
-      const actionSucessful = new Discord.MessageEmbed()
-  		.setDescription(sucessMessages[Math.floor(Math.random() * 5)])
-  		.setAuthor(`${message.author.username}`, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
-  		.setColor('#D8D52B')
-  		.setFooter('ConnorBot', config.icon)
-  		.setTimestamp();
+    const actionSucessful = new Discord.MessageEmbed()
+  	.setDescription(sucessMessages[Math.floor(Math.random() * 5)])
+  	.setAuthor(`${message.author.username}`, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+  	.setColor('#D8D52B')
+  	.setFooter('ConnorBot', config.icon)
+  	.setTimestamp();
 		// Command Sequence
 		try {
 		if (!args[0]) return message.channel.send(invalidArguments);
