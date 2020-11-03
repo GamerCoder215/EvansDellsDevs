@@ -7,8 +7,16 @@
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<link href="images/connor.png" rel="icon">
 </head>
+<!--- Load Scripts -->
+<script src="scripts/login.js"></script>
+<script src="scripts/button/colorchange.js"></script>
 <!--Body -->
 <body>
+<div class="header">
+	<p>ConnorBot Dashbaord | <a href="./basicindex.html">Load HTML</a></p>
+	
+</div>
+<div id="normal">
 <h1 class="title"><img src="images/connor.png" class="icon">|The only bot you need.</h1>
 <div style="overflow:hidden;">
 	<p style="float:left;">Connor is designed for</p>
@@ -20,9 +28,21 @@
 	<p style="float:left;">.</p>
 </div>
 <div>
-	<button><img src="/images/db-gear.png" alt="⚙️" class="icon" onmouseover="">Manage</button>
+	<button id="button" onmouseover="hover(this)" onmouseout="away(this)"><img src="/images/db-gear.png" alt="⚙️" class="icon" onmouseover="hoverImg(this)" onmouseout="awayImg(this)">Manage</button>
 </div>
-<!--- Load Scripts -->
-<script src="scripts/login.js"></script>
+<!--- In-App Scripts-->
+<script>
+function hover(button) {
+	button.style.background = "white";
+	button.style.color = "black";
+}
+function away(button) {
+	button.style.background = "transparent";
+	button.style.color = "white";
+}
+function hoverImg(img) {
+	img.
+}
+</script>
 </body>
 </html>

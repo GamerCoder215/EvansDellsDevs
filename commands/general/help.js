@@ -238,8 +238,8 @@ module.exports = {
 			{ name: `**${prefix}new** <value>`, value: `Store a message or keyword in a database. Will return an ID. (Just in case, Connor will delete the message automatically for secrecy.)`},
 			{ name: `**${prefix}get** <value>`, value: `Get the keyword stored from an ID.`},
 			{ name: `**${prefix}protect** <value> <permission>`, value: `Protect a certain value with a permission. If you need a list of permissions, go [here](https://https://docs.connorbot.cf/module-information/database-permissions).`},
-			{ name: `**${prefix}2fa** <user|channel>`, value: `Protects all stored items with 2FA. Click [here](https://docs.connorbot.cf/guide#2fa) to learn more about 2FA.`},
-			{ name: `**${prefix}password** <password>`, value: `Protect all stored items with a password. Click [here](https://docs.connorbot.cf/guide#password-protection) to learn more about password protection.`},
+			{ name: `**${prefix}2FA** <code> <user|channel>`, value: `Protects a stored item with 2FA. Click [here](https://docs.connorbot.cf/) to learn more about 2FA. **Must have password enabled.**`},
+			{ name: `**${prefix}password** <code> <password>`, value: `Protect a stored item with a password. Click [here](https://docs.connorbot.cf/) to learn more about password protection.`},
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
@@ -250,9 +250,9 @@ module.exports = {
 		.addFields(
 			{ name: `**${prefix}rename** <id> <value>`, value: `Renames the value associated with the ID in the database.`},
 			{ name: `**${prefix}delete** <id>`, value: `Deletes a value in the database.`},
-			{ name: `**${prefix}shutdown**`, value: `This will shut down the database, only allowing the owner access to the database. **This will also disable 2FA and Password Protection**.`},
-			{ name: `**${prefix}open**`, value: `This will open the database back up, allowing everyone with access to the database.`},
-			{ name: `**${prefix}setowner** <user> [user2] [user3]`, value: `This will set the owner(s) of the database. Maximum of 3 owners. **Owners bypass 2FA and Password, and can also shut down the database. __Be Careful__**.`},
+			{ name: `**${prefix}blacklist** <user>`, value: `Blacklist a user from the database, despite having access.`},
+			{ name: `**${prefix}unblacklist** <user>`, value: `Remove a user from the database blacklist.`},
+			{ name: `**${prefix}whitelist** <enable|disable>`, value: `Enable or Disable the whitelist. **This will disable the \`${prefix}protect\`** command.`},
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
@@ -261,25 +261,12 @@ module.exports = {
 		.setTitle(`Help for \`${message.author.username}\` | Database | Page 3`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 		.addFields(
-			{ name: `**${prefix}blacklist** <user>`, value: `Blacklist a user from the database, despite having access.`},
-			{ name: `**${prefix}unblacklist** <user>`, value: `Remove a user from the database blacklist.`},
-			{ name: `**${prefix}whitelist** <enable|disable>`, value: `Enable or Disable the whitelist. **This will disable the \`${prefix}protect\`** command.`},
 			{ name: `**${prefix}whitelistadd** <user1> [user2] [user3]`, value: `Add users to the whitelist, if enabled. **You can add as many users as you want**.`},
 			{ name: `**${prefix}whitelistremove** <user1> [user2] [user3]`, value: `Remove users to the whitelist, if enabled. **You can add as many users as you want.**`},
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		const helpDatabase4 = new Discord.MessageEmbed()
-		.setTitle(`Help for \`${message.author.username}\` | Database | Page 4`)
-		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
-		.addFields(
-			{ name: `**${prefix}dbreset**`, value: `This will delete all keywords in the database and disable 2FA and Password protection. **This command can only be executed by the owner(s)**.`},
-		)
-		.setColor(config.blue)
-		.setFooter(config.name, config.icon)
-		.setTimestamp();
-
 
 		// Command Sequence
 		try {
@@ -398,10 +385,10 @@ module.exports = {
 		message.channel.send(helpLogging);
 	} else if (args[0] === 'database') {
 		const databaseHelpPages = await message.channel.send(helpDatabase1);
-		databaseHelpPages.react('1️⃣').then(() => databaseHelpPages.react('2️⃣')).then(() => databaseHelpPages.react('3️⃣')).then(() => databaseHelpPages.react('4️⃣'));
+		databaseHelpPages.react('1️⃣').then(() => databaseHelpPages.react('2️⃣')).then(() => databaseHelpPages.react('3️⃣'));
 		// Filter
 		const databasePageFilter = (reaction, user) => {
-			return ['1️⃣', '2️⃣', '3️⃣', '4️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
+			return ['1️⃣', '2️⃣', '3️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
 		const databasePageTurner = databaseHelpPages.createReactionCollector(databasePageFilter, { time: 120000})
 		databasePageTurner.on('collect', (reaction, user) => {
@@ -414,10 +401,7 @@ module.exports = {
 		} else if (reaction.emoji.name === '3️⃣') {
 			databaseHelpPages.edit(helpDatabase3);
 			databaseHelpPages.reactions.resolve('3️⃣').users.remove(message.author.id);
-		} else if (reaction.emoji.name === '4️⃣') {
-			databaseHelpPages.edit(helpDatabase4);
-			databaseHelpPages.reactions.resolve('4️⃣').users.remove(message.author.id);
-			}
+		}
 		})
 		databasePageTurner.on('end', (collected) => {
 			databaseHelpPages.edit(timedOut)

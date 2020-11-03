@@ -9,11 +9,24 @@ body {
 	background-size: cover;
 	overflow: auto;
 }
+#normal {
+	font-family: Cartoon;
+}
+
+.header {
+	text-align: center;
+	background: #7df9ff;
+	border: solid 2px;
+	font-weight: bold;
+	overflow: hidden;
+	border-radius: 10px;
+}
 
 .title {
 	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 	font-weight: bold;
 	color: white;
+	
 }
 
 .iconSmall {
@@ -42,7 +55,7 @@ div.wavy {
 	float: left;
 	margin-left: 3px;
 }
-button {
+#button {
 	font-family: Cartoon;
 	background: transparent;
 	min-height: 70px;
@@ -54,8 +67,4 @@ button {
 	text-align: center;
 	transform: translateX(100px)
 	translateY(30px);
-}
-
-p {
-	font-family: Cartoon;
 }

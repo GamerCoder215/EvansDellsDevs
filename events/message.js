@@ -23,7 +23,7 @@ module.exports = async (client, message) => {
 		}
 	}
 	// Detects if user is muted
-	if (db.get(`guild_${message.guild.id}_${message.author.id}_muted`) === true) {
+	if (db.get(`guild_${guildID}_${message.author.id}_muted`) === true) {
 		message.delete({ reason: 'User is muted.'});
 	}
 	// Detects if it is in a DM

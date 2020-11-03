@@ -25,6 +25,9 @@ module.exports = {
     .setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
     .setFooter(config.name, config.icon)
     .setTimestamp();
+		// Not the Owner Embed
+		const invalidAccess = new Discord.MessageEmbed()
+		.setDescription(`Sorry ${message.author.username}, you do not have access to this data!`)
     // Command Sequence
     try {
     var keywords = args.slice(0).join(' ')
@@ -37,6 +40,7 @@ module.exports = {
     var valueNumberID = db.get(`valueID`);
     var valueID = `${valueStringID}-${valueNumberID}`;
     db.set(`value_${valueID}`, keywords)
+		db.set(`value_${valueID}_owner`, message.author.id)
     const valueCreated = new Discord.MessageEmbed()
     .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
     .setDescription(`Your value has been saved, ${message.author.username}!\nGet it with this ID: \`${valueID}\``)
