@@ -56,28 +56,23 @@ module.exports = {
 		// Command Sequence
 		try {
 			if (!args[0]) return message.channel.send(invalidArguments);
+			var whitelist = new db.table(`whitelist_${args[0]}`);
       if (args[0] === 'enable') {
-        if (db.get(`password_${args[0]}`) === true) {
+        if (db.get(`password_${args[1]}`) === true) {
           return message.channel.send(passwordEnabled);
       } else {
-      db.set(`whitelist_${args[0]}`, true);
+      db.set(`whitelist_${args[1]}`, true);
       message.channel.send(actionSucessful);
         }
       } else if (args[0] === 'disable') {
-      db.set(`whitelist_${args[0]}`, false);
+      db.set(`whitelist_${args[1]}`, false);
       message.channel.send(actionSucessful);
       } else if (args[0] === 'add') {
-        var users = args.length;
-        while (users >= 0) {
-          db.push(`whitelist_${args[0]}.users`, getID(args[users]));
-          users--;
-        }
+				whitelist.push(`users`, `${getID(args[2])}`);
         message.channel.send(actionSucessful);
       } else if (args[0] === 'remove') {
-        var users = args.length;
-        while (users >= 0) {
-          db;
-        }
+				db.push(`whitelist_${args[1]}.users`, `${getID(args[2])}`);
+				message.channel.send(actionSucessful);
       } else {
       return message.channel.send(invalidArguments);
     }

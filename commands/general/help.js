@@ -252,7 +252,7 @@ module.exports = {
 			{ name: `**${prefix}delete** <id>`, value: `Deletes a value in the database.` },
 			{ name: `**${prefix}blacklist** <user>`, value: `Blacklist a user from the database, despite having access.` },
 			{ name: `**${prefix}unblacklist** <user>`, value: `Remove a user from the database blacklist.` },
-			{ name: `**${prefix}whitelist** <enable|disable>`, value: `Enable or Disable the whitelist. **This will disable the \`${prefix}protect\`** command.` },
+			{ name: `**${prefix}whitelist** <enable|disable> <code>`, value: `Enable or Disable the whitelist. **This will disable the \`${prefix}protect\`** command.` },
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
@@ -261,8 +261,8 @@ module.exports = {
 		.setTitle(`Help for \`${message.author.username}\` | Database | Page 3`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
 		.addFields(
-			{ name: `**${prefix}whitelist** add <user1> [user2] [user3]`, value: `Add users to the whitelist, if enabled. **You can add as many users as you want**.` },
-			{ name: `**${prefix}whitelist** remove <user1> [user2] [user3]`, value: `Remove users to the whitelist, if enabled. **You can add as many users as you want.**` },
+			{ name: `**${prefix}whitelist** add <code> <user>`, value: `Add users to the whitelist, if enabled.`},
+			{ name: `**${prefix}whitelist** remove <user>`, value: `Remove users to the whitelist, if enabled.`},
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)

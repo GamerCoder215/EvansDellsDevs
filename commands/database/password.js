@@ -60,6 +60,7 @@ module.exports = {
 		// Command Sequence
 		try {
 		if (!args[0]) return message.channel.send(invalidArguments);
+		if (db.get(`whitelist_${args[0]}`) === true) return message.channel.send(whitelistEnabled);
 		var password = args.slice(1).join(' ');
 		if (!password) return message.channel.send(invalidArguments);
 		if (db.get(`value_${args[0]}_owner`) !== message.author.id) return message.channel.send(invalidAccess);
