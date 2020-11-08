@@ -14,23 +14,23 @@ module.exports = {
 		`Hey there ${message.author.username}! You have provided some invalid arguments.`,
 		`Let's see ${message.author.username}, you have some invalid arguments.`,
 		`Hey ${message.author.username}, you have invalid arguments!`,
-		`Please provide some valid arguments, ${message.author.username}`
-		]
+		`Please provide some valid arguments, ${message.author.username}`,
+	];
 		var invalidPermissionMessages = [
 			`I\'m sorry ${message.author.username}, but you do not have permission to use this command.`,
 			`Hey ${message.author.username}, you don\'t have the correct permissions to use this command!`,
 			`Stop, you don\'t have the permission, ${message.author.username}`,
 			`${message.author.username} can\'t use this command because he lacks the permissions to do so.`,
 			`Get the permissions to use this command, ${message.author.username}`,
-			`Connor found out you don\'t have the permissions, ${message.author.username}!`
-		]
+			`Connor found out you don\'t have the permissions, ${message.author.username}!`,
+		];
 		var sucessMessages = [
 			`Your action was sucessful, ${message.author.username}`,
 			`${message.author.username}\'s action was sucessful.`,
 			`Congradulations ${message.author.username}, your action was sucessful.`,
 			`Excellent! ${message.author.username} had their action a sucess.`,
-			`Connor found out about your action ${message.author.username}, \nand he helped it become a sucess.`
-		]
+			`Connor found out about your action ${message.author.username},and he helped it become a sucess.`,
+		];
 		// Embeds
 		// Invalid Args Embed
 		const invalidArguments = new Discord.MessageEmbed()
@@ -57,7 +57,7 @@ module.exports = {
 		function getID(mention) {
 			if (!mention) return;
 			if (mention.startsWith('<') && mention.endsWith('>')) {
-				var mentionID = mention.replace(/[<@&#!>]/g, '')
+				var mentionID = mention.replace(/[<@&#!>]/g, '');
 				return (mentionID);
 			} else return;
 		}
@@ -73,12 +73,14 @@ module.exports = {
 				return message.channel.send(invalidPermissions);
 				} else {
 				var channel = client.channels.cache.get(getID(args[0]));
-				if (isNaN(channelID)) return message.channel.send(invalidArguments);
+				if (isNaN(channel.id)) return message.channel.send(invalidArguments);
 				if (channel === undefined) return message.channel.send(invalidArguments);
 				if (args[1] === 'all') {
-				db.set(`guild_${message.guild.id}_logging_all`, channel.id);
+					db.set(`guild_${message.guild.id}_logging_all`, channel.id);
+					message.channel.send(actionSucessful);
 				} else {
-				db.set(`guild_${message.guild.id}_logging_${args[1]}`, channel.id);
+					db.set(`guild_${message.guild.id}_logging_${args[1]}`, channel.id);
+					message.channel.send(actionSucessful);
 				}
 				}
 			}
@@ -87,5 +89,5 @@ module.exports = {
 			console.error(error);
 			message.reply(config.error);
 		}
-	}
-}
+	},
+};

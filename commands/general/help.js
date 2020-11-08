@@ -261,8 +261,8 @@ module.exports = {
 		.setTitle(`Help for \`${message.author.username}\` | Database | Page 3`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
 		.addFields(
-			{ name: `**${prefix}whitelist** add <code> <user>`, value: `Add users to the whitelist, if enabled.`},
-			{ name: `**${prefix}whitelist** remove <user>`, value: `Remove users to the whitelist, if enabled.`},
+			{ name: `**${prefix}whitelist** add <code> <user>`, value: `Add users to the whitelist, if enabled.` },
+			{ name: `**${prefix}whitelist** remove <user>`, value: `Remove users to the whitelist, if enabled.` },
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
