@@ -7,78 +7,61 @@ module.exports = async (client, message) => {
 	const guild = client.guilds.cache.get(config.serverID)
 	const member = guild.member(message.author);
 	// Leveling
-	// Set Null to 0, 1 or false
-	if (db.get(`guild_messages_${message.author.id}_count_permanent`) === null) {
-	db.set(`guild_messages_${message.author.id}_count_permanent`, 0)
-	} 
-	if (db.get(`guild_rebirths_${message.author.id}_permanent`) === null) {
-	db.set(`guild_rebirths_${message.author.id}_permanent`, 0)
-	} 
-	if (db.get(`guild_prestiges_${message.author.id}_permanent`) === null) {
-	db.set(`guild_prestiges_${message.author.id}_permanent`, 0)
-	}
-	if (db.get(`guild_messages`) === null) {
-	db.set(`guild_messages`, 0)
-	}
-	if (db.get(`guild_messages_${message.author.id}_multiplyer`) === null) {
-		db.set(`guild_messages_${message.author.id}_multiplyer`, 1)
-	}
-	if (db.get(`guild_purchases_${message.author.id}_write`) === null) {
-		db.set(`guild_purchases_${message.author.id}_write`, 'false')
-	}
-	if (db.get(`guild_purchases_${message.author.id}_write_multiplyer`) === null) {
-		db.set(`guild_${message.author.id}_write_multiplyer`, 3)
-	}
 	const multiplyer = db.get(`guild_messages_${message.author.id}_multiplyer`)
 	// Add 1 message
 	db.add(`guild_messages_${message.author.id}_count`, multiplyer);
-	db.add(`guild_messages_${message.author.id}_count_permanent`, multiplyer);
+	db.add(`guild_messages_${message.author.id}_count_permanent`, 1);
 	db.add(`guild_messages`, multiplyer);
-	// Leveled Up Embed
-	const leveledUpEmbed = new Discord.MessageEmbed()
-	.setTitle(`Member \`${message.author.username}\` leveled up`)
-	.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
-	.setDescription(`Old Level: ${(db.get(`guild_messsages_${message.author.id}_count`) * 1) - (1 * 1)}\n\nNew Level: **${db.get(`guild_messages_${message.author.id}.count`)}**`)
-	.setColor(config.pink)
-	.setTimestamp();
 	// Level Check
 	if (db.get(`guild_messages_${message.author.id}_count`) === 5) {
-		client.channels.cache.get('764365687770578984').send(`<@${message.author.id}>`, leveledUpEmbed)
+		const leveledUpEmbed1 = new Discord.MessageEmbed()
+		.setTitle(`Member \`${message.author.username}\` leveled up`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`Old Level: 0\n\nNew Level: **1**`)
+		.setColor(config.pink)
+		.setTimestamp();
+		client.channels.cache.get('764365687770578984').send(`<@${message.author.id}>`, leveledUpEmbed1)
 		member.roles.add('764364932556390430')
-		db.set(`guild_leveling_${message.author.id}`, 1)
 		message.author.send(`You\'ve leveled up to Level **1**! Congradulations!`)
 	} else if (db.get(`guild_messages_${message.author.id}_count`) === 300) {
-		client.channels.cache.get('764365687770578984').send(`<${message.author.id}>`, leveledUpEmbed);
+		const leveledUpEmbed2 = new Discord.MessageEmbed()
+		.setTitle(`Member \`${message.author.username}\` leveled up`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`Old Level: 1\n\nNew Level: **2**`)
+		.setColor(config.pink)
+		.setTimestamp();
+		client.channels.cache.get('764365687770578984').send(`<${message.author.id}>`, leveledUpEmbed2);
 		member.roles.add('764365030975078410');
 		db.set(`guild_leveling_${message.author.id}`, 2)
 		message.author.send(`You\'ve leveled up to Level **2**! Congradulations!`);
 	} else if (db.get(`guild_messages_${message.author.id}_count`) === 750) {
-		client.channels.cache.get('764365687770578984').send(`<${message.author.id}>`, leveledUpEmbed);
+		const leveledUpEmbed3 = new Discord.MessageEmbed()
+		.setTitle(`Member \`${message.author.username}\` leveled up`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`Old Level: 2\n\nNew Level: **3**`)
+		.setColor(config.pink)
+		.setTimestamp();
+		client.channels.cache.get('764365687770578984').send(`<${message.author.id}>`, leveledUpEmbed3);
 		member.roles.add('764365151465242655');
 		db.set(`guild_leveling_${message.author.id}`, 3)
 		message.author.send(`You\'ve leveled up to Level **3**! Congradulations!`);
-	} else if (db.get(`guild_messages.${message.author.id}_count`) === 1500) {
-		client.channels.cache.get('764365687770578984').send(`<${message.author.id}>`, leveledUpEmbed);
+	} else if (db.get(`guild_messages_${message.author.id}_count`) === 1500) {
+		const leveledUpEmbed4 = new Discord.MessageEmbed()
+		.setTitle(`Member \`${message.author.username}\` leveled up`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
+		.setDescription(`Old Level: 3\n\nNew Level: **4**`)
+		.setColor(config.pink)
+		.setTimestamp();
+		client.channels.cache.get('764365687770578984').send(`<${message.author.id}>`, leveledUpEmbed4);
 		member.roles.add('764365218385100822');
 		db.set(`guild_leveling_${message.author.id}`, 4)
 		message.author.send(`You\'ve leveled up to Level **4**! Congradulations!`);
 	}
-	// Suggestion react & stuff
-		// Set null to 0
-		if (db.get(`guild_messages_${message.author.id}_count_permanent`) === null) {
-		db.set(`guild_messages_${message.author.id}_count_permanent`, 0)
-		} 
-		if (db.get(`guild_rebirths_${message.author.id}_permanent`) === null) {
-		db.set(`guild_rebirths_${message.author.id}_permanent`, 0)
-		} 
-		if (db.get(`guild_prestiges_${message.author.id}_permanent`) === null) {
-		db.set(`guild_prestiges_${message.author.id}_permanent`, 0)
-		}
 		// Reaction Collector & Naming
 	if (message.channel.id === '764951000191991828') {
 		message.react('764139448967233576').then(() => message.react('764139448791203901'))
 		const suggestionFilter = (reaction, user) => {
-			return ['764139448967233576', '764139448791203901'].some(emoji => reaction.emoji.name === emoji || reaction.emoji.id === emoji) && user.id === message.author.id;
+			return ['764139448967233576', '764139448791203901'].some(emoji => reaction.emoji.name === emoji || reaction.emoji.id === emoji)
 	}
 			const suggestionCollector = message.createReactionCollector(suggestionFilter, { dispose: true })
 			suggestionCollector.on('collect', (reaction, user) => {

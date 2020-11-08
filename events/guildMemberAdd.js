@@ -3,6 +3,7 @@ module.exports = async (client, member) => {
 	const Canvas = require('canvas')
 	const { registerFont } = require('canvas')
 	const config = require('./evt_config.json')
+	const guild = client.guilds.cache.get('761571644384346143');
 	// Font Registration (Canvas)
 	registerFont('./fonts/PressStart2P-Regular.ttf', { family: 'press-start-2p'})
 	registerFont('./fonts/SansPosterBold3D.ttf', { family: 'sans-3d'})
@@ -53,7 +54,7 @@ module.exports = async (client, member) => {
 	// Member Count
 	joinCtx.font = '30px press-start-2p';
 	joinCtx.fillStyle = config.pink;
-	joinCtx.fillText(`Member #${client.guilds.cache.get('761571644384346143').memberCount}`, 200, 125);
+	joinCtx.fillText(`Member #${guild.memberCount}`, 200, 125);
 	// Attatchment Send
 	const joinAttatchment = new Discord.MessageAttachment(joinCanvas.toBuffer(), 'connorcorner-join.png');
 	client.channels.cache.get('761571885514358796').send(`<@${member.user.id}>`, joinAttatchment)
@@ -68,4 +69,5 @@ module.exports = async (client, member) => {
 	.setFooter(config.name, config.icon)
 	.setTimestamp();
 	client.channels.cache.get('764154120621522974').send(userJoinedEmbed);
+	client.channels.cache.get('775111559130382346').setName(`Members: ${guild.memberCount}`);
 }

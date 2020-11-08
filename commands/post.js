@@ -24,29 +24,6 @@ module.exports = {
 			return message.channel.send(invalidPerms);
 		}
 			if (args[0] === 'verify') {
-			// Embed
-			const reactionRolesEmbed = new Discord.MessageEmbed()
-			.setTitle('React to Become Verified')
-			.setAuthor(config.name, config.icon)
-			.setDescription('React below to become verified and be admitted into the server! Remember, once you verify you will not be able to become unverified and you will not have permissions to this channel.')
-			.setFooter(config.name, config.icon)
-			.setColor(config.pink)
-			.setTimestamp();
-			// Reaction Listener
-			const reactRolesMessage = await message.channel.send(reactionRolesEmbed);
-			reactRolesMessage.react('🔓')
-			const reactFilter = (reaction, user) => {
-				return ['🔓'].includes(reaction.emoji.name)
-			};
-			const verificationMessage = reactRolesMessage.createReactionCollector(reactFilter);
-			verificationMessage.on('collect', (reaction, user) => {
-				if (reaction.emoji.name === '🔓') {
-				unverifiedUser = guild.member(user);
-				unverifiedUser.roles.remove('762721218109112380');
-				unverifiedUser.roles.add('762721135883583508');
-				console.log(`${user.username} was admitted into the server.`)
-				}
-			})
 		} else if (args[0] === 'rules') {
 			message.delete()
 			const rulesEmbed = new Discord.MessageEmbed()
@@ -66,86 +43,6 @@ module.exports = {
 			.setTimestamp();
 			const staffApplicationWebhook = new Discord.WebhookClient('764410559000477717', 'NFkvHFvF8CiRapRPMtjdOzahVX1OEQMRilpO6ZckcWCCYbN44b5EhTDO7UlABZ9nKWJd')
 			staffApplicationWebhook.send(staffApplicationEmbed);
-		} else if (args[0] === 'selfroles') {
-			message.delete()
-			// Pings
-			const selfRolesPingsEmbed = new Discord.MessageEmbed()
-			.setTitle(`Self Roles | Pings`)
-			.setDescription('📣 | React to get pinged when an announcement happens.\n🗞️ | React to get pinged when small or minor updates come out.')
-			.setColor(config.pink)
-			.setFooter(config.name, config.icon)
-			.setTimestamp();
-			const selfRolesPings = await message.channel.send(selfRolesPingsEmbed);
-			selfRolesPings.react('📣').then(() => selfRolesPings.react('🗞️'))
-			const selfRolesPingsFilter = (reaction, user) => {
-				return ['📣', '🗞️'].includes(reaction.emoji.name)
-			};
-			const selfRolesPingsCollection = selfRolesPings.createReactionCollector(selfRolesPingsFilter, { dispose: true })
-			selfRolesPingsCollection.on('collect', (reaction, user) => {
-				const userMember = guild.member(user);
-				if (reaction.emoji.name === '📣') {
-				userMember.roles.add('762728355178348594')
-				console.log(`${user.username} subscribed to the announce pings.`)
-				} else if (reaction.emoji.name === '🗞️') {
-				userMember.roles.add('762728079470100500')
-				console.log(`${user.username} subscribed to development pings.`)
-				}
-			})
-			selfRolesPingsCollection.on('remove', (reaction, user) => {
-				const userMember = guild.member(user);
-				if (reaction.emoji.name === '📣') {
-				userMember.roles.remove('762728355178348594')
-				console.log(`${user.username} unsubscribed to the announce pings.`)
-				} else if (reaction.emoji.name === '🗞️') {
-				userMember.roles.remove('762728079470100500')
-				console.log(`${user.username} unsubscribed to the development pings.`)
-				}
-			})
-			// Categorization
-			const selfRolesCategorizationEmbed = new Discord.MessageEmbed()
-			.setTitle('Self Roles | Categorization & Access')
-			.setDescription('<:github:764660513786429500> | React to get access to the logs of Github.\n🗒️ | React to get access to the server logs.\n<:connor:764898652882993184> | React if you use Connor.\n💚 | React if you support shipping of Connor and I.')
-			.setColor(config.pink)
-			.setFooter(config.name, config.icon)
-			.setTimestamp();
-			const selfRolesCategory = await message.channel.send(selfRolesCategorizationEmbed);
-			selfRolesCategory.react('764660513786429500').then(() => selfRolesCategory.react('🗒️')).then(() => selfRolesCategory.react('764898652882993184')).then(() => selfRolesCategory.react('💚'))
-			const selfRolesCategoryFilter = (reaction, user) => {
-				return ['764660513786429500', '🗒️', '764898652882993184', '💚'].some(emoji => reaction.emoji.name === emoji || reaction.emoji.id === emoji)
-			};
-			const selfRolesCategoryCollection = selfRolesCategory.createReactionCollector(selfRolesCategoryFilter, { dispose: true })
-			selfRolesCategoryCollection.on('collect', (reaction, user) => {
-				const userMember = guild.member(user);
-				if (reaction.emoji.id === '764660513786429500') {
-					userMember.roles.add('764659360420069396');
-					console.log(`${user.username} was granted access to the #github channel.`)
-				} else if (reaction.emoji.name === '🗒️') {
-					userMember.roles.add('764659048959180820')
-					console.log(`${user.username} was granted access to the logs.`)
-				} else if (reaction.emoji.id === '764898652882993184') {
-					userMember.roles.add('762728141579485205')
-					console.log(`${user.username} uses Connor!`)
-				} else if (reaction.emoji.name === '💚') {
-					userMember.roles.add('762728219774025788')
-					console.log(`${user.username} supports Connie!`)
-				}
-			});
-			selfRolesCategoryCollection.on('remove', (reaction, user) => {
-				const userMember = guild.member(user);
-				if (reaction.emoji.id === '764660513786429500') {
-					userMember.roles.remove('764659360420069396');
-					console.log(`${user.username} had his access revoked to the #github channel.`)
-				} else if (reaction.emoji.name === '🗒️') {
-					userMember.roles.remove('764659048959180820')
-					console.log(`${user.username} was revoked access to the logs.`)
-				} else if (reaction.emoji.id === '764898652882993184') {
-					userMember.roles.remove('762728141579485205')
-					console.log(`${user.username} does not use Connor anymore.`)
-				} else if (reaction.emoji.name === '💚') {
-					userMember.roles.remove('762728219774025788')
-					console.log(`${user.username} does not support Connie.`)
-				}
-			})
 		} else if (args[0] === 'advertisement') {
 			message.delete();
 			const advertisementEmbed = new Discord.MessageEmbed()

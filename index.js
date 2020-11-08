@@ -26,12 +26,12 @@ fs.readdir('./events/', (err, files) => {
 		client.on(eventName, event.bind(null, client));
 	});
 });
-// Always Online thing
+// Always online thing
 const http = require('http');
 const server = http.createServer((req, res) => {
-  res.writeHead(200);
-  res.end('ok');
+	res.writeHead(200)
+	res.end('ok');
 });
-
+server.listen(3000)
 // Login
 client.login(process.env.TOKEN);

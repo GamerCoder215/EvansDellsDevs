@@ -45,12 +45,12 @@ module.exports = {
 				return message.channel.send(invalidArgs);
 			} else {
 				if (args[0] === 'write') {
-					if (db.get(`guild_messages_${message.author.id}_count`) < 400) {
+					if (db.get(`guild_messages_${message.author.id}_count`) < 300) {
 						return message.channel.send(invalidCurrency)
 					} else if (db.get(`guild_purchases_${message.author.id}_write`) === 'true') {
 						return message.channel.send(alreadyBought);
 					} else {
-						db.set(`guild_purcahses_${message.author.id}_write`, 'true');
+						db.set(`guild_purcahses_${message.author.id}_write`, true);
 						message.channel.send(sucessPurchase);
 					}
 				} else if (args[0] === 'study') {
@@ -68,6 +68,7 @@ module.exports = {
 						.setDescription(`Your multiplyer was sucessfully increased by \`${addMultiplyer}\`!`)
 						.setColor(config.blue)
 						.setTimestamp();
+						message.channel.send(studySucessfulEmbed);
 						// Cooldown Set
 						studyCooldown.add(message.author.id);
 						setTimeout(() => {
@@ -82,7 +83,7 @@ module.exports = {
 					.setColor(config.red)
 					.setFooter(config.name, config.icon)
 					.setTimestamp();
-					if (db.get(`guild_messages_${message.author.id}_count`) < 3000) {
+					if (db.get(`guild_messages_${message.author.id}_count`) < 2000) {
 						return message.channel.send(invalidCurrency);
 					} else if (db.get(`guild_purchases_${message.author.id}_write`) === 'false') {
 						return message.channel.send(writeRequired);
@@ -91,7 +92,7 @@ module.exports = {
 					} else {
 						const treesCut = Math.random() * 5
 						const writeMultiplyer = Math.floor(treesCut * 1.5)
-						db.subtract(`guild_messages_${message.author.id}_count`, 3000)
+						db.subtract(`guild_messages_${message.author.id}_count`, 2000)
 						db.add(`guild_purcahses_${message.author.id}_write_multiplyer`, writeMultiplyer)
 						const chopSucessfulEmbed = new Discord.MessageEmbed()
 						.setDescription(`You successfully chopped down \`${treesCut}\` tree(s) and got \`${writeMultiplyer}\` pieces of paper!`)
@@ -103,6 +104,25 @@ module.exports = {
 							chopCooldown.delete(message.author.id);
 						}, 1000 * 60 * 60 * 48)
 					}
+			} else if (args[0] === 'upgrade') {
+				var upgradeCost = 50 * db.get(`guild_messages_${message.author.id}_multiplyer`)
+				if (db.get(`guild_messages_${message.author.id}_count`) < upgradeCost) {
+					const notEnoughMoney = new Discord.MessageEmbed()
+					.setDescription(`Sorry ${message.author.username}, you need \`${upgradeCost}\` messages to upgrade your multiplyer!`)
+					.setColor(config.pink)
+					.setFooter(config.name, config.icon)
+					.setTimestamp();
+					return message.channel.send(notEnoughMoney);
+				} else {
+					db.add(`guild_messages_${message.author.id}_multiplyer`, 1);
+					db.subtract(`guild_messages_${message.author.id}_count`, upgradeCost);
+					const upgradeSucessful = new Discord.MessageEmbed()
+					.setDescription(`You have sucessfully upgraded your multiplyer to level \`${db.get(`guild_messages_${message.author.id}_multiplyer`)}\`!`)
+					.setColor(config.pink)
+					.setFooter(config.name, config.icon)
+					.setTimestamp();
+					message.channel.send(upgradeSucessful);
+				}
 			} else {
 				return message.channel.send(invalidArgs);
 			}

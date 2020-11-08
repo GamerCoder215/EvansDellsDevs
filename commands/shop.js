@@ -22,6 +22,7 @@ module.exports = {
 				.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 				.addFields(
 					{ name: `**Tools**`, value: '\`?shop tools\`'},
+					{ name: `**Multiplyers**`, value: '\`?shop multiplyers\`'}
 				)
 				.setColor(config.blue)
 				.setFooter(config.name, config.icon)
@@ -34,14 +35,24 @@ module.exports = {
 					.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true,}))
 					.setDescription(`\`\`\`yaml\n?buy <item>\`\`\``)
 					.addFields(
-						{ name: `Write | \`400 messages\``, value: `Allows you to use the command ?write, which imitates you writing a message and grants you a certain amount of messages. (Usage: Every 12 hours.;Command Cost: 200 messages.)`},
-						{ name: `Study | \`700 messages\``, value: `Lets you study words and grants you more messages per message sent! (Usage: Every 24h.)`},
-						{ name: `Chop | \`3,000 messages\``, value: `Increases paper count by chopping trees and increases max value of messages from write. (Requires: Write.; Usage: Every 48h.)`},
+						{ name: `Write | \`300 messages\``, value: `Allows you to use the command ?write, which imitates you writing a message and grants you a certain amount of messages. (Usage: Every 12 hours.;Command Cost: 200 messages.)`},
+						{ name: `Study | \`600 messages\``, value: `Lets you study words and grants you more messages per message sent! (Usage: Every 24h.)`},
+						{ name: `Chop | \`2,000 messages\``, value: `Increases paper count by chopping trees and increases max value of messages from write. (Requires: Write.; Usage: Every 48h.)`},
 					)
 					.setColor(config.blue)
 					.setFooter(config.name, config.icon)
 					.setTimestamp();
 					message.channel.send(shopToolsEmbed);
+				} else if (args[0] === 'multiplyers') {
+					const shopMultiplyersEmbed = new Discord.MessageEmbed()
+					.setDescription(`\`\`\`yaml\n?buy <item>\`\`\``)
+					.addFields(
+						{ name: `Upgrade | \`50 messages x Current Multiplyer\``, value: `Upgrades your multiplyer by 1 point.`},
+					)
+					.setColor(config.blue)
+					.setFooter(config.name, config.icon)
+					.setTimestamp();
+					message.channel.send(shopMultiplyersEmbed)
 				} else {
 					return message.channel.send(invalidArgs);
 				}
