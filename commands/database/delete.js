@@ -1,8 +1,8 @@
 module.exports = {
-	name: 'rename',
-	description: 'Rename a value in database',
+	name: 'delete',
+	description: 'Deletes a value in a database.',
 	database: true,
-	aliases: ['ren', 'name'],
+	aliases: ['del'],
 	async run(client, message, args) {
 		// Discord, Config & NPM Dependencies
 		const Discord = require('discord.js');
@@ -34,16 +34,29 @@ module.exports = {
 		try {
 			if (!args[0]) return message.channel.send(invalidArguments);
 			if (db.get(`value_${args[0]}_owner`) !== message.author.id) return message.channel.send(invalidUser);
-			message.delete({ reason: 'Secrecy' });
-			const newValue = args.slice(1).join(' ');
-			if (!newValue) return message.channel.send(invalidArguments)
-			db.set(`value_${args[0]}`, newValue);
-			const renameEmbed = new Discord.MessageEmbed()
-			.setDescription(`Code \`${args[0]}\` was sucessfully renamed!`)
-			.setFooter(config.name, config.icon)
+			var values = 0;
+			db.delete(`value_${args[0]}`);
+			values++;
+			db.delete(`value_${args[0]}_owner`);
+			values++;
+			if (db.get(`password_${args[0]}`)) {
+				db.delete(`password_${args[0]}`);
+				values++;
+			}
+			if (db.get(`password_${args[0]}_2`)) {
+				db.delete(`password_${args[0]}_2`);
+				values++;
+			}
+			if (db.get(`protection_${args[0]}`)) {
+				db.delete(`protection_${args[0]}`);
+				values++;
+			}
+			const deleteEmbed = new Discord.MessageEmbed()
+			.setDescription(`Deleted \`${values}\` sets of data in code \`${args[0]}\``)
 			.setColor(config.gold)
+			.setFooter(config.name, config.icon)
 			.setTimestamp();
-			message.channel.send(renameEmbed);
+			message.channel.send(deleteEmbed);
 		} catch (error) {
 			console.error(error);
 			message.reply(config.error);

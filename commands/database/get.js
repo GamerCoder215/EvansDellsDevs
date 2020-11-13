@@ -97,7 +97,8 @@ module.exports = {
 				.setTimestamp();
 				if (!message.member.hasPermission(permission)) {
 					return message.channel.send(invalidDiscordPermissions);
-				} else {message.channel.send(dataEmbed);
+				} else {
+					message.channel.send(dataEmbed);
 				}
 			}
 		}
@@ -198,6 +199,17 @@ module.exports = {
 						});
 						message.channel.send(twoFASent);
 					}
+					} else if (db.get(`whitelist_${args[0]}`)) {
+						if (db.has(`whitelist_${args[0]}.users`, message.author.id)) {
+							const whitelistSuessfulEmbed = new Discord.MessageEmbed()
+							.setDescription('You are whitelisted! Checking for protection...')
+							.setColor(config.gold)
+							.setFooter(config.name, config.icon)
+							.setTimestamp();
+							checkProtection();
+						} else {
+							return message.channel.send(invalidAccess);
+						}
 					} else {
 					checkProtection();
 					}

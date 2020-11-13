@@ -55,9 +55,11 @@ module.exports = {
 		.setTimestamp();
     try {
       if (!args[0]) return message.channel.send(invalidArguments);
-      if (args[0] !== 'normal' && 'embed') return message.channel.send(invalidArguments);
-      if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.send(invalidPermissions);
-      db.set(`guild_${message.guild.id}_logging_msgtype`, args[0]);
+			if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.send(invalidPermissions);
+      if (args[0] === 'normal' || 'embed') {
+				db.set(`guild_${message.guild.id}_logging_msgtype`, args[0])
+			} else return message.channel.send(invalidArguments);
+      ;
       message.channel.send(actionSucessful);
     } catch (error) {
       console.error(error);

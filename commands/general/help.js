@@ -250,24 +250,10 @@ module.exports = {
 		.addFields(
 			{ name: `**${prefix}rename** <id> <value>`, value: `Renames the value associated with the ID in the database.` },
 			{ name: `**${prefix}delete** <id>`, value: `Deletes a value in the database.` },
-			{ name: `**${prefix}blacklist** <user>`, value: `Blacklist a user from the database, despite having access.` },
-			{ name: `**${prefix}unblacklist** <user>`, value: `Remove a user from the database blacklist.` },
-			{ name: `**${prefix}whitelist** <enable|disable> <code>`, value: `Enable or Disable the whitelist. **This will disable the \`${prefix}protect\`** command.` },
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		const helpDatabase3 = new Discord.MessageEmbed()
-		.setTitle(`Help for \`${message.author.username}\` | Database | Page 3`)
-		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
-		.addFields(
-			{ name: `**${prefix}whitelist** add <code> <user>`, value: `Add users to the whitelist, if enabled.` },
-			{ name: `**${prefix}whitelist** remove <user>`, value: `Remove users to the whitelist, if enabled.` },
-		)
-		.setColor(config.blue)
-		.setFooter(config.name, config.icon)
-		.setTimestamp();
-
 		// Command Sequence
 		try {
 			if (!args[0]) {
@@ -385,10 +371,10 @@ module.exports = {
 		message.channel.send(helpLogging);
 	} else if (args[0] === 'database') {
 		const databaseHelpPages = await message.channel.send(helpDatabase1);
-		databaseHelpPages.react('1️⃣').then(() => databaseHelpPages.react('2️⃣')).then(() => databaseHelpPages.react('3️⃣'));
+		databaseHelpPages.react('1️⃣').then(() => databaseHelpPages.react('2️⃣'))
 		// Filter
 		const databasePageFilter = (reaction, user) => {
-			return ['1️⃣', '2️⃣', '3️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
+			return ['1️⃣', '2️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
 		};
 		const databasePageTurner = databaseHelpPages.createReactionCollector(databasePageFilter, { time: 120000 });
 		databasePageTurner.on('collect', (reaction, user) => {
@@ -398,16 +384,13 @@ module.exports = {
 		} else if (reaction.emoji.name === '2️⃣') {
 			databaseHelpPages.edit(helpDatabase2);
 			databaseHelpPages.reactions.resolve('2️⃣').users.remove(message.author.id);
-		} else if (reaction.emoji.name === '3️⃣') {
-			databaseHelpPages.edit(helpDatabase3);
-			databaseHelpPages.reactions.resolve('3️⃣').users.remove(message.author.id);
 		}
 		});
 		databasePageTurner.on('end', (collected) => {
 			databaseHelpPages.edit(timedOut);
 			databaseHelpPages.reactions.removeAll();
 		});
-	}
+	} else return;
 	} catch (error) {
 		message.reply(config.error);
 		console.error(error);

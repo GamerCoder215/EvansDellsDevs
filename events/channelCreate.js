@@ -1,19 +1,20 @@
-module.exports = async (client, guild, channel) => {
+module.exports = async (client, channel) => {
 	const Discord = require('discord.js');
 	const config = require('./evt_config.json');
 	const db = require('quick.db');
 	// Useful Locals
+	const guild = channel.guild;
 	var msgtyp = db.get(`guild_${guild.id}_logging_msgtype`);
 	var detail = db.get(`guild_${guild.id}_logging_detailtype`);
-	if (channel.type === 'category') {
-		var parent = 'Server';
-	} else {
-		var parent = channel.parent.name;
-	}
 	try {
 		if (!db.get(`guild_${guild.id}_logging_ch-create_enabled`) && !db.get(`guild_${guild.id}_logging_all_enabled`) === true) {
 			return;
 		} else {
+				if (channel.type === 'category') {
+				var parent = 'Server';
+				} else {
+				var parent = channel.parent.name;
+				}
 			if (db.get(`guild_${guild.id}_logging_all`) && db.get(`guild_${guild.id}_logging_ch-create`)) {
 				var setChannel = db.get(`guild_${guild.id}_logging_ch-create`);
 			} else if (db.get(`guild_${guild.id}_logging_all`)) {

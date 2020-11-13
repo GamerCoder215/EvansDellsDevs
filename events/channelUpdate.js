@@ -1,6 +1,6 @@
 module.exports = async (client, guild, oldChannel, newChannel) => {
   const Discord = require('discord.js');
-  const config = require('../command_config.json');
+  const config = require('../evt_config.json');
   const db = require('quick.db');
   if (!db.get(`guild_${guild.id}_logging_ch-edit_enabled`) && !db.get(`guild_${guild.id}_logging_all_enabled`) === true) {
     return;

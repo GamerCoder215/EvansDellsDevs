@@ -111,7 +111,7 @@ module.exports = async (client, message) => {
 		db.set(`dms_purchases_${message.author.id}_education`, true);
 	}
 	// Detects if the user doesn't have the role (Removed by Patreon Bot) and is added to the Set of people who have Education
-	if (!message.member.roles.cache.has('766313565816487976') && db.get(`dms_purchases_${message.author.id}_education`) === true) {
+	if (!message.member.roles.cache.has('766313565816487976') && db.get(`dms_purchases_${message.author.id}_education`) === true && message.guild.id === '761571644384346143') {
 		db.set(`modules_education_${message.author.id}_purchased`, false);
 		db.set(`dms_purchases_${message.author.id}_education`, false);
 		const removeEmbed = new Discord.MessageEmbed()
