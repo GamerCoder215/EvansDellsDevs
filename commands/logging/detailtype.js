@@ -60,7 +60,7 @@ module.exports = {
         if (isNaN(args[0])) return message.channel.send(invalidArguments);
         if (args[0] < 1 || args[0] > 4) return message.channel.send(invalidArguments);
         if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.send(invalidPermissions);
-        db.get(`guild_${message.guild.id}_logging_detailtype`, args[0]);
+        db.set(`guild_${message.guild.id}_logging_detailtype`, args[0]);
         message.channel.send(actionSucessful);
       }
     } catch (error) {

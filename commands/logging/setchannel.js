@@ -72,14 +72,14 @@ module.exports = {
 				if (!message.member.hasPermission('MANAGE_CHANNELS')) {
 				return message.channel.send(invalidPermissions);
 				} else {
-				var channel = client.channels.cache.get(getID(args[0]));
-				if (isNaN(channel.id)) return message.channel.send(invalidArguments);
-				if (channel === undefined) return message.channel.send(invalidArguments);
+				var channelID = getID(args[0]);
+				if (isNaN(channelID)) return message.channel.send(invalidArguments);
+				if (client.channels.cache.get(channelID) === undefined) return message.channel.send(invalidArguments);
 				if (args[1] === 'all') {
-					db.set(`guild_${message.guild.id}_logging_all`, channel.id);
+					db.set(`guild_${message.guild.id}_logging_all_channel`, channelID);
 					message.channel.send(actionSucessful);
 				} else {
-					db.set(`guild_${message.guild.id}_logging_${args[1]}`, channel.id);
+					db.set(`guild_${message.guild.id}_logging_${args[1]}_channel`, channelID);
 					message.channel.send(actionSucessful);
 				}
 				}

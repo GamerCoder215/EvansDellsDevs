@@ -15,25 +15,25 @@ module.exports = async (client, channel) => {
 				} else {
 				var parent = channel.parent.name;
 				}
-			if (db.get(`guild_${guild.id}_logging_all`) && db.get(`guild_${guild.id}_logging_ch-create`)) {
-				var setChannel = db.get(`guild_${guild.id}_logging_ch-create`);
-			} else if (db.get(`guild_${guild.id}_logging_all`)) {
-				setChannel = db.get(`guild_${guild.id}_logging_all`);
-			} else if (db.get(`guild_${guild.id}_logging_ch-create`)) {
-				setChannel = db.get(`guild_${guild.id}_logging_ch-create`);
+			if (db.get(`guild_${guild.id}_logging_all_enabled`) === true && db.get(`guild_${guild.id}_logging_ch-create_enabled`) === true) {
+				var setChannel = db.get(`guild_${guild.id}_logging_ch-create_channel`);
+			} else if (db.get(`guild_${guild.id}_logging_all_enabled`) === true) {
+				setChannel = db.get(`guild_${guild.id}_logging_all_channel`);
+			} else if (db.get(`guild_${guild.id}_logging_ch-create_enabled`) === true) {
+				setChannel = db.get(`guild_${guild.id}_logging_ch-create_channel`);
 			}
 			if (msgtyp === 'normal') {
-				if (detail === 1) {
+				if (detail === '1') {
 				client.channels.cache.get(setChannel).send(`**New Channel Created**\nName: ${channel.name}\nMention: <#${channel.id}>`);
-				} else if (detail === 2) {
+				} else if (detail === '2') {
 				client.channels.cache.get(setChannel).send(`**New Channel Created**\nName: ${channel.name}\nMention: <#${channel.id}>\nType: ${channel.type}\nID: ${channel.id}`);
-				} else if (detail === 3) {
+				} else if (detail === '3') {
 				client.channels.cache.get(setChannel).send(`**New Channel Created**\nName: ${channel.name}\nMention: <#${channel.id}>\nType: ${channel.type}\nID: ${channel.id}\nCreated At: ${channel.createdAt}\nParent Category: ${parent}`);
-				} else if (detail === 4) {
+				} else if (detail === '4') {
 				client.channels.cache.get(setChannel).send(`**New Channel Created**\nName: ${channel.name}\nMention: <#${channel.id}>\nType: ${channel.type}\nID: ${channel.id}\nCreated At: ${channel.createdAt}\nCreated At (Timestamp): ${channel.createdTimestamp}\nParent Category: ${parent}\nPosition: ${channel.position}\nRaw Position: ${channel.rawPosition}\n`);
 				}
 			} else if (msgtyp === 'embed') {
-				if (detail === 1) {
+				if (detail === '1') {
 					const detail1Embed = new Discord.MessageEmbed()
 					.setTitle(`New Channel Created`)
 					.setAuthor(guild.name, guild.iconURL({ dynamic: true, format: 'png', size: 1024 }))
@@ -45,7 +45,7 @@ module.exports = async (client, channel) => {
 					.setFooter(config.name, config.icon)
 					.setTimestamp();
 					client.channels.cache.get(setChannel).send(detail1Embed);
-				} else if (detail === 2) {
+				} else if (detail === '2') {
 					const detail2Embed = new Discord.MessageEmbed()
 					.setTitle('New Channel Created')
 					.setAuthor(guild.name, guild.iconURL({ dynamic: true, format: 'png', size: 1024 }))
@@ -59,7 +59,7 @@ module.exports = async (client, channel) => {
 					.setFooter(config.name, config.icon)
 					.setTimestamp();
 					client.channels.cache.get(setChannel).send(detail2Embed);
-				} else if (detail === 3) {
+				} else if (detail === '3') {
 					const detail3Embed = new Discord.MessageEmbed()
 					.setTitle('New Channel Created')
 					.setAuthor(guild.name, guild.iconURL({ dynamic: true, format: 'png', size: 1024 }))
@@ -75,7 +75,7 @@ module.exports = async (client, channel) => {
 					.setFooter(config.name, config.icon)
 					.setTimestamp();
 					client.channels.cache.get(setChannel).send(detail3Embed);
-				} else if (detail === 4) {
+				} else if (detail === '4') {
 					const detail4Embed = new Discord.MessageEmbed()
 					.setTitle('New Channel Created')
 					.setAuthor(guild.name, guild.iconURL({ dynamic: true, format: 'png', size: 1024 }))

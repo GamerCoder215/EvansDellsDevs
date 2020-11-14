@@ -56,8 +56,10 @@ module.exports = {
     try {
       if (!args[0]) return message.channel.send(invalidArguments);
 			if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.send(invalidPermissions);
-      if (args[0] === 'normal' || 'embed') {
-				db.set(`guild_${message.guild.id}_logging_msgtype`, args[0])
+      if (args[0] === 'normal') {
+				db.set(`guild_${message.guild.id}_logging_msgtype`, 'normal');
+			} else if (args[0] === 'embed') {
+				db.set(`guild_${message.guild.id}_logging_msgtype`, 'embed')
 			} else return message.channel.send(invalidArguments);
       ;
       message.channel.send(actionSucessful);

@@ -1,27 +1,31 @@
-module.exports = async (client, guild, oldChannel, newChannel) => {
+module.exports = async (client, oldChannel, newChannel) => {
   const Discord = require('discord.js');
-  const config = require('../evt_config.json');
+  const config = require('./evt_config.json');
   const db = require('quick.db');
+
+	const guild = oldChannel.guild
   if (!db.get(`guild_${guild.id}_logging_ch-edit_enabled`) && !db.get(`guild_${guild.id}_logging_all_enabled`) === true) {
     return;
   } else {
-    if (db.get(`guild_${guild.id}_logging_all`) && db.get(`guild_${guild.id}_logging_ch-edit`)) {
-      var setChannel = db.get(`guild_${guild.id}_logging_ch-edit`);
-    } else if (db.get(`guild_${guild.id}_logging_all`)) {
-      setChannel = db.get(`guild_${guild.id}_logging_all`);
-    } else if (db.get(`guild_${guild.id}_logging_ch-edit`)) {
-      setChannel = db.get(`guild_${guild.id}_logging_ch-edit`);
+    if (db.get(`guild_${guild.id}_logging_all_enabled`) && db.get(`guild_${guild.id}_logging_ch-edit_enabled`)) {
+      var setChannel = db.get(`guild_${guild.id}_logging_ch-edit_channel`);
+    } else if (db.get(`guild_${guild.id}_logging_all_enabled`)) {
+      setChannel = db.get(`guild_${guild.id}_logging_all_channel`);
+    } else if (db.get(`guild_${guild.id}_logging_ch-edit_enabled`)) {
+      setChannel = db.get(`guild_${guild.id}_logging_ch-edit_channel`);
     }
-    function checkUpdate() {
       const updateEmbed = new Discord.MessageEmbed()
       .setTitle('Channel Updated')
       .setColor(config.blue)
-      .setAuthor(guild.name, guild.iconURL({ dynamic: true, format: 'png', size: 1024 }));
+      .setAuthor(guild.name, guild.iconURL({ dynamic: true, format: 'png', size: 1024 }))
+			.setFooter(config.name, config.icon)
+			.setTimestamp();
         if (oldChannel.members.size !== newChannel.members.size) {
-          updateEmbed.addField(`Old Member Count: ${oldChannel.members.size}\nNew Member Count: **${oldChannel.members.size}**`);
+          updateEmbed.addField(`Old Member Count: ${oldChannel.members.size}\nNew Member Count: **${oldChannel.members.size}**`, `\u200B`);
         }
         if (oldChannel.name !== newChannel.name) {
-          updateEmbed.addField(`Old Name: ${oldChannel.name}\nNew Name: **${newChannel.name}**`);
+          updateEmbed.addField(`Old Name: ${oldChannel.name}\nNew Name: **${newChannel.name}**`, `
+					\u200B`);
         }
         if (oldChannel.parent.id !== newChannel.parent.id) {
           if (oldChannel.type === 'category') {
@@ -29,13 +33,11 @@ module.exports = async (client, guild, oldChannel, newChannel) => {
           } else {
             parent = newChannel.parent.name;
           }
-          updateEmbed.addField(`Old Category: ${parent}\nNew Category: ${parent}`);
+          updateEmbed.addField(`Old Category: ${parent}\nNew Category: ${parent}`, `\u200B`);
         }
         if (oldChannel.position !== newChannel.position) {
           updateEmbed.addField(`Old Position: ${oldChannel.position}\nNew Position: ${newChannel.position}`);
         }
-        client.channels.cache.get(setChannel).send(updateEmbed);
-    }
-    checkUpdate();
+      client.channels.cache.get(setChannel).send(updateEmbed);
   }
 };
