@@ -37,7 +37,7 @@ module.exports = {
 		.addFields(
 			{ name: '🔧Moderation', value: `\`${prefix}help moderation\``, inline: true },
 			{ name: '\u200b', value: '\u200b' },
-			{ name: '🏠 Server Moderation', value: `\`${prefix}help servermod\``, inline: true },
+			{ name: '🏠 Server Moderation (Coming Soon)', value: `\`${prefix}help servermod\``, inline: true },
 			{ name: '\u200b', value: '\u200b' },
 			{ name: '📦 Logging', value: `\`${prefix}help logging\``, inline: true },
 		)
@@ -53,7 +53,7 @@ module.exports = {
 			{ name: '\u200b', value: '\u200b' },
 			{ name: '<:database:766527107651338250> Database', value: `\`${prefix}help database\`` },
 			{ name: '\u200b', value: '\u200b' },
-			{ name: '🛠️ Advanced Tools', value: `\`${prefix}help advtools\`` },
+			{ name: '🛠️ Advanced Tools (Coming Soon)', value: `\`${prefix}help advtools\`` },
 		)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
 		.setColor(config.gold)
@@ -254,6 +254,16 @@ module.exports = {
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
+
+		const helpSettings = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Settings`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
+		.addFields(
+			{ name: `**${prefix}prefix** <prefix>`, value: `Set the bot's prefix.` },
+		)
+		.setColor(config.blue)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
 		// Command Sequence
 		try {
 			if (!args[0]) {
@@ -371,7 +381,7 @@ module.exports = {
 		message.channel.send(helpLogging);
 	} else if (args[0] === 'database') {
 		const databaseHelpPages = await message.channel.send(helpDatabase1);
-		databaseHelpPages.react('1️⃣').then(() => databaseHelpPages.react('2️⃣'))
+		databaseHelpPages.react('1️⃣').then(() => databaseHelpPages.react('2️⃣'));
 		// Filter
 		const databasePageFilter = (reaction, user) => {
 			return ['1️⃣', '2️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
@@ -390,6 +400,8 @@ module.exports = {
 			databaseHelpPages.edit(timedOut);
 			databaseHelpPages.reactions.removeAll();
 		});
+	} else if (args[0] === 'settings') {
+		message.channel.send(helpSettings);
 	} else return;
 	} catch (error) {
 		message.reply(config.error);
