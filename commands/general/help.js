@@ -16,7 +16,13 @@ module.exports = {
 		.setColor('#ff0000')
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		// Page 1 + 2 Embeds
+		// Beta Message Embed
+		const betaEmbed = new Discord.MessageEmbed()
+		.setDescription(`This command is currently in beta, and is not released to the public yet. Join the [support server](https://discord.gg/upx6SqG) for updates on Connor.`)
+		.setColor(config.red)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
+		// Help Embeds
 		const helpPage1 = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Free Modules`)
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\`\nIf you need additional help, refer to the [documentation](https://docs.connorbot.cf).`)
@@ -68,6 +74,7 @@ module.exports = {
 			{ name: `**${prefix}help**`, value: 'View the help message.' },
 			{ name: `**${prefix}ping**`, value: 'Ping me with an exact runtime.' },
 			{ name: `**${prefix}cmdinfo** <command>`, value: 'Get information about a command. Commands must be referred as their **original name**.' },
+			{ name: `**${prefix}apply**`, value: 'Learn about earning or gaining Free Premium.'}
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
@@ -255,6 +262,31 @@ module.exports = {
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
 
+		const helpServerModeration1 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Server Moderation`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
+		.addFields(
+			{ name: `**${prefix}setname** <name>`, value: `Set the server's name.`},
+			{ name: `**${prefix}setafk** <channelID> [timeout]`, value: `Set the AFK channel. As voice channels cannot be mentioned, you must provide an ID. Option of setting the timeout as well.`},
+			{ name: `**${prefix}setsystem** <channel>`, value: `Sets the system messages channel.`},
+			{ name: `**${prefix}setdefaultnotify** <all|mentions>`, value: `Sets the default server notifications to either __All Messages__ or __Only Mentions__.`},
+			{ name: `**${prefix}setregion** <region>`, value: `Sets the region. See the [documentation](https://docs.connorbot.cf/modules/server-moderation) for more information.`}
+		)
+		.setColor(config.blue)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
+
+		const helpServerModeration2 = new Discord.MessageEmbed()
+		.setTitle(`Help for \`${message.author.username}\` | Server Moderation | Page 2`)
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
+		.addFields(
+			{ name: `**${prefix}setmodlevel** <1|2|3|4|5>`, value: `Sets the moderation level (1 = none, 2 = low, 3 = medium, 4 = high, 5 = highest)`},
+			{ name: `**${prefix}setmedia** <1|2|3>`, value: `Set the level of scanning you want to have on messages (1 = None, 2 = No Roles, 3 = All)`},
+		)
+		.setColor(config.blue)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
+
 		const helpSettings = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Settings`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
@@ -402,6 +434,26 @@ module.exports = {
 		});
 	} else if (args[0] === 'settings') {
 		message.channel.send(helpSettings);
+	} else if (args[0] === 'servermod') {
+		const servermodHelpPages = await message.channel.send(helpServerModeration1);
+		servermodHelpPages.react('1️⃣').then(() => servermodHelpPages.react('2️⃣'));
+		const servermodPageFilter = (reaction, user) => {
+			return ['1️⃣', '2️⃣'].includes(reaction.emoji.name) && user.id === message.author.id;
+		};
+		const servermodPageTurner = servermodHelpPages.createReactionCollector(servermodPageFilter, { time: 120000 });
+		servermodPageTurner.on('collect', (reaction, user) => {
+			if (reaction.emoji.name === '1️⃣') {
+				servermodHelpPages.edit(helpServerModeration1);
+				servermodHelpPages.reactions.resolve('1️⃣').users.remove(message.author.id);
+			} else if (reaction.emoji.name === '2️⃣') {
+				servermodHelpPages.edit(helpServerModeration2);
+				servermodHelpPages.reactions.resolve('2️⃣').users.remove(message.author.id);
+			}
+		})
+		servermodPageTurner.on('end', (collected) => {
+			servermodHelpPages.edit(timedOut);
+			servermodHelpPages.reactions.removeAll();
+		})
 	} else return;
 	} catch (error) {
 		message.reply(config.error);

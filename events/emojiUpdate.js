@@ -15,7 +15,9 @@ module.exports = async (client, oldEmoji, newEmoji) => {
 			} else if (db.get(`guild_${guild.id}_logging_em-edit_enabled`) === true) {
 				setChannel = db.get(`guild_${guild.id}_logging_em-edit_channel`);
 			}
+			if (oldEmoji === newEmoji) return;
       const emojiUpdateEmbed = new Discord.MessageEmbed()
+			.setTitle('Emoji Updated')
       .setAuthor(guild.name, guild.iconURL({ dynamic: true, format: 'png', size: 1024 }))
       .setColor(config.blue)
       .setFooter(config.name, config.icon)

@@ -16,11 +16,12 @@ module.exports = async (client, oldMember, newMember) => {
 				setChannel = db.get(`guild_${guild.id}_logging_sr-memedit_channel`);
 			}
       const memberUpdateEmbed = new Discord.MessageEmbed()
-      .setTitle(`User \`${newMember.nickname}\`#${newMember.user.discriminator}`)
+      .setTitle(`User \`${newMember.displayName}\`#${newMember.user.discriminator}`)
       .setAuthor(guild.name, guild.iconURL({ dynamic: true, format: 'png', size: 1024 }))
       .setColor(config.blue)
       .setFooter(config.name, config.icon)
       .setTimestamp();
+			if (oldMember === newMember) return;
       if (oldMember.user.username !== newMember.user.username) {
         memberUpdateEmbed.addField(`Old Username: ${oldMember.user.username}\nNew Username: ${newMember.username}`, `\u200B`);
       }
@@ -42,11 +43,12 @@ module.exports = async (client, oldMember, newMember) => {
       }
       if (oldMember.roles.cache.size !== newMember.roles.cache.size) {
         if (oldMember.roles.cache.size > newMember.roles.cache.size) {
-          memberUpdateEmbed.addField(`Removed \`${oldMember.roles.cache.size - newMember.roles.cache.size}\` roles`);
+          memberUpdateEmbed.addField(`Removed \`${oldMember.roles.cache.size - newMember.roles.cache.size}\` roles`, `\u200b`);
         } else if (oldMember.roles.cache.size < newMember.roles.cache.size) {
-          memberUpdateEmbed.addField(`Added \`${newMember.roles.cache.size - oldMember.roles.cache.size}\` roles`);
+          memberUpdateEmbed.addField(`Added \`${newMember.roles.cache.size - oldMember.roles.cache.size}\` roles`, `\u200b`);
         }
       }
+			if (memberUpdateEmbed.fields.length < 1) return;
       client.channels.cache.get(setChannel).send(memberUpdateEmbed);
     }
   } catch (error) {

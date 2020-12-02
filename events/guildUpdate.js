@@ -15,13 +15,15 @@ module.exports = async (client, oldGuild, newGuild) => {
 			} else if (db.get(`guild_${guild.id}_logging_sr-memadd_enabled`) === true) {
 				setChannel = db.get(`guild_${guild.id}_logging_sr-memadd_channel`);
 			}
+			if (oldGuild === newGuild) return;
       const guildUpdateEmbed = new Discord.MessageEmbed()
+			.setTitle(`Guild ${guild.name} Updated`)
       .setAuthor(guild.name, guild.iconURL({ dynamic: true, format: 'png', size: 1024 }))
       .setColor(config.blue)
       .setFooter(config.name, config.icon)
       .setTimestamp();
       if (oldGuild.afkChannel !== newGuild.afkChannel) {
-        guildUpdateEmbed.addField(`Old AFK Channel: ${oldGuild.afkChannel.name}\nNew AFK Channel: ${newGuild.afkChannel}`, `\u200B`);
+        guildUpdateEmbed.addField(`Old AFK Channel: ${oldGuild.afkChannel.name}\nNew AFK Channel: ${newGuild.afkChannel.name}`, `\u200B`);
       }
       if (oldGuild.large !== newGuild.large) {
         if (newGuild.large === true) {
@@ -56,6 +58,7 @@ module.exports = async (client, oldGuild, newGuild) => {
           guildUpdateEmbed.addField(`This guild isn't Partnered anymore.`);
         }
       }
+			if (guildUpdateEmbed.fields.length < 1) return;
       client.channels.cache.get(setChannel).send(guildUpdateEmbed);
     }
   } catch (error) {

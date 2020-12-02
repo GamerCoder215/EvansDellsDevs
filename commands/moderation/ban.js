@@ -10,7 +10,7 @@ module.exports = {
 		// In-App Dependencies
 		const guild = client.guilds.cache.get(message.guild.id);
     // Tables
-      // Invalid Args Table
+    // Invalid Args Table
 		var invalidArgumentMessages = [
 			`Sorry ${message.author.username}, you have provided invalid arguments.`,
 			`Hey there ${message.author.username}! You have provided some invalid arguments.`,
@@ -68,7 +68,7 @@ module.exports = {
         if (mention.startsWith('<@') && mention.endsWith('>')) {
           var mentionID = mention.replace(/[<@!>]/g, '')
           return (mentionID);
-        } else return;
+        } else return (mention);
       }
     // Command Sequence
     try {

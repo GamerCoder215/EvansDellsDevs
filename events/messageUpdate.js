@@ -16,6 +16,7 @@ module.exports = async (client, oldMessage, newMessage) => {
     } else if (db.get(`guild_${guild.id}_logging_msg-edit_enabled`)) {
       setChannel = db.get(`guild_${guild.id}_logging_msg-edit_channel`);
     }
+	if (oldMessage === newMessage) return;
 	const messageUpdateEmbed = new Discord.MessageEmbed()
 	.setAuthor(guild.name, guild.iconURL({ dynamic: true, format: 'png', size: 1024 }))
 	.setColor(config.blue)
@@ -24,6 +25,7 @@ module.exports = async (client, oldMessage, newMessage) => {
 	if (oldMessage.content !== newMessage.content) {
 		messageUpdateEmbed.addField(`Old Message: ${oldMessage.content}\nNew Message: **${newMessage.content}**`, `\u200B`);
 	}
+	if (messageUpdateEmbed.fields.length < 1) return;
 	client.channels.cache.get(setChannel).send(messageUpdateEmbed);
 	}
 }

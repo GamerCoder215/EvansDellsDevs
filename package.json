@@ -19,13 +19,16 @@
   },
   "homepage": "https://github.com/GamerCoder215/TCC---Connor#readme",
   "dependencies": {
+    "axios": "^0.21.0",
+    "body-parser": "^1.19.0",
     "canvas": "^2.6.1",
-    "discord.js": "^12.3.1",
+    "discord.js": "^12.5.1",
     "express": "^4.17.1",
+    "form-data": "^3.0.0",
     "generate-password": "^1.5.1",
-    "mathjs": "^7.5.1",
+    "mathjs": "^7.6.0",
     "node-fetch": "^2.6.1",
-    "quick.db": "^7.1.2",
+    "quick.db": "^7.1.3",
     "translate-google": "^1.4.3"
   },
   "engines": {

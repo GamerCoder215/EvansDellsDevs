@@ -14,6 +14,7 @@ module.exports = async (client, oldChannel, newChannel) => {
     } else if (db.get(`guild_${guild.id}_logging_ch-edit_enabled`)) {
       setChannel = db.get(`guild_${guild.id}_logging_ch-edit_channel`);
     }
+			if (oldChannel === newChannel) return;
       const updateEmbed = new Discord.MessageEmbed()
       .setTitle('Channel Updated')
       .setColor(config.blue)
@@ -38,6 +39,7 @@ module.exports = async (client, oldChannel, newChannel) => {
         if (oldChannel.position !== newChannel.position) {
           updateEmbed.addField(`Old Position: ${oldChannel.position}\nNew Position: ${newChannel.position}`);
         }
+				if (updateEmbed.fields.length < 1) return;
       client.channels.cache.get(setChannel).send(updateEmbed);
   }
 };

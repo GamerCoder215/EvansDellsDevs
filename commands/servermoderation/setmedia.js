@@ -1,14 +1,13 @@
 module.exports = {
-	name: 'unban',
-	description: 'Unban a user.',
+	name: 'setmedia',
+	description: 'Sets the media scan filter for your server.',
 	guildOnly: true,
-	aliases: ['pardon', 'prdn'],
+	aliases: ['setmed', 'setscan', 'setmediascan', 'setmedscanfilter', 'smed'],
 	async run(client, message, args) {
-		// Discord, Config & NPM Dependencies
 		const Discord = require('discord.js');
 		const config = require('../command_config.json');
-		// In-App Dependencies
-		const guild = client.guilds.cache.get(message.guild.id);
+		// In-App
+		const guild = message.guild;
 		// Tables
 		var invalidArgumentMessages = [
 			`Sorry ${message.author.username}, you have provided invalid arguments.`,
@@ -33,19 +32,18 @@ module.exports = {
 			`Connor found out about your action ${message.author.username}, \nand he helped it become a sucess.`
 		]
 		// Embeds
-		// Invalid Args Embed
-		const invalidArguments = new Discord.MessageEmbed()
-		.setDescription(invalidArgumentMessages[Math.floor(Math.random() * 5)])
+		// Invalid Mod Level
+		const invalidLevel = new Discord.MessageEmbed()
+		.setDescription('Please set the media scan level to \`1\` (None), \`2\` (Members without Roles) or \`3\` (All). **1 and 2 are not available to Community Servers**.')
 		.setColor(config.red)
-		.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
 		// Invalid Permissions
 		const invalidPermissions = new Discord.MessageEmbed()
 		.setDescription(invalidPermissionMessages[Math.floor(Math.random() * 6)])
-		.setColor(config.red)
-		.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
-		.setFooter(config.name, config.icon)
+		.setColor('#ff0000')
+		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+		.setFooter('ConnorBot', config.icon)
 		.setTimestamp();
 		// Action Sucessful
 		const actionSucessful = new Discord.MessageEmbed()
@@ -54,31 +52,28 @@ module.exports = {
 		.setColor(config.gold)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		// Already Banned
-		const alreadyBanned = new Discord.MessageEmbed()
-		.setDescription('This user isn\'t banned!')
-		.setColor(config.red)
-		.setFooter(config.name, config.icon)
-		.setTimestamp();
-		// Get ID Function
-		function getID(mention) {
-			if (!mention) return;
-			if (mention.startsWith('<') && mention.endsWith('>')) {
-				var mentionID = mention.replace(/[<@&#!>]/)
-				return (mentionID);
-			} else return (mention);
-		}
-		// Command Sequence
+		// Invalid Args Embed
+    const invalidArguments = new Discord.MessageEmbed()
+    .setDescription(invalidArgumentMessages[Math.floor(Math.random() * 5)])
+    .setColor(config.red)
+    .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+    .setFooter(config.name, config.icon)
+    .setTimestamp();
 		try {
-			if (!args[0]) return message.channel.send(invalidArguments);
-			var user = client.users.cache.get(getID(args[0]));
-			if (!message.member.hasPermission('BAN_MEMBERS')) {
-				return message.channel.send(invalidPermissions);
-			} else {
-				guild.members.unban(user.id);
-				message.channel.send(actionSucessful);
-				user.send(`<@${user.id}> You were unbanned in **${guild.name}**!`)
+			 const features = guild.features;
+			if (!message.member.hasPermission('MANAGE_SERVER')) return message.channel.send(invalidPermissions);
+			if (isNaN(args[0])) return message.channel.send(invalidArguments);
+			if (args[0] < 1 || args[0] > 3) return message.channel.send(invalidLevel);
+			if (args[0] == 1 && features.includes('COMMUNITY')) return message.channel.send(invalidLevel);
+			if (args[0] == 2 && features.includes('COMMUNITY')) return message.channel.send(invalidLevel);
+			 if (args[0] == 1) {
+				guild.setExplicitContentFilter("DISABLED")
+			} else if (args[0] == 2) {
+				guild.setExplicitContentFilter('MEMBERS_WITHOUT_ROLES')
+			} else if (args[0] == 3) {
+				guild.setExplicitContentFilter('ALL_MEMBERS');
 			}
+			message.channel.send(actionSucessful);
 		} catch (error) {
 			console.error(error);
 			message.reply(config.error);

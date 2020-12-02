@@ -1,14 +1,14 @@
 module.exports = {
-	name: 'unban',
-	description: 'Unban a user.',
+	name: 'setregion',
 	guildOnly: true,
-	aliases: ['pardon', 'prdn'],
+	description: 'Sets the server\'s region.',
+	aliases: ['setcountry', 'setreg', 'setcout'],
 	async run(client, message, args) {
 		// Discord, Config & NPM Dependencies
 		const Discord = require('discord.js');
 		const config = require('../command_config.json');
-		// In-App Dependencies
-		const guild = client.guilds.cache.get(message.guild.id);
+		// In-App
+		const guild = message.guild;
 		// Tables
 		var invalidArgumentMessages = [
 			`Sorry ${message.author.username}, you have provided invalid arguments.`,
@@ -33,19 +33,18 @@ module.exports = {
 			`Connor found out about your action ${message.author.username}, \nand he helped it become a sucess.`
 		]
 		// Embeds
-		// Invalid Args Embed
-		const invalidArguments = new Discord.MessageEmbed()
-		.setDescription(invalidArgumentMessages[Math.floor(Math.random() * 5)])
+		// Same Channel
+		const notARegion = new Discord.MessageEmbed()
+		.setDescription(`The region you have given does not exist, or was deprecated.`)
 		.setColor(config.red)
-		.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
 		// Invalid Permissions
 		const invalidPermissions = new Discord.MessageEmbed()
 		.setDescription(invalidPermissionMessages[Math.floor(Math.random() * 6)])
-		.setColor(config.red)
-		.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
-		.setFooter(config.name, config.icon)
+		.setColor('#ff0000')
+		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+		.setFooter('ConnorBot', config.icon)
 		.setTimestamp();
 		// Action Sucessful
 		const actionSucessful = new Discord.MessageEmbed()
@@ -54,31 +53,48 @@ module.exports = {
 		.setColor(config.gold)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		// Already Banned
-		const alreadyBanned = new Discord.MessageEmbed()
-		.setDescription('This user isn\'t banned!')
-		.setColor(config.red)
-		.setFooter(config.name, config.icon)
-		.setTimestamp();
-		// Get ID Function
-		function getID(mention) {
-			if (!mention) return;
-			if (mention.startsWith('<') && mention.endsWith('>')) {
-				var mentionID = mention.replace(/[<@&#!>]/)
-				return (mentionID);
-			} else return (mention);
-		}
-		// Command Sequence
+		// Invalid Args Embed
+    const invalidArguments = new Discord.MessageEmbed()
+    .setDescription(invalidArgumentMessages[Math.floor(Math.random() * 5)])
+    .setColor(config.red)
+    .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+    .setFooter(config.name, config.icon)
+    .setTimestamp();
+		// Get Region Function
+		function getRegion(region) {
+			if (!region) return;
+			if (region === 'us') {
+				return ('us-central');
+			} else if (region === 'use') {
+				return ('us-east');
+			} else if (region === 'uss') {
+				return ('us-south');
+			} else if (region === 'usw') {
+				return ('us-west');
+			} else if (region === 'sng') {
+				return ('singapore');
+			} else if (region === 'soa') {
+				return ('south-africa');
+			} else if (region === 'rus') {
+				return ('russia');
+			} else if (region === 'jap') {
+				return ('japan');
+			} else if (region === 'ind') {
+				return ('india');
+			} else if (region === 'hnkn') {
+				return ('hong-kong'); 
+			} else if (region === 'eu') {
+				return ('europe');
+			} else if (region === 'br') {
+				return ('brazil');
+			}
+		} 
 		try {
 			if (!args[0]) return message.channel.send(invalidArguments);
-			var user = client.users.cache.get(getID(args[0]));
-			if (!message.member.hasPermission('BAN_MEMBERS')) {
-				return message.channel.send(invalidPermissions);
-			} else {
-				guild.members.unban(user.id);
-				message.channel.send(actionSucessful);
-				user.send(`<@${user.id}> You were unbanned in **${guild.name}**!`)
-			}
+			if (!message.member.hasPermission('MANAGE_SERVER')) return message.channel.send(invalidPermissions);
+			guild.setRegion(getRegion(args[0]))
+			.catch(error => message.channel.send(notARegion));
+			message.channel.send(actionSucessful);
 		} catch (error) {
 			console.error(error);
 			message.reply(config.error);

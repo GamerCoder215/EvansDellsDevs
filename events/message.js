@@ -18,8 +18,6 @@ module.exports = async (client, message) => {
 	}
 	const guild = client.guilds.cache.get(guildID);
 	const clientUser = guild.member(client.user);
-	// Tests if missing permissions
-	if (!clientUser.hasPermission('ADMINISTRATOR')) return message.channel.send(`Hey ${message.author.username}, before I can execute that command, I am missing my Administrator Permission! Ask the owner to add it, **please**!`);
 	// Detects if a channel is muted
 	if (db.get(`channel_${message.channel.id}_muted`) === true) {
 		if (!message.member.hasPermission('MANAGE_MESSAGES') && !message.author.bot) {
@@ -40,22 +38,7 @@ module.exports = async (client, message) => {
 	// Get the command
 
   const command = client.commands.get(cmdName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(cmdName));
-	if (!command) return;
 	// If there is no command, return
-	// Detects if command is in a DM
-	if (command.guildOnly && message.channel.type === 'dm') {
-		var messages = [
-			`Sorry ${message.author.username}, you need to be in a guild to execute this command!`,
-			`Oops ${message.author.username}, this command is onlly executable in a server.`,
-			`Please use this command in a server, ${message.author.username}`,
-		];
-		const invalidChannel = new Discord.MessageEmbed()
-		.setTitle('Error')
-		.setColor('#ff0000')
-		.setDescription(messages[Math.floor(Math.random() * 3)])
-		.setTimestamp();
-		return message.reply(invalidChannel);
-	}
 	// Set Null to False or 0
 	if (db.get(`modules_education_${message.author.id}_purchased`) === null) {
 		db.set(`modules_education_${message.author.id}_purchased`, false);
@@ -88,16 +71,6 @@ module.exports = async (client, message) => {
 	if (message.member.roles.cache.has('768146574026473494')) {
 		db.set(`modules_advtools_${message.author.id}_purchased`, true);
 	}
-	// Detetcs if Premium Modules haven't bought
-	if (command.education && db.get(`modules_education_${message.author.id}_purchased`) === false) {
-		return message.channel.send(premiumEmbed);
-	}
-	if (command.database && db.get(`modules_database_${message.author.id}_purchased`) === false) {
-		return message.channel.send(premiumEmbed);
-	}
-	if (command.advtools && db.get(`modules_advtools_${message.author.id}_purchased`) === false) {
-		return message.channel.send(premiumEmbed);
-	}
 	// Detects if you haven't been DMed with a code and you haven't
 	if (message.member.roles.cache.has('766313565816487976') && db.get(`dms_purchases_${message.author.id}_education`) === false) {
 		const thanksEmbed = new Discord.MessageEmbed()
@@ -124,8 +97,46 @@ module.exports = async (client, message) => {
 		message.author.send(`<@${message.author.id}>`, removeEmbed);
 	}
 	try {
-		if (command) command.run(client, message, args);
-		// If there is a command, run it
+		if (!command) return;
+		if (command) {
+			if (command.guildOnly && message.channel.type === 'dm') {
+				var messages = [
+					`Sorry ${message.author.username}, you need to be in a guild to execute this command!`,
+					`Oops ${message.author.username}, this command is onlly executable in a server.`,
+					`Please use this command in a server, ${message.author.username}`,
+				];
+				const invalidChannel = new Discord.MessageEmbed()
+				.setTitle('Error')
+				.setColor('#ff0000')
+				.setDescription(messages[Math.floor(Math.random() * 3)])
+				.setTimestamp();
+				return message.reply(invalidChannel);
+			}
+			// Tests if missing permissions in needed categories
+			if (db.get(`module_${command.name}`) === 'moderation') {
+				if (!clientUser.hasPermission('ADMINISTRATOR')) {
+					return message.channel.send(`For my \`moderation\` module, I require the \`Administrator\` permission. Please add it!`)
+				} else command.run(client, message, args);
+			}
+			if (command.beta && message.author.id !== '572173428086538270') {
+			const betaEmbed = new Discord.MessageEmbed()
+			.setDescription(`This command is currently in beta, and is not released to the public yet. Join the [support server](https://discord.gg/upx6SqG) for updates on Connor.`)
+			.setColor(config.red)
+			.setFooter(config.name, config.icon)
+			.setTimestamp();
+			return message.channel.send(betaEmbed);
+			}
+			if (command.education && db.get(`modules_education_${message.author.id}_purchased`) === false) {
+				return message.channel.send(premiumEmbed);
+			}
+			if (command.database && db.get(`modules_database_${message.author.id}_purchased`) === false) {
+				return message.channel.send(premiumEmbed);
+			}
+			if (command.advtools && db.get(`modules_advtools_${message.author.id}_purchased`) === false) {
+				return message.channel.send(premiumEmbed);
+			} else command.run(client, message, args);
+	}
+	// If there is a command, run it
 	// If there is any errors, catch it and log it in the console
 	} catch (error) {
 		console.error(error);

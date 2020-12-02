@@ -1,14 +1,14 @@
 module.exports = {
-	name: 'unban',
-	description: 'Unban a user.',
+	name: 'setsystem',
+	description: 'Sets the system messages channel',
 	guildOnly: true,
-	aliases: ['pardon', 'prdn'],
+	aliases: ['setsys', 'systemchannel', 'setsystemchannel'],
 	async run(client, message, args) {
 		// Discord, Config & NPM Dependencies
 		const Discord = require('discord.js');
 		const config = require('../command_config.json');
 		// In-App Dependencies
-		const guild = client.guilds.cache.get(message.guild.id);
+		const guild = message.guild;
 		// Tables
 		var invalidArgumentMessages = [
 			`Sorry ${message.author.username}, you have provided invalid arguments.`,
@@ -33,19 +33,18 @@ module.exports = {
 			`Connor found out about your action ${message.author.username}, \nand he helped it become a sucess.`
 		]
 		// Embeds
-		// Invalid Args Embed
-		const invalidArguments = new Discord.MessageEmbed()
-		.setDescription(invalidArgumentMessages[Math.floor(Math.random() * 5)])
+		// Same Channel
+		const sameChannel = new Discord.MessageEmbed()
+		.setDescription(`The channel you have given is already the System Channel of the server!`)
 		.setColor(config.red)
-		.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
 		// Invalid Permissions
 		const invalidPermissions = new Discord.MessageEmbed()
 		.setDescription(invalidPermissionMessages[Math.floor(Math.random() * 6)])
-		.setColor(config.red)
-		.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
-		.setFooter(config.name, config.icon)
+		.setColor('#ff0000')
+		.setAuthor('', message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+		.setFooter('ConnorBot', config.icon)
 		.setTimestamp();
 		// Action Sucessful
 		const actionSucessful = new Discord.MessageEmbed()
@@ -54,31 +53,32 @@ module.exports = {
 		.setColor(config.gold)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		// Already Banned
-		const alreadyBanned = new Discord.MessageEmbed()
-		.setDescription('This user isn\'t banned!')
-		.setColor(config.red)
-		.setFooter(config.name, config.icon)
-		.setTimestamp();
+		// Invalid Args Embed
+    const invalidArguments = new Discord.MessageEmbed()
+    .setDescription(invalidArgumentMessages[Math.floor(Math.random() * 5)])
+    .setColor(config.red)
+    .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+    .setFooter(config.name, config.icon)
+    .setTimestamp();
 		// Get ID Function
 		function getID(mention) {
 			if (!mention) return;
-			if (mention.startsWith('<') && mention.endsWith('>')) {
-				var mentionID = mention.replace(/[<@&#!>]/)
+			if (mention.startsWith('<#') && mention.endsWith('>')) {
+				var mentionID = mention.replace(/[<#>]/g, '')
 				return (mentionID);
+			} else if (!isNaN(mention)) {
+				return (mention)
 			} else return (mention);
 		}
 		// Command Sequence
 		try {
 			if (!args[0]) return message.channel.send(invalidArguments);
-			var user = client.users.cache.get(getID(args[0]));
-			if (!message.member.hasPermission('BAN_MEMBERS')) {
-				return message.channel.send(invalidPermissions);
-			} else {
-				guild.members.unban(user.id);
-				message.channel.send(actionSucessful);
-				user.send(`<@${user.id}> You were unbanned in **${guild.name}**!`)
-			}
+			const oldSystemChannel = guild.systemChannel;
+			const newSystemChannel = client.channels.cache.get(getID(args[0]));
+			if (oldSystemChannel === newSystemChannel) return message.channel.send(sameChannel);
+			if (!message.member.hasPermission('MANAGE_SERVER')) return message.channel.send(invalidPermissions);
+			guild.setSystemChannel(newSystemChannel);
+			message.channel.send(actionSucessful);
 		} catch (error) {
 			console.error(error);
 			message.reply(config.error);

@@ -38,6 +38,7 @@ module.exports = async (client, message) => {
 					.setColor(config.blue)
 					.setFooter(config.name, config.icon)
 					.setTimestamp();
+					if (detail1Embed.fields.length < 1) return;
 					client.channels.cache.get(setChannel).send(detail1Embed);
 				} else if (detail === '2') {
 					const detail2Embed = new Discord.MessageEmbed()
@@ -51,6 +52,7 @@ module.exports = async (client, message) => {
 					.setColor(config.blue)
 					.setFooter(config.name, config.icon)
 					.setTimestamp();
+					if (detail2Embed.fields.length < 1) return;
 					client.channels.cache.get(setChannel).send(detail2Embed);
 				} else if (detail === '3') {
 					const detail3Embed = new Discord.MessageEmbed()
@@ -66,6 +68,7 @@ module.exports = async (client, message) => {
 					.setColor(config.blue)
 					.setFooter(config.name, config.icon)
 					.setTimestamp();
+					if (detail3Embed.fields.length < 1) return;
 					client.channels.cache.get(setChannel).send(detail3Embed);
 				} else if (detail === '4') {
 					const detail4Embed = new Discord.MessageEmbed()
@@ -84,6 +87,7 @@ module.exports = async (client, message) => {
 					.setColor(config.blue)
 					.setFooter(config.name, config.icon)
 					.setTimestamp();
+					if (detail1Embed.fields.length < 1) return;
 					client.channels.cache.get(setChannel).send(detail4Embed);
 				}
 			}

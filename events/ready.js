@@ -1,5 +1,5 @@
 module.exports = async (client) => {
-  console.log('Connor is currently running correctly.');
+  console.log('\x1b[36mConnor is currently running correctly.\x1b[0m');
 	const Discord = require('discord.js')
   // Set the client user's activity (randomly)
 	setInterval(() => {

@@ -84,7 +84,7 @@ module.exports = {
         if (mention.startsWith('<@') && mention.endsWith('>')) {
           var mentionID = mention.replace(/[<@!>]/g, '')
           return (mentionID);
-        } else return;
+        } else return (mention);
       }
     // Command Sequence
     try {
