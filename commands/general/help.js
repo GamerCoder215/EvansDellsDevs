@@ -10,10 +10,9 @@ module.exports = {
 		const config = require('../command_config.json');
 		// Timed Out Embed
 		const timedOut = new Discord.MessageEmbed()
-		.setTitle('❌ Error')
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
-		.setDescription('Your message has timed out!')
-		.setColor('#ff0000')
+		.setDescription('This menu has timed out, because we can\'t display this forever. Please use the command again.')
+		.setColor(config.red)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
 		// Beta Message Embed
@@ -38,12 +37,12 @@ module.exports = {
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
 		const helpPage2 = new Discord.MessageEmbed()
-		.setTitle(`Help for \`${message.author.username}\` | Page 2 | Free Modules (Page 2)`)
+		.setTitle(`Help for \`${message.author.username}\` | Free Modules (Page 2)`)
 		.setDescription(`\`\`\`css\n[] is optional; <> is required\`\`\`\nIf you need additional help, refer to the [documentation](https://docs.connorbot.cf).`)
 		.addFields(
 			{ name: '🔧Moderation', value: `\`${prefix}help moderation\``, inline: true },
 			{ name: '\u200b', value: '\u200b' },
-			{ name: '🏠 Server Moderation (Coming Soon)', value: `\`${prefix}help servermod\``, inline: true },
+			{ name: '🏠 Server Moderation', value: `\`${prefix}help servermod\``, inline: true },
 			{ name: '\u200b', value: '\u200b' },
 			{ name: '📦 Logging', value: `\`${prefix}help logging\``, inline: true },
 		)
@@ -286,12 +285,11 @@ module.exports = {
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-
 		const helpSettings = new Discord.MessageEmbed()
 		.setTitle(`Help for \`${message.author.username}\` | Settings`)
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
 		.addFields(
-			{ name: `**${prefix}prefix** <prefix>`, value: `Set the bot's prefix.` },
+			{ name: `**${prefix}prefix** <prefix>`, value: `Set the bot's prefix.` }
 		)
 		.setColor(config.blue)
 		.setFooter(config.name, config.icon)

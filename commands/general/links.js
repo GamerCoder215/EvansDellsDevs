@@ -11,8 +11,9 @@ module.exports = {
 		const linksEmbed = new Discord.MessageEmbed()
 		.setTitle('Links')
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
-		.setDescription('[Support Server](https://discord.gg/upx6SqG)\n[]')
-		.setFooter('ConnorBot', config.icon)
+		.setDescription('[Website](https://connorbot.cf)\n[Support Server](https://discord.gg/upx6SqG)\n[Documentation](https://docs.connorbot.cf)\n[Status](https://status.connorbot.cf)')
+		.setColor(config.blue)
+		.setFooter(config.name, config.icon)
 		.setTimestamp();
 		message.channel.send(linksEmbed);
 		} catch (error) {

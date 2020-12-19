@@ -5,7 +5,10 @@ module.exports = {
 	async run(client, message, args) {
 		// Discord, Config & NPM Dependencies
 		const Discord = require('discord.js');
+		const db = require('quick.db');
 		const config = require('../command_config.json');
+
+		var prefix = db.get(`guild_${message.guild.id}_prefix`) || '?';
 		// Tables
 		var invalidCommandMessages = [
 			`Hey ${message.author.username}, this command does not exist.`,
@@ -24,12 +27,11 @@ module.exports = {
 		.setFooter('Psst. Click on the title if it\'s an issue.', config.icon)
 		.setTimestamp();
 		try {
-		if (!client.commands.has(args[0])) {
+		const command = client.commands.get(args[0]);
+		if (command === undefined) {
 			return message.channel.send(invalidCommand);
 		} else {
 		// Get Commands
-		const cmdName = args.shift().toLowerCase();
-		const command = client.commands.get(cmdName);
 		var education = command.education;
 		var guildOnly = command.guildOnly;
 		var database = command.database;
@@ -46,7 +48,7 @@ module.exports = {
 			{ name: 'Name', value: command.name},
 			{ name: 'Description', value: command.description},
 			{ name: 'Premium Status', value: `Education: ${education}\nDatabase: ${database}\nAdv. Tools: ${advtools}`},
-			{ name: 'Aliases', value: aliases },
+			{ name: 'Aliases', value: aliases.join(`, `) },
 			{ name: 'Guild Only', value: guildOnly},
 		)
 		.setColor(config.blue)

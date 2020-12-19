@@ -1,9 +1,10 @@
 {
 	"icon": "https://cdn.discordapp.com/attachments/759105938233491526/759315061482717214/Connor.png",
-	"error": "Unhandled Error Found. Contact Evans & Dells Developers (discord.gg/upx6SqG)!",
+	"error": "I have encountered an error:\n• Have you given me the correct permissions?\n• Did you enter the correct parameters?\nIf you have correctly answered these questions and still don't know what is wrong, join the support server: https://discord.io/evansdellsdevs",
 	"name": "ConnorBot",
 	"blue": "#7df9ff",
 	"gold": "#ffd700",
+	"orange": "#ffa700",
 	"red": "#ff0000",
 	"ownerID": "572173428086538270"
 }

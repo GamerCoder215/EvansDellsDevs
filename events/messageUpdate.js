@@ -4,6 +4,7 @@ module.exports = async (client, oldMessage, newMessage) => {
   const db = require('quick.db');
 
 	const guild = oldMessage.guild
+	if (!guild) return;
   if (!db.get(`guild_${guild.id}_logging_msg-edit_enabled`) && !db.get(`guild_${guild.id}_logging_all_enabled`) === true) {
     return;
   } else {

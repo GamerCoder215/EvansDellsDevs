@@ -1,4 +1,5 @@
 module.exports = async (client, message) => {
+	if (message.author.bot) return;
 	// Discord & Dependencies
 	const Discord = require('discord.js');
 	const db = require('quick.db');
@@ -17,7 +18,6 @@ module.exports = async (client, message) => {
 		var guildID = message.guild.id;
 	}
 	const guild = client.guilds.cache.get(guildID);
-	const clientUser = guild.member(client.user);
 	// Detects if a channel is muted
 	if (db.get(`channel_${message.channel.id}_muted`) === true) {
 		if (!message.member.hasPermission('MANAGE_MESSAGES') && !message.author.bot) {
@@ -52,12 +52,6 @@ module.exports = async (client, message) => {
 	if (db.get(`dms_purchases_${message.author.id}_database`) === null) {
 		db.set(`dms_purchases_${message.author.id}_database`, false);
 	}
-	if (db.get(`modules_advtools_${message.author.id}_purchased`) === null) {
-		db.set(`modules_advtools_${message.author.id}_purchased`, false);
-	}
-	if (db.get(`dms_purchases_${message.author.id}_advtools`) === null) {
-		db.set(`dms_purchases_${message.author.id}_advtools`, false);
-	}
 	if (db.get(`valueID`) === null) {
 		db.set(`valueID`, 0);
 	}
@@ -68,37 +62,59 @@ module.exports = async (client, message) => {
 	if (message.member.roles.cache.has('768146423258415104')) {
 		db.set(`modules_database_${message.author.id}_purchased`, true);
 	}
-	if (message.member.roles.cache.has('768146574026473494')) {
-		db.set(`modules_advtools_${message.author.id}_purchased`, true);
-	}
-	// Detects if you haven't been DMed with a code and you haven't
+	// Detects if you haven't been DMed with sucessful purchase
 	if (message.member.roles.cache.has('766313565816487976') && db.get(`dms_purchases_${message.author.id}_education`) === false) {
-		const thanksEmbed = new Discord.MessageEmbed()
+		const educationThanksEmbed = new Discord.MessageEmbed()
 		.setTitle('Thanks for Purchasing the Education Module!')
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
 		.setDescription(`Thanks for Purchasing my Education Module!\nWe appreciate your support and believing in Connor for all the work he has done!\n\nHappy Learning!`)
 		.setColor(config.gold)
 		.setFooter(config.name, config.icon)
 		.setTimestamp();
-		message.author.send(`<@${message.author.id}>`, thanksEmbed);
+		message.author.send(`<@${message.author.id}>`, educationThanksEmbed);
 		db.set(`dms_purchases_${message.author.id}_education`, true);
 	}
-	// Detects if the user doesn't have the role (Removed by Patreon Bot) and is added to the Set of people who have Education
+	// Detects if the user doesn't have the role (Removed by DonateBot) and is added to the Set of people who have Education
 	if (!message.member.roles.cache.has('766313565816487976') && db.get(`dms_purchases_${message.author.id}_education`) === true && message.guild.id === '761571644384346143') {
 		db.set(`modules_education_${message.author.id}_purchased`, false);
 		db.set(`dms_purchases_${message.author.id}_education`, false);
-		const removeEmbed = new Discord.MessageEmbed()
+		const educationRemoveEmbed = new Discord.MessageEmbed()
 		.setTitle('Sorry')
 		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
 		.setDescription(`Unfortunately, you stopped paying for Education. We have to remove you from the set, but hey, maybe you'll go back!\nLet us know what we did wrong by Joining our Support Server —> https://discord.gg/upx6SqG`)
 		.setColor(config.red)
 		.setFooter('*Sad Connor Noises*')
 		.setTimestamp();
-		message.author.send(`<@${message.author.id}>`, removeEmbed);
+		message.author.send(`<@${message.author.id}>`, educationRemoveEmbed);
+	}
+	// Detects if you haven't been DMed with sucessful purchase
+	if (message.member.roles.cache.has('768146423258415104') && db.get(`dms_purchases_${message.author.id}_database`) === false) {
+		const databaseThanksEmbed = new Discord.MessageEmbed()
+		.setTitle('Thanks for Purchasing the Database Module!')
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
+		.setDescription(`Thanks for Purchasing my Database Module!\nWe appreciate your support and believing in Connor for all the work he has done!\n\nHappy Learning!`)
+		.setColor(config.gold)
+		.setFooter(config.name, config.icon)
+		.setTimestamp();
+		message.author.send(`<@${message.author.id}>`, thanksEmbed);
+		db.set(`dms_purchases_${message.author.id}_database`, true);
+	}
+	// Detects if the user doesn't have the role (Removed by DonateBot) and is added to the Set of people who have Database
+	if (!message.member.roles.cache.has('766313565816487976') && db.get(`dms_purchases_${message.author.id}_database`) === true && message.guild.id === '761571644384346143') {
+		db.set(`modules_database_${message.author.id}_purchased`, false);
+		db.set(`dms_purchases_${message.author.id}_database`, false);
+		const databaseRemoveEmbed = new Discord.MessageEmbed()
+		.setTitle('Sorry')
+		.setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
+		.setDescription(`Unfortunately, you stopped paying for Database. We have to remove you from the set, but hey, maybe you'll go back!\nLet us know what we did wrong by Joining our Support Server —> https://discord.gg/upx6SqG`)
+		.setColor(config.red)
+		.setFooter('*Sad Connor Noises*')
+		.setTimestamp();
+		message.author.send(`<@${message.author.id}>`, databaseRemoveEmbed);
 	}
 	try {
 		if (!command) return;
-		if (command) {
+		if (command) command.run(client, message, args);
 			if (command.guildOnly && message.channel.type === 'dm') {
 				var messages = [
 					`Sorry ${message.author.username}, you need to be in a guild to execute this command!`,
@@ -113,11 +129,6 @@ module.exports = async (client, message) => {
 				return message.reply(invalidChannel);
 			}
 			// Tests if missing permissions in needed categories
-			if (db.get(`module_${command.name}`) === 'moderation') {
-				if (!clientUser.hasPermission('ADMINISTRATOR')) {
-					return message.channel.send(`For my \`moderation\` module, I require the \`Administrator\` permission. Please add it!`)
-				} else command.run(client, message, args);
-			}
 			if (command.beta && message.author.id !== '572173428086538270') {
 			const betaEmbed = new Discord.MessageEmbed()
 			.setDescription(`This command is currently in beta, and is not released to the public yet. Join the [support server](https://discord.gg/upx6SqG) for updates on Connor.`)
@@ -132,14 +143,9 @@ module.exports = async (client, message) => {
 			if (command.database && db.get(`modules_database_${message.author.id}_purchased`) === false) {
 				return message.channel.send(premiumEmbed);
 			}
-			if (command.advtools && db.get(`modules_advtools_${message.author.id}_purchased`) === false) {
-				return message.channel.send(premiumEmbed);
-			} else command.run(client, message, args);
-	}
 	// If there is a command, run it
 	// If there is any errors, catch it and log it in the console
 	} catch (error) {
 		console.error(error);
-		message.reply(config.error);
 	}
 };

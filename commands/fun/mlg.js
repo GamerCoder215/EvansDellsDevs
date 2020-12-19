@@ -35,10 +35,8 @@ module.exports = {
 		try {
 			const canvas = Canvas.createCanvas(720, 720);
 			const ctx = canvas.getContext('2d');
-			const target = message.mentions.users.first();
-			if (!message.mentions.users.size) {
-				return message.channel.send(invalidArguments)
-			} else {
+			let target = message.mentions.users.first();
+			if (!message.mentions.users.size) target = message.author;
 			// Avatar Background
 			const background = await Canvas.loadImage(target.displayAvatarURL({ dynamic: true, format: 'png', size: 1024}))
 			ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
@@ -51,9 +49,8 @@ module.exports = {
 			const mlgFrog = await Canvas.loadImage('https://gifimage.net/wp-content/uploads/2017/06/mlg-frog-gif-5.gif')
 			ctx.drawImage(mlgFrog, 50, 400, 250, 250)
 			// Sending the MLG picture.
-			const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'mlg-image.png');
+			const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'mlg-image.gif');
 			message.channel.send('', attachment)
-			}
 		} catch (error) {
 			console.error(error);
 			message.reply(config.error);

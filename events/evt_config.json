@@ -5,5 +5,6 @@
 	"gold": "#ffd700",
 	"blue": "7df9ff",
 	"error": "I'm sorry, I had an internal error. Notify Connor Corner and describe the actions that lead up to this message.",
-	"serverID": "761571644384346143"
+	"serverID": "761571644384346143",
+	"access_denied": "Erm, According to my code, I don't have permissions to do this."
 }

@@ -28,14 +28,7 @@ module.exports = async (client, oldChannel, newChannel) => {
           updateEmbed.addField(`Old Name: ${oldChannel.name}\nNew Name: **${newChannel.name}**`, `
 					\u200B`);
         }
-        if (oldChannel.parent.id !== newChannel.parent.id) {
-          if (oldChannel.type === 'category') {
-            var parent = 'Server';
-          } else {
-            parent = newChannel.parent.name;
-          }
-          updateEmbed.addField(`Old Category: ${parent}\nNew Category: ${parent}`, `\u200B`);
-        }
+				
         if (oldChannel.position !== newChannel.position) {
           updateEmbed.addField(`Old Position: ${oldChannel.position}\nNew Position: ${newChannel.position}`);
         }

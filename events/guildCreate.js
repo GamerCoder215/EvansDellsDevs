@@ -13,7 +13,7 @@ module.exports = async (client, guild) => {
 	const { executor, target } = botAdd;
 	const addedToServer = new Discord.MessageEmbed()
 	.setTitle(`Thanks for Adding Me!`)
-	.setDescription(`Hey ${executor.username}, thanks for adding me to the server. Some commands to get you started:\n\n\`?help\` — My Special help Message\n\`?prefix\` <prefix> — Set your own prefix\n?links — Get some useful links!\n\`?ping\` — Ping me to get some reaction time!`)
+	.setDescription(`Thanks for adding me to the server! Some commands to get you started:\n\n\`?help\` — My Special help Message\n\`?prefix\` <prefix> — Set your own prefix\n?links — Get some useful links!\n\`?ping\` — Ping me to get some reaction time!`)
 	.setColor(config.blue)
 	.setFooter('Now, to go hate on MEE6...')
 	.setTimestamp();
@@ -21,6 +21,23 @@ module.exports = async (client, guild) => {
 	console.log(`Joined ${guild.name}!`)
 	} catch (error) {
 		console.error(error);
-		message.reply(config.error)
+		var errorCode = error.code;
+		if (errorCode == 50013) {
+			let channelID;
+    let channels = guild.channels.cache;
+
+    channelLoop:
+    for (let key in channels) {
+        let c = channels[key];
+        if (c[1].type === "text") {
+            channelID = c[0];
+            break channelLoop;
+        }
+    }
+
+    let channel = guild.channels.cache.get(guild.systemChannelID || channelID);
+    channel.send(addedToServer);
+		}
+		message.reply(config.error);
 	}
 }

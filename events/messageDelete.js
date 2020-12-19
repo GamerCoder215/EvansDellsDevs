@@ -87,7 +87,7 @@ module.exports = async (client, message) => {
 					.setColor(config.blue)
 					.setFooter(config.name, config.icon)
 					.setTimestamp();
-					if (detail1Embed.fields.length < 1) return;
+					if (detail4Embed.fields.length < 1) return;
 					client.channels.cache.get(setChannel).send(detail4Embed);
 				}
 			}

@@ -3,7 +3,7 @@ module.exports = async (client) => {
 	const Discord = require('discord.js')
   // Set the client user's activity (randomly)
 	setInterval(() => {
-	var chooser = Math.floor(Math.random() * 3)
+	var chooser = Math.floor(Math.random() * 4)
 	if (chooser === 0) chooser = 1;
 	if (chooser === 1) {
 	var playingPresences = [
@@ -36,5 +36,5 @@ module.exports = async (client) => {
 	var listeningRandom = listeningPresences[Math.floor(Math.random() * 5)]
 	client.user.setActivity(listeningRandom, { type: 'LISTENING' })
 	}
-	}, 1000 * 5)
+	}, 1000 * 30)
 };	

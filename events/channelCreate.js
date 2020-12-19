@@ -4,6 +4,7 @@ module.exports = async (client, channel) => {
 	const db = require('quick.db');
 	// Useful Locals
 	const guild = channel.guild;
+	if (!guild) return;
 	var msgtyp = db.get(`guild_${guild.id}_logging_msgtype`);
 	var detail = db.get(`guild_${guild.id}_logging_detailtype`);
 	try {
